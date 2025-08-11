@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chatrooms | COURSE.XWAGON</title>
+<style>
+  /* Reset */
+  *, *::before, *::after {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Courier New', Courier, monospace;
+    background: #0a0a0a;
+    color: #5a3c1a;
+    min-height: 100vh;
+    user-select: none;
+    letter-spacing: 0.04em;
+    padding: 60px 24px 100px;
+    background-image:
+      radial-gradient(circle at top left, #1a0f04 5%, transparent 40%),
+      radial-gradient(circle at bottom right, #3b2c10 10%, transparent 50%);
+  }
+
+  h1.heading-gradient {
+    font-size: 3rem;
+    font-weight: 900;
+    background: linear-gradient(90deg, #ff0000, #ffcc00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    user-select: none;
+  }
+
+  p {
+    color: #5a3c1a;
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin-bottom: 40px;
+    user-select: none;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+
+  .card {
+    background: #1a180fdd;
+    border: 2px solid #5a3c1a88;
+    box-shadow: 0 0 20px #5a3c1a66 inset;
+    border-radius: 12px;
+    padding: 24px;
+    color: #5a3c1a;
+    user-select: none;
+  }
+
+  .card-header {
+    border-bottom: 1px solid #5a3c1a44;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .card-title {
+    font-weight: 900;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .card-description {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #806232cc;
+  }
+
+  a.external-link {
+    color: #ffcc00;
+    text-decoration: none;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+  }
+  a.external-link:hover {
+    text-decoration: underline;
+  }
+
+  .icon-circle {
+    width: 80px;
+    height: 80px;
+    background: #2ecc40aa;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px;
+    filter: drop-shadow(0 0 8px #2ecc40aa);
+  }
+
+  .icon {
+    width: 40px;
+    height: 40px;
+    fill: #27ae60;
+  }
+
+  .features {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+  .feature-item {
+    background: #2e2b23aa;
+    border: 1.5px solid #5a3c1aaa;
+    padding: 12px 16px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  .feature-icon {
+    width: 20px;
+    height: 20px;
+    fill: #ffcc00;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #27ae60;
+    color: #000;
+    font-weight: 900;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    user-select: none;
+  }
+  .btn:hover {
+    background-color: #1e8449;
+  }
+
+  .other-communities a {
+    display: flex;
+    gap: 14px;
+    padding: 16px;
+    border: 1.5px solid #5a3c1a88;
+    border-radius: 12px;
+    color: #5a3c1a;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    align-items: center;
+    user-select: none;
+  }
+  .other-communities a:hover {
+    background-color: #3b2c10cc;
+  }
+  .other-icon-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #00000055;
+  }
+  .blue { fill: #2980b9; }
+  .orange { fill: #d35400; }
+  .pink { fill: #c0392b; }
+
+  .chat-rules {
+    margin-top: 20px;
+    border-top: 1px solid #5a3c1a55;
+    padding-top: 20px;
+  }
+  .chat-rules h3 {
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .chat-rules ul {
+    list-style: none;
+    color: #806232cc;
+  }
+  .chat-rules li {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .chat-rules li::before {
+    content: "•";
+    color: #ffcc00;
+    font-weight: 900;
+  }
+
+  .footer-join {
+    text-align: center;
+    margin-top: 60px;
+  }
+  .footer-join h2 {
+    font-weight: 900;
+    font-size: 2rem;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .footer-join p {
+    color: #5a3c1acc;
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto 24px;
+    user-select: none;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <h1 class="heading-gradient">Community Chatrooms</h1>
+  <p>Connect with fellow knowledge seekers, request specific books or courses, and join the conversation in our vibrant community spaces.</p>
+
+  <div class="grid">
+
+    <section class="card" aria-label="WhatsApp Group">
+      <div class="card-header">
+        <div class="card-title">Join Our WhatsApp Group</div>
+        <a href="https://chat.whatsapp.com/Ikfz9473Vg27LPmayyKU2e?mode=ac_t" target="_blank" rel="noopener noreferrer" class="external-link" aria-label="Open WhatsApp group link">
+          Open WhatsApp
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24"><path d="M14 3v2h3.586L10 12.586l1.414 1.414L19 6.414V10h2V3z"/></svg>
+        </a>
+      </div>
+      <div class="card-description">Make requests and connect with our community</div>
+      <div class="icon-circle" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-15.38 4.5L3 20l4-1.62A8.5 8.5 0 1 1 21 11.5z"/></svg>
+      </div>
+      <h3 style="text-align:center; font-weight:700; font-size:1.25rem; margin-bottom:16px;">Request Books, Courses & More</h3>
+      <p style="max-width:500px; margin:0 auto 30px; color:#806232cc; font-weight:600; user-select:none;">
+        Join our active WhatsApp group to request specific content, get recommendations, and connect with fellow COURSE.XWAGON members.
+      </p>
+      <div class="features" role="list">
+        <div class="feature-item" role="listitem">
+          <svg xmlns="http://www.w3.org/2000/svg" class="feature-icon" viewBox="0 0 24 24"><path d="M6 2h9a2 2 0 0 1 2 2v16l-5-3-5 3V4a2 2 0 0 1 2-2z"/></svg>
+          Book Requests
+        </div>
+        <div class="feature-item" role="listitem">
+          <svg xmlns="http://www.w3.org/2000/svg" class="feature-icon" viewBox="0 0 24 24"><path d="M2 2l20 20M2 22L22 2"/></svg>
+          Course Requests
+        </div>
+        <div class="feature-item" role="listitem">
+          <svg xmlns="http://www.w3.org/2000/svg" class="feature-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+          Community Discussion
+        </div>
+      </div>
+      <a href="https://chat.whatsapp.com/Ikfz9473Vg27LPmayyKU2e?mode=ac_t" target="_blank" rel="noopener noreferrer" class="btn" aria-label="Join WhatsApp Group">
+        Join WhatsApp Group
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-15.38 4.5L3 20l4-1.62A8.5 8.5 0 1 1 21 11.5z"/></svg>
+      </a>
+    </section>
+
+    <section class="card other-communities" aria-label="Other Communities">
+      <div class="card-header">
+        <div class="card-title">Other Communities</div>
+      </div>
+      <div class="card-description" style="margin-bottom:20px;">
+        Connect with COURSE.XWAGON members on multiple platforms
+      </div>
+
+      <a href="https://t.me/+AhEmrpuZzsE3NTdk" target="_blank" rel="noopener noreferrer" aria-label="Telegram Community">
+        <div class="other-icon-circle" style="background:#2980b955;">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon blue" viewBox="0 0 24 24"><path d="M9.5 17.5l7-7-7-3-1 5-3 1 1 2z"/></svg>
+        </div>
+        <div>
+          <h3 style="margin:0; font-weight:700;">Telegram</h3>
+          <p style="margin:0; font-size:0.85rem; color:#806232cc;">Secondary community</p>
+        </div>
+      </a>
+
+      <a href="https://share.google/9HsRYn5RGCD50asZ1" target="_blank" rel="noopener noreferrer" aria-label="Reddit Community">
+        <div class="other-icon-circle" style="background:#d3540055;">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon orange" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+        </div>
+        <div>
+          <h3 style="margin:0; font-weight:700;">Reddit</h3>
+          <p style="margin:0; font-size:0.85rem; color:#806232cc;">Discussion forum</p>
+        </div>
+      </a>
+
+      <a href="https://www.tiktok.com/@course.xwagon" target="_blank" rel="noopener noreferrer" aria-label="TikTok Community">
+        <div class="other-icon-circle" style="background:#c0392b55;">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon pink" viewBox="0 0 24 24"><path d="M12 2v20"/></svg>
+        </div>
+        <div>
+          <h3 style="margin:0; font-weight:700;">TikTok</h3>
+          <p style="margin:0; font-size:0.85rem; color:#806232cc;">Video content & updates</p>
+        </div>
+      </a>
+
+      <div class="chat-rules">
+        <h3>Chat Rules</h3>
+        <ul>
+          <li>Be respectful to all members</li>
+          <li>No spamming or self-promotion</li>
+          <li>Keep discussions relevant to the channel</li>
+          <li>Report any inappropriate behavior</li>
+        </ul>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="footer-join">
+    <h2>Ready to join the conversation?</h2>
+    <p>Our community is active 24/7 with knowledge seekers from around the world. Join us and be part of the movement.</p>
+    <a href="https://chat.whatsapp.com/Ikfz9473Vg27LPmayyKU2e?mode=ac_t" target="_blank" rel="noopener noreferrer" class="btn" aria-label="Join WhatsApp Group Now">
+      Join WhatsApp Group Now
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-15.38 4.5L3 20l4-1.62A8.5 8.5 0 1 1 21 11.5z"/></svg>
+    </a>
+  </div>
+
+</div>
+
+</body>
+</html>

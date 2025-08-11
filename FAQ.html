@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>C.XWAGON - Savage FAQ</title>
+<style>
+  /* Reset */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  body {
+    background: #121212; /* pitch black */
+    color: #888; /* cold steel grey */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    padding: 50px 20px;
+    min-height: 100vh;
+  }
+  h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #b22222; /* blood red */
+    margin-bottom: 30px;
+    text-shadow: 0 0 10px #800000;
+  }
+  p.intro {
+    max-width: 700px;
+    margin-bottom: 40px;
+    font-size: 1.2rem;
+    color: #666;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+  }
+
+  /* Accordion container */
+  .accordion {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #1e1e1e;
+    border: 2px solid #5a0000;
+    border-radius: 14px;
+    box-shadow: 0 0 25px #5a0000aa;
+  }
+
+  /* Each accordion item */
+  .accordion-item {
+    border-bottom: 1px solid #5a0000;
+  }
+  .accordion-item:last-child {
+    border-bottom: none;
+  }
+
+  /* Question styles */
+  .accordion-trigger {
+    cursor: pointer;
+    padding: 20px 30px;
+    font-weight: 900;
+    font-size: 1.3rem;
+    color: #bbb;
+    background: #2a2a2a;
+    border-left: 6px solid transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    letter-spacing: 0.02em;
+    transition: background 0.25s ease, border-left 0.25s ease, color 0.25s ease;
+    user-select: none;
+  }
+  .accordion-trigger:hover,
+  .accordion-trigger.active {
+    background: #420000;
+    color: #ff3333;
+    border-left: 6px solid #b22222;
+    text-shadow: 0 0 5px #b22222;
+  }
+
+  /* Chevron icon */
+  .accordion-trigger::after {
+    content: '▶';
+    font-size: 1.2rem;
+    color: #b22222;
+    transition: transform 0.3s ease;
+  }
+  .accordion-trigger.active::after {
+    transform: rotate(90deg);
+  }
+
+  /* Answer content */
+  .accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    background: #171717;
+    color: #999;
+    padding: 0 30px;
+    font-size: 1.05rem;
+    letter-spacing: 0.015em;
+    font-weight: 600;
+    line-height: 1.7;
+    transition: max-height 0.45s ease, padding 0.45s ease;
+    user-select: text;
+  }
+  .accordion-content.open {
+    padding: 20px 30px;
+    max-height: 1200px;
+  }
+
+  /* Links in answers */
+  a {
+    color: #ff4444;
+    text-decoration: none;
+    font-weight: 800;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Footer contact */
+  .contact {
+    max-width: 900px;
+    margin: 60px auto 0 auto;
+    padding: 25px;
+    background: #420000;
+    border-radius: 12px;
+    text-align: center;
+    color: #ff5555;
+    font-weight: 900;
+    font-size: 1.2rem;
+    box-shadow: 0 0 30px #b22222bb;
+    user-select: none;
+  }
+  .contact a {
+    color: #ff2222;
+    font-weight: 900;
+    text-decoration: none;
+  }
+  .contact a:hover {
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+
+<h1>FREQUENTLY ASKED QUESTIONS</h1>
+<p class="intro">This is not your average FAQ. We tell you how it is — no lies, no bullshit. Read carefully. Got questions? Contact us below.</p>
+
+<div class="accordion" role="region" aria-label="FAQ Accordion">
+
+  <div class="accordion-item">
+    <button class="accordion-trigger" aria-expanded="false" aria-controls="faq1" id="faq1-trigger">
+      What the hell is COURSE.XWAGON?
+    </button>
+    <div id="faq1" class="accordion-content" role="region" aria-labelledby="faq1-trigger">
+      COURSE.XWAGON is your no-nonsense digital vault packed with ebooks, audiobooks, and courses. This is where mastery meets rebellion. No fluff, just straight knowledge and tools to dominate.
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <button class="accordion-trigger" aria-expanded="false" aria-controls="faq2" id="faq2-trigger">
+      How do I buy stuff here?
+    </button>
+    <div id="faq2" class="accordion-content" role="region" aria-labelledby="faq2-trigger">
+      Smash the "Buy Now" or "Info" button. You’ll get sent to our bulletproof Gumroad checkout. Pay up, no delays. Download your loot immediately. No excuses.
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <button class="accordion-trigger" aria-expanded="false" aria-controls="faq3" id="faq3-trigger">
+      Free stuff — do you have it or what?
+    </button>
+    <div id="faq3" class="accordion-content" role="region" aria-labelledby="faq3-trigger">
+      Yeah, free resources exist for you to test your hunger. Same quality as paid. Look for “Free” labels and grab what you want. But don’t expect handouts forever.
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <button class="accordion-trigger" aria-expanded="false" aria-controls="faq4" id="faq4-trigger">
+      How do I get adult content?
+    </button>
+    <div id="faq4" class="accordion-content" role="region" aria-labelledby="faq4-trigger">
+      Adult stuff is locked behind strict 18+ verification. No minors, no exceptions. You want in, prove it.
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <button class="accordion-trigger" aria-expanded="false" aria-controls="faq5" id="faq5-trigger">
+      What payment methods do you accept?
+    </button>
+    <div id="faq5" class="accordion-content" role="region" aria-labelledby="faq5-trigger">
+      We take major credit cards, PayPal, and selected cryptocurrencies through Gumroad’s ironclad checkout. No funny business, all legit and secure.
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <button class="accordion-trigger" aria-expanded="false" aria-controls="faq6" id="faq6-trigger">
+      Refunds? Seriously?
+    </button>
+    <div id="faq6" class="accordion-content" role="region" aria-labelledby="faq6-trigger">
+      Listen closely — <strong>NO REFUNDS</strong>. All sales are final. You either know what you’re buying or don’t buy at all. We don't play that game. If you can’t handle that, stay away.
+      <br><a href="refund.html">Full policy (aka no refunds) →</a>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <button class="accordion-trigger" aria-expanded="false" aria-controls="faq7" id="faq7-trigger">
+      How to join your community chats?
+    </button>
+    <div id="faq7" class="accordion-content" role="region" aria-labelledby="faq7-trigger">
+      Hit the Chatrooms link on the main menu. Telegram groups for book requests, courses, and raw talk. Join or stay irrelevant.
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <button class="accordion-trigger" aria-expanded="false" aria-controls="faq8" id="faq8-trigger">
+      How often do you drop new content?
+    </button>
+    <div id="faq8" class="accordion-content" role="region" aria-labelledby="faq8-trigger">
+      Weekly. No delays, no excuses. Check the "New Uploads" on the homepage or social media. Stay sharp.
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <button class="accordion-trigger" aria-expanded="false" aria-controls="faq9" id="faq9-trigger">
+      Can I request specific books or courses?
+    </button>
+    <div id="faq9" class="accordion-content" role="region" aria-labelledby="faq9-trigger">
+      Absolutely. Use Telegram chats or the contact form. We grind hard to deliver what you want. Don’t ask if you’re not serious.
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <button class="accordion-trigger" aria-expanded="false" aria-controls="faq10" id="faq10-trigger">
+      Is my data safe with you?
+    </button>
+    <div id="faq10" class="accordion-content" role="region" aria-labelledby="faq10-trigger">
+      Hell yes. We don’t store payment info — Gumroad handles that. We only take essentials to deliver your gear. No leaks, no bullshit.
+      <br><a href="privacy.html">Read full Privacy Policy →</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="contact">
+  Still don’t get it? Hit us on WhatsApp: <a href="https://wa.me/0633339745" target="_blank" rel="noopener noreferrer">0633339745</a>
+</div>
+
+<script>
+  // Brutal Accordion toggle
+  document.querySelectorAll('.accordion-trigger').forEach(button => {
+    button.addEventListener('click', () => {
+      const expanded = button.getAttribute('aria-expanded') === 'true';
+      const content = document.getElementById(button.getAttribute('aria-controls'));
+
+      // Close all brutally
+      document.querySelectorAll('.accordion-trigger').forEach(btn => {
+        btn.setAttribute('aria-expanded', 'false');
+        btn.classList.remove('active');
+      });
+      document.querySelectorAll('.accordion-content').forEach(panel => {
+        panel.classList.remove('open');
+      });
+
+      // Open clicked if closed
+      if (!expanded) {
+        button.setAttribute('aria-expanded', 'true');
+        button.classList.add('active');
+        content.classList.add('open');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

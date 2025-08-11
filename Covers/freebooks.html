@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BookVault - Local Covers 3D</title>
+<style>
+  body {
+    margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #050505; color: #fff;
+  }
+  header {
+    position: sticky; top: 0;
+    background: linear-gradient(90deg, rgba(255,127,80,0.02), rgba(0,0,0,0));
+    text-align: center; padding: 28px 16px;
+    font-weight: 800; font-size: 28px; color: #ff7f50;
+    letter-spacing: 0.6px;
+    text-shadow: 0 0 8px #ff7f50, 0 0 18px #ff7f50, 0 0 30px rgba(255,127,80,0.6);
+    backdrop-filter: blur(4px); z-index: 999;
+  }
+  #grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr));
+    gap: 18px; max-width: 1400px; margin: 28px auto; padding: 0 16px; box-sizing: border-box;
+  }
+  .book-card {
+    background: #0f0f10; border-radius: 12px; padding: 16px;
+    display: flex; flex-direction: column; align-items: center;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.6), 0 0 18px rgba(255,127,80,0.04);
+    border: 1px solid rgba(255,127,80,0.06);
+    min-height: 460px; transition: transform 0.3s ease;
+    perspective: 800px;
+  }
+  .book-card:hover { transform: scale(1.06); box-shadow: 0 12px 36px rgba(255,127,80,0.8); }
+  .cover-3d {
+    width: 100%; height: 320px; border-radius: 10px;
+    position: relative; transform-style: preserve-3d;
+    transform-origin: left center; transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+  .book-card:hover .cover-3d { transform: rotateY(-10deg); }
+  .cover-front {
+    width: 100%; height: 100%; border-radius: 10px;
+    background-size: cover; background-position: center;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.7), 0 0 15px rgba(255,127,80,0.6);
+    position: relative; z-index: 3; backface-visibility: hidden;
+  }
+  .cover-spine {
+    position: absolute; left: -12px; top: 10px;
+    width: 12px; height: 300px;
+    background: linear-gradient(180deg, #ff7f50, #cc653f);
+    border-radius: 4px 0 0 4px;
+    box-shadow: inset 1px 0 2px rgba(255,255,255,0.2), 0 0 6px rgba(255,127,80,0.5);
+    transform: translateZ(-5px); z-index: 2;
+  }
+  .title {
+    margin-top: 16px; font-weight: 700; font-size: 16px;
+    text-align: center; min-height: 56px; color: #fff;
+    user-select: none;
+  }
+  .stars {
+    margin-top: 8px; color: #ffd700; font-size: 18px;
+    text-shadow: 0 0 6px #ffd700, 0 0 12px rgba(255,215,0,0.2);
+    user-select: none;
+  }
+  .download-btn {
+    margin-top: auto; background: #fff; color: #111;
+    padding: 12px 26px; font-weight: 800; border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 6px 28px rgba(255,255,255,0.14), 0 0 18px rgba(255,255,255,0.28);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    user-select: none;
+  }
+  .download-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(255,255,255,0.22), 0 0 28px rgba(255,255,255,0.4);
+  }
+  @media (max-width: 420px) {
+    header { font-size: 18px; }
+    #grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+    .book-card { min-height: 420px; }
+    .cover-3d { height: 260px; }
+  }
+</style>
+</head>
+<body>
+<header>Unlocked 🔓 The Don/ignacio. Book mode. Get All books-unlimited</header>
+<div id="grid"></div>
+
+<script>
+  const bookNames = [
+    "Quantum Legacy: The Ignition","Neural Genesis: Code of the Mind","Silent Cipher: Shadows of Infinity",
+    "Ethereal Grid: The Data Monolith","Celestial Nexus: Beyond the Void","Primal Code: The Awakening Loop",
+    "Obsidian Dawn: Algorithms of Power","Stellar Flux: A Cosmic Chronicle","Digital Oracle: Secrets of the Future",
+    "Phantom Protocol: Ghosts in the Machine","Titan’s Gambit: The War of Elements","Aether Scripts: The Lost Codex",
+    "Lumina Veil: The Radiant Path","Vortex Cipher: Spiral of Time","Nebula Drift: The Final Frontier",
+    "Iron Veins: Cybernetic Rebellion","Solaris Edge: Flames of Destiny","Chaos Matrix: The Hidden Equation",
+    "Arcane Bytes: The Forbidden Code","Echoes of Tomorrow: The Silent War","Voidwalkers: Across the Divide",
+    "Genesis Frame: Origins Rewritten","Oblivion Key: Unlocking Eternity","Crimson Prism: Light and Shadow",
+    "Phantom Chain: Links of Fate","Nova Pulse: Heart of the Cosmos","Silent Dawn: Rise of the Sentinels",
+    "Titanium Mind: Metal and Memory","Spectral Tide: Waves of the Unknown","Radiant Core: Energy Unleashed",
+    "Celestium: The Starborn Legacy","Digital Phoenix: Code Resurrection","Echo Nexus: The Memory Vault",
+    "Ironclad Faith: The Last Crusade","Nova Spiral: Dance of the Suns","Shadowforge: The Dark Alloy",
+    "Infinite Loop: The Timeless Code","Solar Winds: Breath of the Gods","Crystal Cipher: The Prism Key",
+    "Stellar Cascade: Lightspeed Voyage","Chrono Rift: Fractured Time","Neon Veil: The Cyber Masquerade",
+    "Eclipse Protocol: Shadows Ascend","Arcadia Drift: The Lost Horizon","Obsidian Pulse: Heartbeat of Steel",
+    "Zephyr Code: Winds of Change","Luminous Path: The Enlightened","Phantom Spectrum: Colors of Silence",
+    "Iron Horizon: The Last Frontier","Nova Core: Genesis Spark"
+  ];
+
+  const bookLinks = [
+    "https://upfiles.com/dyMeFU0","https://upfiles.com/oPeNyB2","https://upfiles.com/y1zJ",
+    "https://upfiles.com/APlHaP","https://upfiles.com/xrCatV","https://upfiles.com/cZjM",
+    "https://upfiles.com/2ahgHwY","https://upfiles.com/xAaim","https://upfiles.com/M4Nx",
+    "https://upfiles.com/BKPcDe","https://upfiles.com/KrZS4n","https://upfiles.com/Xno3h",
+    "https://upfiles.com/W6WVK","https://upfiles.com/TFS1R49t","https://upfiles.com/Ndct",
+    "https://upfiles.com/XbcPx","https://upfiles.com/AgDPA","https://upfiles.com/Wvf7p7JP",
+    "https://upfiles.com/wKPXPPx","https://upfiles.com/oHPTAIB","https://upfiles.com/qt0kO",
+    "https://upfiles.com/ZIP2cE7","https://upfiles.com/kBHgen","https://upfiles.com/Nldyg",
+    "https://upfiles.com/fiAHgMc2","https://upfiles.com/9VjIQt34","https://upfiles.com/dDV8N",
+    "https://upfiles.com/8zHLlZ5N","https://upfiles.com/50uMvRL","https://upfiles.com/Do5g",
+    "https://upfiles.com/bZECw","https://upfiles.com/KSE6PqG","https://upfiles.com/mpt6f2H",
+    "https://upfiles.com/dfCqN","https://upfiles.com/RhFu6uDo","https://upfiles.com/Q7vDm7",
+    "https://upfiles.com/E36KDr7","https://upfiles.com/ijOo","https://upfiles.com/D5OI",
+    "https://upfiles.com/fmEk","https://upfiles.com/JbVw","https://upfiles.com/0DS48dJ",
+    "https://upfiles.com/STKZo6Gf","https://upfiles.com/G4cKIWAH","https://upfiles.com/yuTCYq7e",
+    "https://upfiles.com/egKT9pmJ","https://upfiles.com/cbKvbe","https://upfiles.com/1xU39",
+    "https://upfiles.com/5sQZDp","https://upfiles.com/ihA7"
+  ];
+
+  const coverFiles = [
+    "IMG-20250809-WA0028.jpg","IMG-20250809-WA0029.jpg","IMG-20250809-WA0031.jpg",
+    "IMG-20250809-WA0032.jpg","IMG-20250809-WA0033.jpg","IMG-20250809-WA0034.jpg",
+    "IMG-20250809-WA0035.jpg","IMG-20250809-WA0036.jpg","IMG-20250809-WA0037.jpg",
+    "IMG-20250809-WA0038.jpg","IMG-20250809-WA0039.jpg","IMG-20250809-WA0040.jpg",
+    "IMG-20250809-WA0041.jpg","IMG-20250809-WA0042.jpg","IMG-20250809-WA0043.jpg",
+    "IMG-20250809-WA0044.jpg","IMG-20250809-WA0045.jpg","IMG-20250809-WA0046.jpg",
+    "IMG-20250809-WA0047.jpg","IMG-20250809-WA0049.jpg","IMG-20250809-WA0050.jpg",
+    "IMG-20250809-WA0051.jpg","IMG-20250809-WA0052.jpg","IMG-20250809-WA0053.jpg",
+    "IMG-20250809-WA0054.jpg","IMG-20250809-WA0055.jpg","IMG-20250809-WA0056.jpg",
+    "IMG-20250809-WA0057.jpg","IMG-20250809-WA0058.jpg","IMG-20250809-WA0059.jpg",
+    "IMG-20250809-WA0060.jpg","IMG-20250809-WA0061.jpg","IMG-20250809-WA0062.jpg",
+    "IMG-20250809-WA0063.jpg","IMG-20250809-WA0064.jpg","IMG-20250809-WA0065.jpg",
+    "IMG-20250809-WA0066.jpg","IMG-20250809-WA0067.jpg","IMG-20250809-WA0068.jpg",
+    "IMG-20250809-WA0069.jpg","IMG-20250809-WA0070.jpg","IMG-20250809-WA0071.jpg",
+    "IMG-20250809-WA0072.jpg","IMG-20250809-WA0073.jpg","IMG-20250809-WA0074.jpg",
+    "IMG-20250809-WA0075.jpg","IMG-20250809-WA0076.jpg","IMG-20250809-WA0077.jpg",
+    "IMG-20250809-WA0078.jpg"
+  ];
+
+  const coversFolder = "./Covers/";
+
+  const grid = document.getElementById("grid");
+
+  for(let i = 0; i < 50; i++) {
+    const card = document.createElement("div");
+    card.className = "book-card";
+
+    const cover3d = document.createElement("div");
+    cover3d.className = "cover-3d";
+
+    const coverFront = document.createElement("div");
+    coverFront.className = "cover-front";
+    coverFront.style.backgroundImage = `url('${coversFolder + coverFiles[i]}')`;
+    coverFront.title = bookNames[i];
+
+    const coverSpine = document.createElement("div");
+    coverSpine.className = "cover-spine";
+
+    cover3d.appendChild(coverFront);
+    cover3d.appendChild(coverSpine);
+
+    const title = document.createElement("div");
+    title.className = "title";
+    title.textContent = bookNames[i];
+
+    const stars = document.createElement("div");
+    stars.className = "stars";
+    stars.textContent = "★★★★★";
+
+    const downloadBtn = document.createElement("a");
+    downloadBtn.className = "download-btn";
+    downloadBtn.href = bookLinks[i];
+    downloadBtn.target = "_blank";
+    downloadBtn.rel = "noopener noreferrer";
+    downloadBtn.textContent = "Download";
+
+    card.appendChild(cover3d);
+    card.appendChild(title);
+    card.appendChild(stars);
+    card.appendChild(downloadBtn);
+
+    grid.appendChild(card);
+  }
+</script>
+</body>
+</html>

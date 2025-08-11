@@ -1,0 +1,297 @@
+/**
+ * =====================================
+ *         UI Design Guide
+ * =====================================
+ * 
+ * Project: COURSE.XWAGON
+ * Type: Digital Marketplace Platform
+ * 
+ * Design Language
+ * Style: Futuristic · Clean · Vault-inspired
+ * Vision: A modern digital vault for knowledge and premium content
+ * 
+ * Characteristics:
+ * - Professional: Sleek interfaces with premium visual quality
+ * - Immersive: Engaging animations and vault-inspired visuals
+ * - Organized: Clear content categories with intuitive navigation
+ * 
+ * Philosophy:
+ * The design embodies a digital vault of knowledge, combining futuristic elements with
+ * a premium, secure feeling. Every interaction should feel like unlocking valuable content.
+ * 
+ * Reference: Modern digital marketplaces with premium content presentation
+ * =====================================
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Main color scheme based on COURSE.XWAGON palette */
+    --gold: 41 100% 50%;            /* Gold */
+    --gold-light: 41 100% 75%;      /* Light Gold */
+    --midnight: 222 75% 6%;         /* Darker Midnight Black */
+    --vault-blue: 214 80% 25%;      /* Vault Blue */
+    --accent-red: 0 80% 50%;        /* Accent Red */
+    
+    /* Theme integration with shadcn */
+    --background: 222 75% 6%;       /* Darker Midnight Black */
+    --foreground: 0 0% 98%;         /* Nearly white text */
+    
+    --card: 214 80% 15%;            /* Darker Vault Blue for cards */
+    --card-foreground: 0 0% 98%;    /* Nearly white text */
+    
+    --popover: 222 75% 6%;          /* Darker Midnight Black */
+    --popover-foreground: 0 0% 98%; /* Nearly white text */
+    
+    --primary: 41 100% 50%;         /* Gold */
+    --primary-foreground: 222 75% 10%; /* Midnight Black */
+    
+    --secondary: 214 80% 25%;       /* Vault Blue */
+    --secondary-foreground: 0 0% 98%; /* Nearly white text */
+    
+    --muted: 214 80% 12%;           /* Even Darker Vault Blue */
+    --muted-foreground: 0 0% 70%;   /* Light gray text */
+    
+    --accent: 0 80% 50%;            /* Accent Red */
+    --accent-foreground: 0 0% 98%;  /* Nearly white text */
+    
+    --destructive: 0 84.2% 60.2%;   /* Standard destructive */
+    --destructive-foreground: 0 0% 98%; /* Nearly white text */
+    
+    --border: 214 80% 30%;          /* Lighter Vault Blue for borders */
+    --input: 214 80% 30%;           /* Lighter Vault Blue for inputs */
+    --ring: 41 100% 50%;            /* Gold ring */
+    
+    --chart-1: 41 100% 50%;         /* Gold */
+    --chart-2: 214 80% 25%;         /* Vault Blue */
+    --chart-3: 0 80% 50%;           /* Accent Red */
+    --chart-4: 41 80% 65%;          /* Light Gold */
+    --chart-5: 214 60% 40%;         /* Light Vault Blue */
+    
+    --radius: 0.5rem;
+  
+    --sidebar-background: 222 75% 4%; /* Even Darker Midnight Black */
+    --sidebar-foreground: 41 100% 70%; /* Light Gold */
+    --sidebar-primary: 41 100% 50%;    /* Gold */
+    --sidebar-primary-foreground: 222 75% 10%; /* Midnight Black */
+    --sidebar-accent: 214 80% 25%;     /* Vault Blue */
+    --sidebar-accent-foreground: 0 0% 98%; /* Nearly white text */
+    --sidebar-border: 214 80% 30%;     /* Lighter Vault Blue */
+    --sidebar-ring: 41 100% 50%;       /* Gold */
+  }
+  .light {
+    /* Light mode for potential future use - inverted from default dark theme */
+    --background: 0 0% 98%;
+    --foreground: 222 75% 10%;
+    
+    --card: 214 30% 95%;
+    --card-foreground: 222 75% 10%;
+    
+    --popover: 0 0% 98%;
+    --popover-foreground: 222 75% 10%;
+    
+    --primary: 41 100% 45%;
+    --primary-foreground: 0 0% 98%;
+    
+    --secondary: 214 80% 65%;
+    --secondary-foreground: 0 0% 98%;
+    
+    --muted: 214 30% 90%;
+    --muted-foreground: 0 0% 40%;
+    
+    --accent: 0 60% 50%;
+    --accent-foreground: 0 0% 98%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --border: 214 30% 80%;
+    --input: 214 30% 80%;
+    --ring: 41 100% 45%;
+    
+    --chart-1: 41 100% 45%;
+    --chart-2: 214 80% 45%;
+    --chart-3: 0 60% 50%;
+    --chart-4: 41 70% 55%;
+    --chart-5: 214 60% 60%;
+  
+    --sidebar-background: 0 0% 95%;
+    --sidebar-foreground: 41 100% 40%;
+    --sidebar-primary: 41 100% 45%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 214 30% 85%;
+    --sidebar-accent-foreground: 222 75% 10%;
+    --sidebar-border: 214 30% 80%;
+    --sidebar-ring: 41 100% 45%;
+  }
+}
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Open Sans', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    @apply font-bold;
+  }
+}
+
+@layer components {
+  .container {
+    @apply px-4 md:px-6 lg:px-8 mx-auto max-w-7xl;
+  }
+  
+  .heading-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--gold))] to-[hsl(var(--gold-light))];
+  }
+  
+  .glow-border {
+    @apply relative;
+  }
+  
+  .glow-border::after {
+    content: '';
+    @apply absolute inset-0 rounded-[inherit] border-2 border-[hsl(var(--gold))] opacity-50 blur-[2px];
+  }
+  
+  .vault-card {
+    @apply bg-card text-card-foreground rounded-lg border border-[hsl(var(--gold))] p-6
+           transition-all duration-300 hover:shadow-[0_0_15px_rgba(255,215,0,0.3)] overflow-hidden;
+  }
+  
+  /* Animations */
+  .animate-vault-door {
+    animation: vault-door 1.5s ease-in-out forwards;
+  }
+  
+  @keyframes vault-door {
+    0% {
+      transform: perspective(1000px) rotateY(-90deg);
+      opacity: 0;
+    }
+    100% {
+      transform: perspective(1000px) rotateY(0deg);
+      opacity: 1;
+    }
+  }
+  
+  .animate-fade-in-up {
+    animation: fade-in-up 0.6s ease-out forwards;
+  }
+  
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Button Hover Effects */
+  .btn-glow {
+    @apply relative overflow-hidden;
+  }
+  
+  .btn-glow::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-[hsl(var(--gold))] to-[hsl(var(--gold-light))]
+           opacity-0 transition-opacity duration-300 ease-in-out;
+    z-index: -1;
+  }
+  
+  .btn-glow:hover::before {
+    @apply opacity-20;
+  }
+
+  /* 3D Card Flip styles */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  /* Audio waveform animation */
+  @keyframes waveform {
+    0% { height: 30%; }
+    50% { height: 100%; }
+    100% { height: 30%; }
+  }
+
+  .waveform-bar {
+    animation: waveform 0.5s ease infinite;
+    animation-delay: calc(var(--index) * 0.1s);
+  }
+  
+  /* Enhanced animations */
+  .hover-lift {
+    @apply transition-all duration-300;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-5px);
+    @apply shadow-lg shadow-gold/10;
+  }
+  
+  .hover-glow {
+    @apply transition-all duration-300;
+  }
+  
+  .hover-glow:hover {
+    @apply shadow-[0_0_15px_rgba(255,215,0,0.3)];
+  }
+  
+  /* Animated background */
+  .animated-bg {
+    background: linear-gradient(
+      125deg,
+      hsl(222, 75%, 4%) 0%,
+      hsl(222, 75%, 8%) 25%, 
+      hsl(214, 80%, 10%) 50%,
+      hsl(214, 80%, 12%) 75%,
+      hsl(222, 75%, 4%) 100%
+    );
+    background-size: 400% 400%;
+    animation: gradient-animation 15s ease infinite;
+  }
+  
+  @keyframes gradient-animation {
+    0% { background-position: 0% 50% }
+    50% { background-position: 100% 50% }
+    100% { background-position: 0% 50% }
+  }
+  
+  /* Mobile optimizations */
+  @media (max-width: 768px) {
+    .mobile-full {
+      @apply -mx-4 px-4 w-screen;
+    }
+    
+    .mobile-card {
+      @apply rounded-none border-l-0 border-r-0;
+    }
+    
+    .mobile-touch-scroll {
+      @apply overflow-x-auto pb-4 snap-x snap-mandatory;
+    }
+    
+    .mobile-touch-scroll > * {
+      @apply snap-center;
+    }
+    
+    .mobile-pb-safe {
+      padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0));
+    }
+  }
+}

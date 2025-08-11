@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>C.X FREE BOOKS - REBELLION</title>
+<style>
+  /* Reset */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  body {
+    font-family: 'Consolas', 'Courier New', monospace;
+    background: #0a0a0a;
+    color: #f44336; /* angry red */
+    overflow-x: hidden;
+    user-select: none;
+    letter-spacing: 0.06em;
+  }
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 56px;
+    background: #b71c1c;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-shadow:
+      0 0 8px #f44336,
+      0 0 18px #b71c1c,
+      0 0 28px #ff0000;
+    border-bottom: 3px solid #d32f2f;
+    z-index: 1001;
+    animation: pulseRed 3s infinite alternate;
+  }
+  @keyframes pulseRed {
+    0% { text-shadow: 0 0 8px #f44336, 0 0 18px #b71c1c, 0 0 28px #ff0000; }
+    100% { text-shadow: 0 0 14px #ff0000, 0 0 30px #b71c1c, 0 0 48px #f44336; }
+  }
+  /* Hamburger */
+  #hamburger {
+    position: fixed;
+    top: 14px;
+    left: 16px;
+    width: 28px;
+    height: 22px;
+    cursor: pointer;
+    z-index: 1100;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  #hamburger div {
+    height: 4px;
+    background: #f44336;
+    border-radius: 2px;
+    box-shadow:
+      0 0 6px #ff0000,
+      0 0 12px #b71c1c;
+    animation: flicker 2s infinite alternate;
+  }
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  /* Sidebar */
+  #sidebar {
+    position: fixed;
+    top: 0; left: -240px;
+    width: 240px;
+    height: 100vh;
+    background: #1b0000;
+    box-shadow: 6px 0 24px rgba(244,67,54,0.8);
+    padding-top: 60px;
+    transition: left 0.3s ease;
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    border-right: 2px solid #b71c1c;
+  }
+  #sidebar.open {
+    left: 0;
+  }
+  #sidebar a {
+    padding: 16px 24px;
+    font-size: 18px;
+    font-weight: 900;
+    color: #f44336;
+    text-decoration: none;
+    border-left: 4px solid transparent;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: background 0.3s ease, border-left 0.3s ease, color 0.3s ease;
+    filter: drop-shadow(0 0 2px #f44336);
+  }
+  #sidebar a:hover,
+  #sidebar a.active {
+    background: #b71c1c;
+    color: #fff;
+    border-left: 4px solid #ffebee;
+    filter: drop-shadow(0 0 6px #ff8a80);
+    animation: neonGlow 1.5s ease-in-out infinite alternate;
+  }
+  @keyframes neonGlow {
+    0% { text-shadow: 0 0 4px #ff8a80; }
+    100% { text-shadow: 0 0 16px #f44336; }
+  }
+  /* Content grid container */
+  main {
+    padding: 76px 28px 28px 28px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    background: #2a0000;
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 440px;
+    box-shadow:
+      0 0 16px #f44336,
+      inset 0 0 12px #b71c1c;
+    border: 2px solid #ff0000;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+  .card:hover {
+    transform: scale(1.05) rotate(-1deg);
+    box-shadow:
+      0 0 32px #ff1744,
+      inset 0 0 20px #d50000;
+  }
+  .card img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow:
+      0 0 12px #ff1744,
+      inset 0 0 10px #b71c1c;
+    margin-bottom: 14px;
+    filter: drop-shadow(0 0 8px #d32f2f);
+  }
+  .title {
+    font-size: 16px;
+    font-weight: 900;
+    text-align: center;
+    padding: 8px 6px;
+    color: #ff5252;
+    margin-bottom: 12px;
+    min-height: 54px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    text-shadow: 0 0 6px #ff8a80;
+  }
+  .stars {
+    color: #ffeb3b;
+    font-size: 20px;
+    text-shadow:
+      0 0 6px #fff176,
+      0 0 12px #ffeb3b;
+    margin-bottom: 16px;
+  }
+  .download-btn {
+    padding: 14px 32px;
+    border-radius: 9999px;
+    background: #ff3d00;
+    color: #fff;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    box-shadow:
+      0 8px 30px #ff3d00,
+      0 0 18px #ff6e40;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    user-select: none;
+  }
+  .download-btn:hover {
+    transform: translateY(-5px) scale(1.1);
+    box-shadow:
+      0 16px 48px #ff3d00,
+      0 0 36px #ff6e40,
+      0 0 12px #fff;
+  }
+  @media (max-width: 420px) {
+    .grid {
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+    header {
+      font-size: 20px;
+    }
+    .card img {
+      height: 240px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hamburger toggle -->
+<div id="hamburger" aria-label="Toggle menu" role="button" tabindex="0">
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+
+<!-- Sidebar menu -->
+<nav id="sidebar" aria-label="Sidebar navigation">
+  <a href="index.html" class="active">Home</a>
+  <a href="audiobooks.html">Audiobooks</a>
+  <a href="courses.html">Courses</a>
+</nav>
+
+<header>C.X FREE BOOKS</header>
+
+<main>
+  <div class="grid" id="bookGrid"></div>
+</main>
+
+<script>
+  // Sidebar toggle logic
+  const hamburger = document.getElementById('hamburger');
+  const sidebar = document.getElementById('sidebar');
+  function toggleSidebar() {
+    sidebar.classList.toggle('open');
+  }
+  hamburger.addEventListener('click', toggleSidebar);
+  hamburger.addEventListener('keypress', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggleSidebar();
+    }
+  });
+
+  const bookLinks = [
+    "https://upfiles.com/dyMeFU0","https://upfiles.com/oPeNyB2","https://upfiles.com/y1zJ",
+    "https://upfiles.com/APlHaP","https://upfiles.com/xrCatV","https://upfiles.com/cZjM",
+    "https://upfiles.com/2ahgHwY","https://upfiles.com/xAaim","https://upfiles.com/M4Nx",
+    "https://upfiles.com/BKPcDe","https://upfiles.com/KrZS4n","https://upfiles.com/Xno3h",
+    "https://upfiles.com/W6WVK","https://upfiles.com/TFS1R49t","https://upfiles.com/Ndct",
+    "https://upfiles.com/XbcPx","https://upfiles.com/AgDPA","https://upfiles.com/Wvf7p7JP",
+    "https://upfiles.com/wKPXPPx","https://upfiles.com/oHPTAIB","https://upfiles.com/qt0kO",
+    "https://upfiles.com/ZIP2cE7","https://upfiles.com/kBHgen","https://upfiles.com/Nldyg",
+    "https://upfiles.com/fiAHgMc2","https://upfiles.com/9VjIQt34","https://upfiles.com/dDV8N",
+    "https://upfiles.com/8zHLlZ5N","https://upfiles.com/50uMvRL","https://upfiles.com/Do5g",
+    "https://upfiles.com/bZECw","https://upfiles.com/KSE6PqG","https://upfiles.com/mpt6f2H",
+    "https://upfiles.com/dfCqN","https://upfiles.com/RhFu6uDo","https://upfiles.com/Q7vDm7",
+    "https://upfiles.com/E36KDr7","https://upfiles.com/ijOo","https://upfiles.com/D5OI",
+    "https://upfiles.com/fmEk","https://upfiles.com/JbVw","https://upfiles.com/0DS48dJ",
+    "https://upfiles.com/STKZo6Gf","https://upfiles.com/G4cKIWAH","https://upfiles.com/yuTCYq7e",
+    "https://upfiles.com/egKT9pmJ","https://upfiles.com/cbKvbe","https://upfiles.com/1xU39",
+    "https://upfiles.com/5sQZDp","https://upfiles.com/ihA7"
+  ];
+
+  const bookNames = [
+    "Quantum Legacy: The Ignition","Neural Genesis: Code of the Mind","Silent Cipher: Shadows of Infinity",
+    "Ethereal Grid: The Data Monolith","Celestial Nexus: Beyond the Void","Primal Code: The Awakening Loop",
+    "Obsidian Dawn: Algorithms of Power","Stellar Flux: A Cosmic Chronicle","Digital Oracle: Secrets of the Future",
+    "Phantom Protocol: Ghosts in the Machine","Titan’s Gambit: The War of Elements","Aether Scripts: The Lost Codex",
+    "Lumina Veil: The Radiant Path","Vortex Cipher: Spiral of Time","Nebula Drift: The Final Frontier",
+    "Iron Veins: Cybernetic Rebellion","Solaris Edge: Flames of Destiny","Chaos Matrix: The Hidden Equation",
+    "Arcane Bytes: The Forbidden Code","Echoes of Tomorrow: The Silent War","Voidwalkers: Across the Divide",
+    "Genesis Frame: Origins Rewritten","Oblivion Key: Unlocking Eternity","Crimson Prism: Light and Shadow",
+    "Phantom Chain: Links of Fate","Nova Pulse: Heart of the Cosmos","Silent Dawn: Rise of the Sentinels",
+    "Titanium Mind: Metal and Memory","Spectral Tide: Waves of the Unknown","Radiant Core: Energy Unleashed",
+    "Celestium: The Starborn Legacy","Digital Phoenix: Code Resurrection","Echo Nexus: The Memory Vault",
+    "Ironclad Faith: The Last Crusade","Nova Spiral: Dance of the Suns","Shadowforge: The Dark Alloy",
+    "Infinite Loop: The Timeless Code","Solar Winds: Breath of the Gods","Crystal Cipher: The Prism Key",
+    "Stellar Cascade: Lightspeed Voyage","Chrono Rift: Fractured Time","Neon Veil: The Cyber Masquerade",
+    "Eclipse Protocol: Shadows Ascend","Arcadia Drift: The Lost Horizon","Obsidian Pulse: Heartbeat of Steel",
+    "Zephyr Code: Winds of Change","Luminous Path: The Enlightened","Phantom Spectrum: Colors of Silence",
+    "Iron Horizon: The Last Frontier","Nova Core: Genesis Spark"
+  ];
+
+  const coverFiles = [
+    "IMG-20250809-WA0028.jpg","IMG-20250809-WA0029.jpg","IMG-20250809-WA0031.jpg",
+    "IMG-20250809-WA0032.jpg","IMG-20250809-WA0033.jpg","IMG-20250809-WA0034.jpg",
+    "IMG-20250809-WA0035.jpg","IMG-20250809-WA0036.jpg","IMG-20250809-WA0037.jpg",
+    "IMG-20250809-WA0038.jpg","IMG-20250809-WA0039.jpg","IMG-20250809-WA0040.jpg",
+    "IMG-20250809-WA0041.jpg","IMG-20250809-WA0042.jpg","IMG-20250809-WA0043.jpg",
+    "IMG-20250809-WA0044.jpg","IMG-20250809-WA0045.jpg","IMG-20250809-WA0046.jpg",
+    "IMG-20250809-WA0047.jpg","IMG-20250809-WA0049.jpg","IMG-20250809-WA0050.jpg",
+    "IMG-20250809-WA0051.jpg","IMG-20250809-WA0052.jpg","IMG-20250809-WA0053.jpg",
+    "IMG-20250809-WA0054.jpg","IMG-20250809-WA0055.jpg","IMG-20250809-WA0056.jpg",
+    "IMG-20250809-WA0057.jpg","IMG-20250809-WA0058.jpg","IMG-20250809-WA0059.jpg",
+    "IMG-20250809-WA0060.jpg","IMG-20250809-WA0061.jpg","IMG-20250809-WA0062.jpg",
+    "IMG-20250809-WA0063.jpg","IMG-20250809-WA0064.jpg","IMG-20250809-WA0065.jpg",
+    "IMG-20250809-WA0066.jpg","IMG-20250809-WA0067.jpg","IMG-20250809-WA0068.jpg",
+    "IMG-20250809-WA0069.jpg","IMG-20250809-WA0070.jpg","IMG-20250809-WA0071.jpg",
+    "IMG-20250809-WA0072.jpg","IMG-20250809-WA0073.jpg","IMG-20250809-WA0074.jpg",
+    "IMG-20250809-WA0075.jpg","IMG-20250809-WA0076.jpg","IMG-20250809-WA0077.jpg",
+    "IMG-20250809-WA0078.jpg"
+  ];
+
+  const grid = document.getElementById('bookGrid');
+
+  for(let i=0; i<bookNames.length; i++) {
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const img = document.createElement('img');
+    img.src = `./Covers/${coverFiles[i]}`;
+    img.alt = bookNames[i] + ' cover';
+    img.onerror = () => {
+      img.style.display = 'none';
+    };
+
+    const title = document.createElement('div');
+    title.className = 'title';
+    title.textContent = bookNames[i];
+
+    const stars = document.createElement('div');
+    stars.className = 'stars';
+    stars.textContent = '★★★★★';
+
+    const btn = document.createElement('a');
+    btn.className = 'download-btn';
+    btn.href = bookLinks[i];
+    btn.target = '_blank';
+    btn.rel = 'noopener noreferrer';
+    btn.textContent = 'Download';
+
+    card.appendChild(img);
+    card.appendChild(title);
+    card.appendChild(stars);
+    card.appendChild(btn);
+
+    grid.appendChild(card);
+  }
+</script>
+
+</body>
+</html>

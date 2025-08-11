@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>COURSE.XWAGON — Courses Vault</title>
+<style>
+  /* Reset */
+  *, *::before, *::after {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  body {
+    font-family: 'Courier New', Courier, monospace;
+    background: #0a0a0a;
+    color: #5a3c1a;
+    overflow-x: hidden;
+    user-select: none;
+    letter-spacing: 0.04em;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(circle at top left, #1a0f04 5%, transparent 40%),
+      radial-gradient(circle at bottom right, #3b2c10 10%, transparent 50%);
+  }
+  header {
+    background: #12100cdd;
+    backdrop-filter: blur(6px);
+    padding: 20px 25px;
+    text-align: center;
+    font-weight: 900;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.4rem;
+    color: #5a3c1a;
+    letter-spacing: 0.12em;
+    user-select: none;
+    box-shadow: inset 0 -2px 4px #3b2c10cc;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1100;
+  }
+  header span.white {
+    color: #3b2c10;
+  }
+
+  /* Sidebar toggle */
+  #sidebarToggle {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    background: #2e2b23;
+    border: 2px solid #5a3c1a;
+    border-radius: 6px;
+    padding: 12px 18px;
+    cursor: pointer;
+    font-weight: 700;
+    font-family: 'Courier New', Courier, monospace;
+    color: #5a3c1a;
+    box-shadow: 0 0 15px #5a3c1a88;
+    z-index: 1150;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    user-select: none;
+  }
+  #sidebarToggle:hover {
+    background-color: #5a3c1a;
+    color: #1c1a11;
+    box-shadow: 0 0 20px #806232aa;
+  }
+
+  /* Sidebar */
+  #sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100vh;
+    background: #1a180fdd;
+    padding: 80px 24px 24px;
+    box-shadow:
+      4px 0 20px #5a3c1a88 inset,
+      inset 0 0 10px #3b2c1088;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-weight: 700;
+    font-family: 'Courier New', Courier, monospace;
+    color: #5a3c1a;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 0 8px 8px 0;
+    transition: left 0.3s ease;
+    user-select: none;
+    z-index: 1140;
+  }
+  #sidebar.open {
+    left: 0;
+  }
+  #sidebar h2 {
+    font-family: 'Courier New', Courier, monospace;
+    margin-bottom: 25px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    color: #5a3c1a;
+    text-shadow: 1px 1px 2px #2f1f09;
+  }
+  #sidebar nav a {
+    color: #5a3c1a;
+    text-decoration: none;
+    margin: 15px 0;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+    display: block;
+    padding: 10px 0;
+  }
+  #sidebar nav a:hover {
+    color: #806232;
+    text-shadow: 0 0 6px #806232bb;
+  }
+
+  /* Overlay */
+  #overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.9);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+    z-index: 1130;
+    user-select: none;
+  }
+  #overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Container */
+  .container {
+    max-width: 1200px;
+    margin: 80px auto 60px;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+  }
+
+  /* Course Box */
+  .course-box {
+    background: #1a180fdd;
+    border-radius: 15px;
+    box-shadow:
+      0 0 15px #5a3c1a88,
+      inset 0 0 15px #3b2c10cc;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: none;
+    transition: box-shadow 0.3s ease;
+  }
+  .course-box:hover {
+    box-shadow:
+      0 0 25px #806232cc,
+      inset 0 0 20px #806232cc;
+  }
+  .course-box img {
+    width: 100%;
+    max-height: 160px;
+    object-fit: contain;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    box-shadow: 0 0 15px #5a3c1a;
+  }
+  .course-box h3 {
+    font-family: 'Courier New', Courier, monospace;
+    color: #5a3c1a;
+    font-weight: 900;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    text-align: center;
+    letter-spacing: 0.1em;
+    user-select: none;
+  }
+
+  /* Buttons */
+  .btn {
+    background: #5a3c1a;
+    color: #1c1a11;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 40px;
+    font-weight: 700;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.05rem;
+    cursor: pointer;
+    margin: 8px 0;
+    box-shadow: 0 0 20px #806232cc;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+    user-select: none;
+  }
+  .btn:hover {
+    background-color: #806232;
+    color: #12100c;
+    box-shadow: 0 0 30px #a07a35cc;
+  }
+
+  /* Watch Trailer Button Override */
+  .btn.watch-trailer-btn {
+    background: #7c1f00 !important;
+    color: #fff !important;
+    box-shadow: 0 0 20px #7c1f0044 !important;
+  }
+  .btn.watch-trailer-btn:hover {
+    background-color: #a33500 !important;
+  }
+
+  /* Trailer Modal */
+  .trailer-modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1200;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+  }
+  .trailer-modal.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  .trailer-modal video {
+    max-width: 90vw;
+    max-height: 80vh;
+    border-radius: 15px;
+    box-shadow: 0 0 30px #5a3c1a;
+  }
+  .close-trailer-btn {
+    position: fixed;
+    top: 20px; right: 25px;
+    background: #5a3c1a;
+    border: none;
+    border-radius: 50%;
+    width: 45px; height: 45px;
+    font-size: 1.5rem;
+    color: #12100c;
+    cursor: pointer;
+    font-weight: 900;
+    box-shadow: 0 0 20px #806232cc;
+    user-select: none;
+    z-index: 1250;
+  }
+  .close-trailer-btn:hover {
+    background-color: #806232;
+    color: #12100c;
+  }
+
+  /* Footer */
+  footer {
+    background: #12100cdd;
+    color: #3b2c10cc;
+    text-align: center;
+    padding: 18px 15px;
+    font-size: 0.85rem;
+    border-top: 1px solid #5a3c1a;
+    user-select: none;
+    margin-top: 40px;
+    font-family: 'Courier New', Courier, monospace;
+    letter-spacing: 0.06em;
+  }
+  footer a {
+    color: #5a3c1a;
+    margin: 0 10px;
+    font-weight: 700;
+    text-decoration: none;
+    filter: drop-shadow(0 0 4px #5a3c1a44);
+  }
+  footer a:hover {
+    color: #806232;
+    filter: drop-shadow(0 0 6px #806232aa);
+  }
+  footer .cofounders {
+    margin: 10px 0 5px;
+    font-weight: 700;
+    color: #5a3c1a;
+  }
+
+  /* Responsive */
+  @media (max-width: 720px) {
+    header {
+      font-size: 1.1rem;
+      padding: 15px 15px;
+    }
+    .container {
+      grid-template-columns: 1fr;
+      margin-top: 100px;
+      padding: 0 16px;
+    }
+    #sidebar {
+      width: 240px;
+      padding-top: 70px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Sidebar Toggle -->
+<button id="sidebarToggle" aria-label="Toggle Menu">MENU</button>
+
+<!-- Sidebar -->
+<div id="sidebar" aria-label="Sidebar Navigation">
+  <h2>C.X</h2>
+  <nav>
+    <a href="index.html">\\HOME//</a>
+    <a href="audiobooks.html">/AUDIOBOOKS//</a>
+    <a href="freebooks.html">\\FREE BOOKS</a>
+  </nav>
+</div>
+
+<!-- Overlay -->
+<div id="overlay"></div>
+
+<!-- Header -->
+<header>
+  <span>PREMIUM COURSES </span><span class="white">WE NEVER PASS $50</span>
+</header>
+
+<!-- Main container -->
+<main class="container" role="main" aria-label="Courses List">
+
+  <!-- Course 1 -->
+  <section class="course-box" tabindex="0" aria-label="Freelancing Course">
+    <img src="images/COURSES BANNERS/1.FREELANCING COURSE.jpeg" alt="Freelancing Course Banner" />
+    <h3>Freelancing Course</h3>
+    <button class="btn watch-trailer-btn" aria-expanded="false" aria-controls="trailer1">Watch Trailer</button>
+    <a href="https://masteredpath.gumroad.com/l/wbtuj" target="_blank" rel="noopener noreferrer" class="btn">Buy Now</a>
+  </section>
+
+  <!-- Course 2 -->
+  <section class="course-box" tabindex="0" aria-label="E-Commerce Course">
+    <img src="images/COURSES BANNERS/2.ECOMARCE COURSE .jpeg" alt="E-Commerce Course Banner" />
+    <h3>E-Commerce Course</h3>
+    <button class="btn watch-trailer-btn" aria-expanded="false" aria-controls="trailer2">Watch Trailer</button>
+    <a href="https://masteredpath.gumroad.com/l/ytbqq" target="_blank" rel="noopener noreferrer" class="btn">Buy Now</a>
+  </section>
+
+  <!-- Course 3 -->
+  <section class="course-box" tabindex="0" aria-label="AI Content Course">
+    <img src="images/COURSES BANNERS/3.AI CONTENT COURSE.jpeg" alt="AI Content Course Banner" />
+    <h3>AI Content Course</h3>
+    <button class="btn watch-trailer-btn" aria-expanded="false" aria-controls="trailer3">Watch Trailer</button>
+    <a href="https://masteredpath.gumroad.com/l/zszqo" target="_blank" rel="noopener noreferrer" class="btn">Buy Now</a>
+  </section>
+
+  <!-- Course 4 -->
+  <section class="course-box" tabindex="0" aria-label="AI Content Creation Course">
+    <img src="images/COURSES BANNERS/4.AI CONTENT CREATION COURSE.jpeg" alt="AI Content Creation Course Banner" />
+    <h3>AI Content Creation Course</h3>
+    <button class="btn watch-trailer-btn" aria-expanded="false" aria-controls="trailer4">Watch Trailer</button>
+    <a href="https://masteredpath.gumroad.com/l/nlgein" target="_blank" rel="noopener noreferrer" class="btn">Buy Now</a>
+  </section>
+
+  <!-- Course 5 -->
+  <section class="course-box" tabindex="0" aria-label="Copywriting Course by TRW">
+    <img src="images/COURSES BANNERS/5.COPYWRITING COURSE BY TRW.jpeg" alt="Copywriting Course by TRW Banner" />
+    <h3>Copywriting Course by TRW</h3>
+    <button class="btn watch-trailer-btn" aria-expanded="false" aria-controls="trailer5">Watch Trailer</button>
+    <a href="https://masteredpath.gumroad.com/l/vgoqr" target="_blank" rel="noopener noreferrer" class="btn">Buy Now</a>
+  </section>
+
+  <!-- Course 6 -->
+  <section class="course-box" tabindex="0" aria-label="Copywriting Paid Course">
+    <img src="images/COURSES BANNERS/6.COPYWRITING PAID COURSE.jpeg" alt="Copywriting Paid Course Banner" />
+    <h3>Copywriting Paid Course</h3>
+    <button class="btn watch-trailer-btn" aria-expanded="false" aria-controls="trailer6">Watch Trailer</button>
+    <a href="https://masteredpath.gumroad.com/l/wiiis" target="_blank" rel="noopener noreferrer" class="btn">Buy Now</a>
+  </section>
+
+  <!-- Course 7 -->
+  <section class="course-box" tabindex="0" aria-label="Writing Tool Box">
+    <img src="images/COURSES BANNERS/7.WRITING TOOL BOX.jpeg" alt="Writing Tool Box Banner" />
+    <h3>Writing Tool Box</h3>
+    <button class="btn watch-trailer-btn" aria-expanded="false" aria-controls="trailer7">Watch Trailer</button>
+    <a href="https://masteredpath.gumroad.com/l/buqrew" target="_blank" rel="noopener noreferrer" class="btn">Buy Now</a>
+  </section>
+
+  <!-- Course 8 -->
+  <section class="course-box" tabindex="0" aria-label="Affiliate Marketing Course">
+    <img src="images/COURSES BANNERS/8.AFFILIATE MARKETING.jpeg" alt="Affiliate Marketing Banner" />
+    <h3>Affiliate Marketing</h3>
+    <button class="btn watch-trailer-btn" aria-expanded="false" aria-controls="trailer8">Watch Trailer</button>
+    <a href="https://masteredpath.gumroad.com/l/vipisi" target="_blank" rel="noopener noreferrer" class="btn">Buy Now</a>
+  </section>
+
+</main>
+
+<!-- Trailer Modals -->
+<div id="trailerModal" class="trailer-modal" role="dialog" aria-modal="true" aria-label="Course Trailer Video">
+  <button class="close-trailer-btn" aria-label="Close Trailer">&times;</button>
+  <video controls preload="metadata" id="modalVideo" src="" ></video>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="cofounders">Co-Founders: Ignacio Chamboko &amp; Don Kyono</div>
+  <div>
+    <a href="#">Privacy Policy</a> |
+    <a href="#">Terms &amp; Conditions</a> |
+    <a href="#">Refund Policy</a> |
+    <a href="#">DMCA &amp; Copyright</a>
+  </div>
+  <div>Email: <a href="mailto:Coursexwagon@gmail.com">Coursexwagon@gmail.com</a></div>
+</footer>
+
+<script>
+  // Sidebar toggle
+  const sidebarToggle = document.getElementById('sidebarToggle');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+
+  sidebarToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('active');
+  });
+
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+  });
+
+  // Trailer modal elements
+  const trailerModal = document.getElementById('trailerModal');
+  const modalVideo = document.getElementById('modalVideo');
+  const closeTrailerBtn = document.querySelector('.close-trailer-btn');
+
+  // Map course trailer IDs to video sources
+  const trailerSources = {
+    'trailer1': 'videos/FREELANCING TRAILER.mp4',
+    'trailer2': 'videos/E-COMMERCE TRAILER.mp4',
+    'trailer3': 'videos/ai promoting trailer.mp4',
+    'trailer4': 'videos/Lesson 1 What is Content.mp4',
+    'trailer5': 'videos/COPYWRITING TRAILER.mp4',
+    'trailer6': 'videos/COPYWRITING PAID COURSE TRAILER.mp4',
+    'trailer7': 'videos/TOOL BOX TRAILER.mp4',
+    'trailer8': 'videos/AFFILIATE MARKETING TRAILER.mp4'
+  };
+
+  // Show trailer modal on watch button click
+  document.querySelectorAll('.watch-trailer-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const trailerId = btn.getAttribute('aria-controls');
+      const src = trailerSources[trailerId];
+      if (!src) return;
+      modalVideo.src = src;
+      trailerModal.classList.add('active');
+      modalVideo.play();
+      btn.setAttribute('aria-expanded', 'true');
+      // Close sidebar and overlay if open
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+    });
+  });
+
+  // Close trailer modal on close button click
+  closeTrailerBtn.addEventListener('click', () => {
+    modalVideo.pause();
+    modalVideo.currentTime = 0;
+    modalVideo.src = '';
+    trailerModal.classList.remove('active');
+    // Reset all trailer buttons aria-expanded state
+    document.querySelectorAll('.watch-trailer-btn').forEach(btn => {
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Close modal when clicking outside video
+  trailerModal.addEventListener('click', (e) => {
+    if (e.target === trailerModal) {
+      closeTrailerBtn.click();
+    }
+  });
+
+  // Keyboard support: close trailer on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && trailerModal.classList.contains('active')) {
+      closeTrailerBtn.click();
+    }
+  });
+</script>
+
+</body>
+</html>

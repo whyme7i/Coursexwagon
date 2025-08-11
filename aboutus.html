@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us | COURSE.XWAGON</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0a0a0a;
+      color: #f5f5f5;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      user-select: text;
+    }
+    header {
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #000000;
+      border-bottom: 1px solid rgba(255, 0, 0, 0.4);
+      user-select: none;
+    }
+    header h1 {
+      font-size: 1.7rem;
+      font-weight: 900;
+      color: #ff0000;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-family: 'Inter', sans-serif;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 900;
+      margin-bottom: 20px;
+      background: linear-gradient(to right, #ff0000, #ffcc00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+      user-select: none;
+    }
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-top: 40px;
+      margin-bottom: 10px;
+      color: #ff0000;
+      text-transform: uppercase;
+      user-select: none;
+    }
+    p {
+      margin-bottom: 15px;
+      color: #ddd;
+      font-size: 1.05rem;
+      user-select: text;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 8px;
+      font-size: 1.05rem;
+      user-select: text;
+    }
+    a {
+      color: #ffcc00;
+      text-decoration: none;
+      font-weight: bold;
+      user-select: text;
+    }
+    a:hover,
+    a:focus {
+      text-decoration: underline;
+      outline: none;
+    }
+    .footer-link {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 20px;
+      color: #ff0000;
+      font-weight: 700;
+      user-select: text;
+    }
+    /* Animation */
+    .fade-in {
+      opacity: 0;
+      animation: fadeInUp 0.8s ease forwards;
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    /* Optional glitch effect for headings */
+    @keyframes glitch {
+      0% {
+        text-shadow: 2px 0 red, -2px 0 yellow;
+      }
+      20% {
+        text-shadow: -2px 0 red, 2px 0 yellow;
+      }
+      40% {
+        text-shadow: 2px 0 red, -2px 0 yellow;
+      }
+      60% {
+        text-shadow: -2px 0 red, 2px 0 yellow;
+      }
+      80% {
+        text-shadow: 2px 0 red, -2px 0 yellow;
+      }
+      100% {
+        text-shadow: none;
+      }
+    }
+    h1.glitch {
+      animation: glitch 2s infinite;
+      user-select: none;
+    }
+    /* Responsive */
+    @media (max-width: 600px) {
+      header {
+        padding: 15px 20px;
+      }
+      header h1 {
+        font-size: 1.4rem;
+      }
+      .container {
+        padding: 30px 15px;
+      }
+      h1 {
+        font-size: 2.2rem;
+      }
+      h2 {
+        font-size: 1.3rem;
+      }
+      p, li {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>COURSE.XWAGON</h1>
+  </header>
+  <div class="container fade-in">
+    <h1 class="glitch">About Us</h1>
+    <h2>No Rules. No Limits.</h2>
+    <p>
+      This isn’t a “platform.” This is a war against overpriced gatekeepers. COURSE.XWAGON is built for rebels, hustlers, and anyone who refuses to pay $500 for something you can grab for the price of a coffee.
+    </p>
+    <p>
+      We don’t play the game — we break it. We supply high-value content: elite courses, rare archives, forbidden guides. Once you buy, it’s yours forever. Resell it. Share it. Flip it. No rules, no DRM, no begging for access.
+    </p>
+    <h2>Why We Exist</h2>
+    <p>
+      The “system” wants you broke, obedient, and forever paying top dollar for what’s already out there. We’re the locksmiths. We pick the locks, crack the vaults, and put the keys in your hands.
+    </p>
+    <h2>Our Code</h2>
+    <ul>
+      <li>🔥 <strong>Freedom First:</strong> No restrictions. No middlemen. No corporate chains.</li>
+      <li>💰 <strong>Profit is Yours:</strong> Buy once, resell forever, keep every cent.</li>
+      <li>⚡ <strong>Instant Access:</strong> No waiting, no delays — you get it now.</li>
+      <li>🚫 <strong>No Apologies:</strong> We’re not here to please the system.</li>
+    </ul>
+    <h2>Join or Stay Broke</h2>
+    <p>
+      Ready to join? Or are you going to keep being a sucker — dropping $500 on courses you could own here for pennies? The wise understand: what’s obtainable at a low cost but ignored is the real gold. The rest stay stuck, funding the gatekeepers and wondering why they never break free.
+    </p>
+    <p>
+      Your move. Welcome to COURSE.XWAGON — or walk away and keep buying overpriced dreams.
+    </p>
+    <a href="FAQ.html" class="FAQ.html">→ FAQ / Help</a>
+  </div>
+</body>
+</html>
