@@ -985,40 +985,13 @@
     
     #devv-badge {
       padding: 5px 10px;
-      font-size: 10px;
-    }
-    
-    #devv-badge-close {
-      display: none !important;
+      font-size: 10px
     }
   }
 </style>
 
   </a>
 </div>
-
-<script>
-  (function() {
-    if (window.self !== window.top) {
-      const badgeContainer = document.getElementById('devv-badge-container');
-      if (badgeContainer) badgeContainer.style.display = 'none';
-    }
-    
-    if (navigator.userAgent.includes('puppeteer') || navigator.userAgent.includes('headless')) {
-      const badgeContainer = document.getElementById('devv-badge-container');
-      if (badgeContainer) badgeContainer.style.display = 'none';
-    }
-    
-    const closeButton = document.getElementById('devv-badge-close');
-    if (closeButton) {
-      closeButton.addEventListener('click', function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        const badgeContainer = document.getElementById('devv-badge-container');
-        if (badgeContainer) badgeContainer.style.display = 'none';
-      });
-    }
-  })();
 </script>
 
 </body>      
