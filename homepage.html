@@ -5,70 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>C.X PRIVATE FORUM</title>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{
-    font-family:'Courier New', monospace;
-    background:#000;
-    color:#d4af37;
-    overflow-x:hidden;
-  }
-  header{
-    position:fixed; top:0; left:0; right:0; height:60px;
-    background:#111; display:flex; align-items:center; justify-content:center;
-    font-weight:900; font-size:1.5rem; z-index:1000;
-    letter-spacing:0.1em; border-bottom:2px solid #d4af37;
-    text-shadow:0 0 8px #d4af37;
-  }
-  #sidebarToggle{
-    position:fixed; top:10px; left:10px;
-    background:#111; border:2px solid #d4af37; padding:10px 15px;
-    cursor:pointer; z-index:1100;
-    text-shadow:0 0 5px #d4af37;
-  }
-  #sidebar{
-    position:fixed; top:0; left:-250px; width:250px; height:100vh;
-    background:#111; padding:70px 15px; display:flex; flex-direction:column;
-    gap:20px; transition:left 0.3s ease; z-index:1099; border-right:2px solid #d4af37;
-  }
-  #sidebar button{
-    padding:12px; font-weight:700; cursor:pointer; border:none;
-    border-radius:5px; background:#d4af37; color:#111;
-    transition:0.3s; font-size:1rem; text-shadow:0 0 3px #000;
-  }
-  #sidebar button:hover{background:#fff;color:#000;}
-  #overlay{
-    position:fixed; top:0; left:0; width:100vw; height:100vh;
-    background:rgba(0,0,0,0.9); opacity:0; visibility:hidden; transition:0.3s;
-    z-index:1098;
-  }
-  #overlay.active{opacity:1; visibility:visible;}
-  main{
-    max-width:1200px; margin:80px auto 50px; padding:0 15px;
-  }
-  .search-bar{
-    width:100%; margin-bottom:20px; padding:12px; font-size:16px; border-radius:5px;
-    border:2px solid #d4af37; background:#000; color:#d4af37;
-    box-shadow:0 0 10px #d4af37 inset;
-  }
-  #threadsContainer{
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px;
-  }
-  .thread{
-    background:#111; padding:20px; border:2px solid #d4af37; border-radius:10px;
-    box-shadow:0 0 15px #d4af37; transition:0.3s; position:relative;
-    animation: fadeIn 0.7s ease;
-  }
-  .thread:hover{box-shadow:0 0 25px #fff;}
-  .thread h3{margin-bottom:10px; text-shadow:0 0 5px #d4af37;}
-  .thread p{margin-bottom:10px;}
-  .delete-btn{
-    position:absolute; top:10px; right:10px; background:red; color:#fff;
-    border:none; border-radius:5px; cursor:pointer; padding:5px 8px; font-weight:bold;
-  }
-  @keyframes fadeIn{
-    from {opacity:0; transform:translateY(20px);}
-    to {opacity:1; transform:translateY(0);}
-  }
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Courier New', monospace;background:#000;color:#d4af37;overflow-x:hidden;}
+header{position:fixed;top:0;left:0;right:0;height:60px;background:#111;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.5rem;z-index:1000;letter-spacing:0.1em;border-bottom:2px solid #d4af37;}
+#sidebarToggle{position:fixed;top:10px;left:10px;background:#111;border:2px solid #d4af37;padding:10px 15px;cursor:pointer;z-index:1100;}
+#sidebar{position:fixed;top:0;left:-250px;width:250px;height:100vh;background:#111;padding:70px 15px;display:flex;flex-direction:column;gap:20px;transition:left 0.3s ease;z-index:1099;}
+#sidebar button{padding:10px;font-weight:700;cursor:pointer;border:none;border-radius:5px;background:#d4af37;color:#111;transition:0.3s;}
+#sidebar button:hover{background:#fff;color:#000;}
+#overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.9);opacity:0;visibility:hidden;transition:0.3s;z-index:1098;}
+#overlay.active{opacity:1; visibility:visible;}
+main{max-width:1200px;margin:80px auto 50px;padding:0 15px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;}
+.thread{background:#111;padding:15px;border:2px solid #d4af37;border-radius:10px;box-shadow:0 0 15px #d4af37;transition:0.3s;position:relative;cursor:pointer;}
+.thread:hover{box-shadow:0 0 25px #fff;animation:shake 0.3s;}
+.thread h3{margin-bottom:10px;}
+.thread p{margin-bottom:10px;}
+.delete-btn{position:absolute;top:10px;right:10px;background:red;color:#fff;border:none;border-radius:5px;cursor:pointer;padding:5px 8px;}
+.search-bar{width:100%;margin-bottom:20px;padding:10px;font-size:16px;border-radius:5px;border:1px solid #d4af37;background:#000;color:#d4af37;}
+@keyframes shake{
+0%{transform:translate(0px,0px);}
+25%{transform:translate(2px,0px);}
+50%{transform:translate(-2px,0px);}
+75%{transform:translate(2px,0px);}
+100%{transform:translate(0px,0px);}
+}
 </style>
 </head>
 <body>
@@ -107,10 +66,16 @@ const db = getFirestore(app);
 const sidebarToggle = document.getElementById('sidebarToggle');
 const sidebar = document.getElementById('sidebar');
 const overlay = document.getElementById('overlay');
-sidebarToggle.addEventListener('click',()=>{sidebar.classList.toggle('open');overlay.classList.toggle('active');});
-overlay.addEventListener('click',()=>{sidebar.classList.remove('open');overlay.classList.remove('active');});
 
-// Load threads
+sidebarToggle.addEventListener('click',()=>{
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('active');
+});
+overlay.addEventListener('click',()=>{
+  sidebar.classList.remove('open');
+  overlay.classList.remove('active');
+});
+
 const threadsContainer = document.getElementById('threadsContainer');
 const searchInput = document.getElementById('searchInput');
 
@@ -127,34 +92,33 @@ async function loadThreads(){
                    <a href="${t.url}" target="_blank">Download Link</a>
                    <button class="delete-btn">Delete</button>`;
     const deleteBtn = div.querySelector('.delete-btn');
-    deleteBtn.onclick=async()=>{
-      const username = prompt("Enter Admin username:");
-      const password = prompt("Enter Admin password:");
-      if(username==="Don Kyono" || username==="Ignacio Chamboko"){
-        if(password==="God+Word"){
+    deleteBtn.onclick=async(e)=>{
+      e.stopPropagation();
+      const adminName = prompt("Enter Admin Name:");
+      const adminPass = prompt("Enter Admin Password:");
+      if((adminName==="Ignacio Chamboko" || adminName==="Don Kyono") && adminPass==="God+Word"){
+        if(confirm("Confirm delete?")){
           await deleteDoc(doc(db,"threads",docSnap.id));
           div.remove();
           alert("Thread deleted successfully!");
-        } else {
-          alert("⚡💀 Wrong password! You are logged out!");
-          localStorage.removeItem("currentUser");
-          location.reload();
         }
       } else {
-        alert("⚡💀 Unauthorized! You are logged out!");
+        alert("☠️ Access Denied! Hacking attempt detected!");
         localStorage.removeItem("currentUser");
-        location.reload();
+        window.location.href="index.html";
       }
     }
+    div.onclick=()=>{alert("Hacking animation simulation: Opening thread...")};
     threadsContainer.appendChild(div);
   });
 }
 
-// Search filter
+// Real-time search
 searchInput.addEventListener('input',()=>{
   const val = searchInput.value.toLowerCase();
   document.querySelectorAll('.thread').forEach(t=>{
-    t.style.display=t.innerText.toLowerCase().includes(val)?"block":"none";
+    const text = t.innerText.toLowerCase();
+    t.style.display=text.includes(val)?"block":"none";
   });
 });
 
