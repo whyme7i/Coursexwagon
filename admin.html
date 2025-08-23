@@ -5,42 +5,20 @@
 <title>⚡ VIP ADMIN PAGE ⚡</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body{
-  margin:0;padding:0;
-  background:#121212;
-  font-family:'Courier New', monospace;
-  color:#d4af37;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  min-height:100vh;
-}
+body{margin:0;padding:0;background:#121212;color:#d4af37;font-family:'Courier New', monospace;display:flex;flex-direction:column;align-items:center;min-height:100vh;}
 h1,h2,h3{text-align:center;margin:10px;}
 #loginDiv, #adminPanel{width:90%;max-width:550px;margin:20px auto;}
-.box{
-  background: rgba(20,20,20,0.95);
-  border:2px solid #b58f1f;
-  border-radius:15px;
-  padding:20px;
-  margin:15px 0;
-  box-shadow:0 0 15px #d4af37;
-  transition:0.3s;
-}
+.box{background: rgba(20,20,20,0.95);border:2px solid #b58f1f;border-radius:15px;padding:20px;margin:15px 0;box-shadow:0 0 15px #d4af37;transition:0.3s;}
 .box:hover{box-shadow:0 0 25px #c0a030;}
-input,select,textarea,button{
-  width:90%;padding:10px;margin:8px 0;font-size:16px;border-radius:5px;border:1px solid #d4af37;background:#1b1b1b;color:#d4af37;outline:none;
-}
+input,select,textarea,button{width:90%;padding:10px;margin:8px 0;font-size:16px;border-radius:5px;border:1px solid #d4af37;background:#1b1b1b;color:#d4af37;outline:none;}
 textarea{resize:none;}
 button{font-weight:bold;cursor:pointer;background:#d4af37;color:#121212;transition:0.3s;}
 button:hover{background:#b58f1f;color:#fff;}
 .hidden{display:none;}
-#profilePic{width:80px;height:80px;border-radius:50%;border:2px solid gold;margin:10px;display:block;margin-left:auto;margin-right:auto;}
+#profilePic{width:80px;height:80px;border-radius:50%;border:2px solid gold;margin:10px auto;display:block;}
 .postPreview{padding:10px;margin:10px 0;border-radius:10px;box-shadow:0 0 10px #d4af37;transition:0.3s;}
 .postPreview:hover{box-shadow:0 0 20px #c0a030;}
-.loadingOverlay{
-  position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);color:#d4af37;
-  display:flex;justify-content:center;align-items:center;font-size:1.8em;z-index:999;flex-direction:column;display:none;
-}
+.loadingOverlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);color:#d4af37;display:flex;justify-content:center;align-items:center;font-size:1.8em;z-index:999;flex-direction:column;display:none;}
 </style>
 </head>
 <body>
@@ -108,9 +86,7 @@ function adminLogin(){
     document.getElementById("adminPanel").classList.remove("hidden");
     document.getElementById("adminWelcome").innerText = `💻 WELCOME ADMIN ${name.toUpperCase()} 💻`;
     loadPosts();
-  } else {
-    msgDiv.innerText="❌ WRONG NAME OR PASSWORD ❌";
-  }
+  } else { msgDiv.innerText="❌ WRONG NAME OR PASSWORD ❌"; }
 }
 
 // Generate unique post ID
@@ -129,11 +105,9 @@ function postAdminLink(){
 
   if(!title || !url){ alert("Title and Link required!"); return; }
 
-  let posts = JSON.parse(localStorage.getItem(target)||"[]");
+  let posts = JSON.parse(localStorage.getItem(target)||"{}"); // stored as object keyed by ID
   let postID = generateID();
-  posts.unshift({
-    id:postID, title, desc, url, admin:currentAdmin, comment, social, textColor, bgColor, emoji
-  });
+  posts[postID] = {id:postID, title, desc, url, admin:currentAdmin, comment, social, textColor, bgColor, emoji};
   localStorage.setItem(target,JSON.stringify(posts));
   showLoadingAnimation();
   resetForm();
@@ -178,9 +152,11 @@ function loadPosts(){
   let savedDiv = document.getElementById("savedPosts");
   savedDiv.innerHTML='';
   ["courses.html","audiobooks.html","freebooks.html"].forEach(page=>{
-    let posts = JSON.parse(localStorage.getItem(page)||"[]");
-    if(posts.length){
-      posts.forEach(p=>{
+    let postsObj = JSON.parse(localStorage.getItem(page)||"{}");
+    let postKeys = Object.keys(postsObj);
+    if(postKeys.length){
+      postKeys.forEach(key=>{
+        let p = postsObj[key];
         let div = document.createElement("div");
         div.className="postPreview";
         div.style.color=p.textColor;
@@ -200,16 +176,16 @@ function loadPosts(){
 
 // Delete post
 function deletePost(id,page){
-  let posts = JSON.parse(localStorage.getItem(page)||"[]");
-  posts = posts.filter(p=>p.id!==id);
+  let posts = JSON.parse(localStorage.getItem(page)||"{}");
+  delete posts[id];
   localStorage.setItem(page,JSON.stringify(posts));
   loadPosts();
 }
 
 // Edit post
 function editPost(id,page){
-  let posts = JSON.parse(localStorage.getItem(page)||"[]");
-  let post = posts.find(p=>p.id===id);
+  let posts = JSON.parse(localStorage.getItem(page)||"{}");
+  let post = posts[id];
   if(post){
     document.getElementById("postTitle").value = post.title;
     document.getElementById("postDesc").value = post.desc;
@@ -220,8 +196,7 @@ function editPost(id,page){
     document.getElementById("bgColor").value = post.bgColor;
     document.getElementById("emojiIcon").value = post.emoji;
     updatePreview();
-    // Remove old post
-    deletePost(id,page);
+    deletePost(id,page); // remove old post
   }
 }
 
