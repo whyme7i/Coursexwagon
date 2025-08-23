@@ -2,60 +2,46 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>⚡ VIP ADMIN PAGE ⚡</title>
+<title>💀 VIP ADMIN PAGE 💀</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body{
   margin:0;padding:0;
-  background:#1a1a1a;
+  background:#111;
   font-family:'Courier New', monospace;
   color:#d4af37;
   display:flex;
   flex-direction:column;
   align-items:center;
-  justify-content:flex-start;
   min-height:100vh;
 }
-h1,h2,h3{margin:10px;text-align:center;}
-#welcome{
-  font-size:2em;
-  text-align:center;
-  margin-top:20px;
-  animation:glow 2s infinite alternate;
-}
-@keyframes glow{
-  0%{text-shadow:0 0 5px #b58f1f;}
-  50%{text-shadow:0 0 20px #c0c0c0;}
-  100%{text-shadow:0 0 40px #d4af37;}
-}
+h1,h2,h3{text-align:center;margin:10px;}
 .box{
   background: rgba(30,30,30,0.95);
-  border:2px solid #c0c0c0;
+  border:2px solid #666;
   border-radius:15px;
   padding:20px;
-  max-width:550px;
-  margin:20px auto;
-  box-shadow:0 0 20px #d4af37;
-  animation:appear 1s ease-in-out;
+  max-width:500px;
+  margin:15px auto;
+  box-shadow:0 0 15px #444;
 }
-@keyframes appear{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
-input,select,textarea,button{
-  width:90%;padding:10px;margin:8px 0;font-size:16px;border-radius:5px;border:1px solid #d4af37;background:#333;color:#d4af37;outline:none;
+input,textarea,select,button{
+  width:90%;padding:10px;margin:8px 0;border-radius:5px;border:1px solid #d4af37;background:#222;color:#d4af37;outline:none;font-size:16px;
 }
 textarea{resize:none;}
-button{font-weight:bold;cursor:pointer;background:#d4af37;color:#1a1a1a;transition:0.3s;}
+button{font-weight:bold;cursor:pointer;background:#d4af37;color:#111;transition:0.3s;}
 button:hover{background:#b58f1f;color:#fff;}
 .hidden{display:none;}
-#profilePic{width:80px;height:80px;border-radius:50%;border:2px solid gold;margin:10px;}
-.postPreview{padding:10px;margin:10px 0;border-radius:10px;box-shadow:0 0 10px #d4af37;}
-#loadingAnim{display:none;text-align:center;margin:10px;font-size:1.2em;}
+.postPreview{padding:10px;margin:10px 0;border-radius:10px;box-shadow:0 0 10px #444;}
+.postControls button{margin-right:5px;background:#666;color:#fff;}
+.postControls button:hover{background:#b58f1f;}
+#loadingAnim{display:none;text-align:center;margin:10px;}
 </style>
 </head>
 <body>
 
-<div id="welcome">💀 VIP ADMIN PAGE 💀</div>
+<h1>💀 VIP ADMIN PAGE 💀</h1>
 
-<!-- Admin Login -->
 <div class="box" id="loginDiv">
   <h2>Admin Login</h2>
   <input type="text" id="adminName" placeholder="Full Name (Ignacio Chamboko / Don Kyono)"><br>
@@ -64,31 +50,37 @@ button:hover{background:#b58f1f;color:#fff;}
   <div id="adminMsg"></div>
 </div>
 
-<!-- Admin Panel -->
 <div class="box hidden" id="adminPanel">
-  <div style="text-align:center;">
-    <img id="profilePic" src="https://i.ebayimg.com/images/g/LHwAAOSwb9xnH64J/s-l1600.jpg" alt="Profile Picture">
-    <h2 id="adminWelcome"></h2>
+  <h2 id="adminWelcome"></h2>
+  <div style="text-align:center;margin-bottom:10px;">
+    <img id="profilePic" src="https://i.ebayimg.com/images/g/LHwAAOSwb9xnH64J/s-l1600.jpg" style="width:80px;height:80px;border-radius:50%;border:2px solid gold;">
   </div>
-  <h3>Create New Thread</h3>
-  <input type="text" id="postTitle" placeholder="Post Title"><br>
-  <textarea id="postDesc" placeholder="Post Description" rows="3"></textarea><br>
+
+  <h3>Create / Edit Thread</h3>
+  <input type="text" id="postTitle" placeholder="Thread Title"><br>
+  <textarea id="postDesc" placeholder="Thread Description" rows="3"></textarea><br>
   <input type="text" id="postLink" placeholder="https://example.com/file.zip"><br>
   <select id="targetPage">
     <option value="courses.html">Courses</option>
     <option value="audiobooks.html">Audiobooks</option>
     <option value="freebooks.html">Free Books</option>
   </select><br>
-  <input type="text" id="commentLock" placeholder="Comment to unlock link (optional)"><br>
-  <input type="text" id="socialLinks" placeholder="Optional social links (comma separated)"><br>
-  <input type="color" id="textColor" value="#d4af37"> Text Color<br>
-  <input type="color" id="bgColor" value="#333333"> Background Color<br>
-  <select id="emojiIcon"><option value="💀">💀</option><option value="🔥">🔥</option><option value="⚡">⚡</option><option value="⭐">⭐</option></select>
-  <button onclick="postAdminLink()">Add Thread</button>
+  <input type="text" id="commentLock" placeholder="Comment to unlock (optional)"><br>
+  <input type="text" id="socialLinks" placeholder="Social links (optional, comma separated)"><br>
+  Text Color: <input type="color" id="textColor" value="#d4af37"><br>
+  Background Color: <input type="color" id="bgColor" value="#222222"><br>
+  Emoji/Icon: 
+  <select id="emojiIcon">
+    <option value="💀">💀</option>
+    <option value="🔥">🔥</option>
+    <option value="⚡">⚡</option>
+    <option value="⭐">⭐</option>
+  </select><br>
+  <button onclick="postAdminLink()">Post Thread</button>
 
-  <div id="loadingAnim">💻 Thread added successfully! 💻</div>
+  <div id="loadingAnim">💻 Posting thread... Please wait!</div>
 
-  <h3>Live Preview</h3>
+  <h3>Thread Preview</h3>
   <div id="postPreview" class="postPreview"></div>
 
   <h3>Saved Threads</h3>
@@ -98,107 +90,140 @@ button:hover{background:#b58f1f;color:#fff;}
 <script>
 const admins = ["Ignacio Chamboko","Don Kyono"];
 const adminPass = "god+word";
-let currentAdmin = "";
+let currentAdmin="";
+let editIndex=-1;
+let editTarget="";
 
-// Admin Login
 function adminLogin(){
-  let name = document.getElementById("adminName").value.trim();
-  let pass = document.getElementById("adminPassInput").value.trim();
-  let msgDiv = document.getElementById("adminMsg");
-  if(admins.includes(name) && pass===adminPass){
-    currentAdmin = name;
+  let name=document.getElementById("adminName").value.trim();
+  let pass=document.getElementById("adminPassInput").value.trim();
+  let msgDiv=document.getElementById("adminMsg");
+  if(admins.includes(name)&&pass===adminPass){
+    currentAdmin=name;
     msgDiv.innerHTML="";
     document.getElementById("loginDiv").classList.add("hidden");
     document.getElementById("adminPanel").classList.remove("hidden");
-    document.getElementById("adminWelcome").innerText = `💻 WELCOME ADMIN ${name.toUpperCase()} 💻`;
+    document.getElementById("adminWelcome").innerText=`💻 WELCOME ADMIN ${name.toUpperCase()} 💻`;
     loadPosts();
-  } else {
-    msgDiv.innerHTML="❌ WRONG NAME OR PASSWORD ❌";
-    msgDiv.style.color="red";
+  }else{
+    msgDiv.innerHTML="❌ WRONG NAME OR PASSWORD ❌"; msgDiv.style.color="red";
   }
 }
 
-// Post Thread
 function postAdminLink(){
-  let title = document.getElementById("postTitle").value.trim();
-  let desc = document.getElementById("postDesc").value.trim();
-  let url = document.getElementById("postLink").value.trim();
-  let target = document.getElementById("targetPage").value;
-  let comment = document.getElementById("commentLock").value.trim();
-  let social = document.getElementById("socialLinks").value.trim();
-  let textColor = document.getElementById("textColor").value;
-  let bgColor = document.getElementById("bgColor").value;
-  let emoji = document.getElementById("emojiIcon").value;
+  let title=document.getElementById("postTitle").value.trim();
+  let desc=document.getElementById("postDesc").value.trim();
+  let url=document.getElementById("postLink").value.trim();
+  let target=document.getElementById("targetPage").value;
+  let comment=document.getElementById("commentLock").value.trim();
+  let social=document.getElementById("socialLinks").value.trim();
+  let textColor=document.getElementById("textColor").value;
+  let bgColor=document.getElementById("bgColor").value;
+  let emoji=document.getElementById("emojiIcon").value;
+  if(!title||!url){alert("Title and link required!");return;}
 
-  if(!title || !url){ alert("Title and link required!"); return; }
+  document.getElementById("loadingAnim").style.display="block";
 
-  let posts = JSON.parse(localStorage.getItem(target)||"[]");
-  posts.unshift({title,desc,url,admin:currentAdmin,comment,social,textColor,bgColor,emoji});
-  localStorage.setItem(target,JSON.stringify(posts));
+  setTimeout(()=>{
+    let posts=JSON.parse(localStorage.getItem(target)||"[]");
 
-  // Reset form
-  document.getElementById("postTitle").value='';
-  document.getElementById("postDesc").value='';
-  document.getElementById("postLink").value='';
-  document.getElementById("commentLock").value='';
-  document.getElementById("socialLinks").value='';
-  document.getElementById("postPreview").innerHTML='';
+    if(editIndex>=0&&editTarget===target){
+      posts[editIndex]={title,desc,url,comment,social,textColor,bgColor,emoji,admin:currentAdmin};
+      editIndex=-1; editTarget="";
+    }else{
+      posts.unshift({title,desc,url,comment,social,textColor,bgColor,emoji,admin:currentAdmin});
+    }
 
-  // Show loading animation
-  let loading = document.getElementById("loadingAnim");
-  loading.style.display="block";
-  setTimeout(()=>{loading.style.display="none";},2000);
-
-  // Reload posts
-  loadPosts();
+    localStorage.setItem(target,JSON.stringify(posts));
+    document.getElementById("loadingAnim").style.display="none";
+    alert("✅ Thread added successfully!");
+    clearForm(); loadPosts();
+  },1000);
 }
 
-// Live preview
+function clearForm(){
+  document.getElementById("postTitle").value="";
+  document.getElementById("postDesc").value="";
+  document.getElementById("postLink").value="";
+  document.getElementById("commentLock").value="";
+  document.getElementById("socialLinks").value="";
+  document.getElementById("textColor").value="#d4af37";
+  document.getElementById("bgColor").value="#222222";
+  document.getElementById("emojiIcon").value="💀";
+  updatePreview();
+}
+
 function updatePreview(){
-  let title = document.getElementById("postTitle").value.trim() || "Post Title";
-  let desc = document.getElementById("postDesc").value.trim() || "Description here...";
-  let url = document.getElementById("postLink").value.trim() || "#";
-  let comment = document.getElementById("commentLock").value.trim() || "";
-  let social = document.getElementById("socialLinks").value.trim();
-  let textColor = document.getElementById("textColor").value;
-  let bgColor = document.getElementById("bgColor").value;
-  let emoji = document.getElementById("emojiIcon").value;
-
-  let previewHTML = `<div style="color:${textColor};background:${bgColor};padding:10px;border-radius:10px;box-shadow:0 0 10px #d4af37;margin-bottom:10px;">
-      <b>${emoji} ${title}</b><br>${desc}<br>
-      <a href="${url}" target="_blank">Download Link</a><br>`;
-  if(comment) previewHTML += `<i>Comment to unlock: "${comment}"</i><br>`;
-  if(social) previewHTML += `Social: ${social}<br>`;
-  previewHTML += `Posted by ${currentAdmin}</div>`;
-  document.getElementById("postPreview").innerHTML = previewHTML;
+  let title=document.getElementById("postTitle").value.trim()||"Thread Title";
+  let desc=document.getElementById("postDesc").value.trim()||"Thread description...";
+  let url=document.getElementById("postLink").value.trim()||"#";
+  let comment=document.getElementById("commentLock").value.trim();
+  let social=document.getElementById("socialLinks").value.trim();
+  let textColor=document.getElementById("textColor").value;
+  let bgColor=document.getElementById("bgColor").value;
+  let emoji=document.getElementById("emojiIcon").value;
+  let html=`<div style="color:${textColor};background:${bgColor};padding:10px;border-radius:10px;box-shadow:0 0 10px #444;">
+    <b>${emoji} ${title}</b><br>${desc}<br>
+    <a href="${url}" target="_blank">Download Link</a><br>`;
+  if(comment) html+=`<i>Comment to unlock: "${comment}"</i><br>`;
+  if(social) html+=`Social: ${social}<br>`;
+  html+=`Posted by ${currentAdmin}</div>`;
+  document.getElementById("postPreview").innerHTML=html;
 }
 
-// Load posts
-function loadPosts(){
-  let savedDiv = document.getElementById("savedPosts");
-  savedDiv.innerHTML = '';
-  ["courses.html","audiobooks.html","freebooks.html"].forEach(page=>{
-    let posts = JSON.parse(localStorage.getItem(page)||"[]");
-    posts.forEach(p=>{
-      let div = document.createElement("div");
-      div.className="postPreview";
-      div.style.color=p.textColor;
-      div.style.background=p.bgColor;
-      div.innerHTML = `<b>${p.emoji} ${p.title}</b><br>${p.desc}<br>
-                       <a href="${p.url}" target="_blank">Download Link</a><br>
-                       ${p.comment ? `<i>Comment to unlock: "${p.comment}"</i><br>` : ""}
-                       ${p.social ? `Social: ${p.social}<br>` : ""}
-                       Posted by ${p.admin}`;
-      savedDiv.appendChild(div);
-    });
-  });
-}
-
-// Update preview live
 ["postTitle","postDesc","postLink","commentLock","socialLinks","textColor","bgColor","emojiIcon"].forEach(id=>{
   document.getElementById(id).addEventListener("input",updatePreview);
 });
-</script>
 
+function loadPosts(){
+  let savedDiv=document.getElementById("savedPosts");
+  savedDiv.innerHTML="";
+  ["courses.html","audiobooks.html","freebooks.html"].forEach(page=>{
+    let posts=JSON.parse(localStorage.getItem(page)||"[]");
+    if(posts.length){
+      posts.forEach((p,i)=>{
+        let div=document.createElement("div");
+        div.className="postPreview";
+        div.style.color=p.textColor;
+        div.style.background=p.bgColor;
+        let controls=`<div class="postControls">
+                        <button onclick="editPost('${page}',${i})">Edit</button>
+                        <button onclick="deletePost('${page}',${i})">Delete</button>
+                      </div>`;
+        div.innerHTML=`<b>${p.emoji} ${p.title}</b><br>${p.desc}<br>
+                       <a href="${p.url}" target="_blank">Download Link</a><br>
+                       ${p.comment ? `<i>Comment to unlock: "${p.comment}"</i><br>`:""}
+                       ${p.social ? `Social: ${p.social}<br>`:""}
+                       Posted by ${p.admin}<br>${controls}`;
+        savedDiv.appendChild(div);
+      });
+    }
+  });
+}
+
+function editPost(page,index){
+  let posts=JSON.parse(localStorage.getItem(page)||"[]");
+  let p=posts[index];
+  document.getElementById("postTitle").value=p.title;
+  document.getElementById("postDesc").value=p.desc;
+  document.getElementById("postLink").value=p.url;
+  document.getElementById("commentLock").value=p.comment;
+  document.getElementById("socialLinks").value=p.social;
+  document.getElementById("textColor").value=p.textColor;
+  document.getElementById("bgColor").value=p.bgColor;
+  document.getElementById("emojiIcon").value=p.emoji;
+  editIndex=index;
+  editTarget=page;
+  updatePreview();
+}
+
+function deletePost(page,index){
+  if(!confirm("Are you sure you want to delete this thread?")) return;
+  let posts=JSON.parse(localStorage.getItem(page)||"[]");
+  posts.splice(index,1);
+  localStorage.setItem(page,JSON.stringify(posts));
+  loadPosts();
+}
+</script>
 </body>
 </html>
