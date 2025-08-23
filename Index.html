@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>💀 MEMBERS ONLY GATE 💀</title>
+<style>
+  body {
+    margin:0;
+    padding:0;
+    background:black;
+    color: lime;
+    font-family: 'Courier New', monospace;
+    text-align:center;
+    overflow-x:hidden;
+  }
+
+  /* Skeleton animation */
+  #skeleton {
+    position: absolute;
+    bottom:0;
+    left:50%;
+    transform: translateX(-50%);
+    width:200px;
+    animation: float 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px lime);
+  }
+
+  @keyframes float {
+    0% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+    50% { transform: translateX(-50%) translateY(-20px) rotate(-5deg); }
+    100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+  }
+
+  h1 {
+    text-shadow: 0 0 10px lime, 0 0 20px lime, 0 0 30px lime;
+    margin-top:50px;
+  }
+
+  .hidden { display:none; }
+  input, button {
+    padding:10px;
+    margin:10px;
+    font-size:16px;
+    background:#111;
+    color:lime;
+    border:1px solid lime;
+  }
+  button {
+    cursor:pointer;
+    background:lime;
+    color:black;
+    font-weight:bold;
+  }
+  .box {
+    border:2px solid lime;
+    padding:20px;
+    border-radius:10px;
+    margin:20px auto;
+    display:inline-block;
+    backdrop-filter: blur(5px);
+  }
+</style>
+</head>
+<body>
+
+<h1>💀 MEMBERS ONLY GATE 💀</h1>
+<img id="skeleton" src="https://i.ebayimg.com/images/g/LHwAAOSwb9xnH64J/s-l1600.jpg" alt="Skeleton">
+
+<!-- Login / Sign-Up Forms -->
+<div id="authDiv" class="box">
+  <h2>Login</h2>
+  <input type="text" id="loginUser" placeholder="Username"><br>
+  <input type="password" id="loginPass" placeholder="Password"><br>
+  <button onclick="login()">Login</button>
+  <hr>
+  <h2>Sign Up</h2>
+  <input type="text" id="signupUser" placeholder="Username"><br>
+  <input type="text" id="signupSurname" placeholder="Surname"><br>
+  <input type="email" id="signupEmail" placeholder="Email"><br>
+  <input type="password" id="signupPass" placeholder="Password"><br>
+  <button onclick="signup()">Create Account</button>
+</div>
+
+<script>
+  // Initialize localStorage users DB if empty
+  if(!localStorage.getItem("users")){
+    localStorage.setItem("users", JSON.stringify([]));
+  }
+
+  // Auto-login if already has account
+  window.onload = function(){
+    const currentUser = localStorage.getItem("currentUser");
+    if(currentUser){
+      window.location.href = "homepage.html";
+    }
+  }
+
+  function login(){
+    let username = document.getElementById("loginUser").value.trim();
+    let password = document.getElementById("loginPass").value.trim();
+    let users = JSON.parse(localStorage.getItem("users"));
+    const user = users.find(u => u.username===username && u.password===password);
+    if(user){
+      localStorage.setItem("currentUser", username);
+      window.location.href = "homepage.html";
+    } else alert("Wrong username or password!");
+  }
+
+  function signup(){
+    let username = document.getElementById("signupUser").value.trim();
+    let surname = document.getElementById("signupSurname").value.trim();
+    let email = document.getElementById("signupEmail").value.trim();
+    let password = document.getElementById("signupPass").value.trim();
+    if(!username || !surname || !email || !password){
+      alert("Fill all fields!");
+      return;
+    }
+
+    let users = JSON.parse(localStorage.getItem("users"));
+
+    // Check for duplicates
+    if(users.find(u => u.username===username)){
+      alert("Username already exists!");
+      return;
+    }
+    if(users.find(u => u.surname===surname)){
+      alert("Surname already exists!");
+      return;
+    }
+    if(users.find(u => u.email===email)){
+      alert("Email already exists!");
+      return;
+    }
+
+    // Add user
+    users.push({username,surname,email,password});
+    localStorage.setItem("users", JSON.stringify(users));
+    localStorage.setItem("currentUser", username);
+    alert("Account created! Redirecting...");
+    window.location.href = "homepage.html";
+  }
+</script>
+
+</body>
+</html>
