@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>⚡ VIP ADMIN PORTAL ⚡</title>
+<title>⚡ VIP ADMIN PAGE ⚡</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body{
@@ -15,15 +15,13 @@ body{
   align-items:center;
   justify-content:flex-start;
   min-height:100vh;
-  overflow-x:hidden;
 }
-h1,h2{margin:10px;text-align:center;}
+h1,h2,h3{margin:10px;text-align:center;}
 #welcome{
   font-size:2em;
   text-align:center;
   margin-top:20px;
   animation:glow 2s infinite alternate;
-  color:#d4af37;
 }
 @keyframes glow{
   0%{text-shadow:0 0 5px #b58f1f;}
@@ -35,7 +33,7 @@ h1,h2{margin:10px;text-align:center;}
   border:2px solid #c0c0c0;
   border-radius:15px;
   padding:20px;
-  max-width:500px;
+  max-width:550px;
   margin:20px auto;
   box-shadow:0 0 20px #d4af37;
   animation:appear 1s ease-in-out;
@@ -50,26 +48,29 @@ button:hover{background:#b58f1f;color:#fff;}
 .hidden{display:none;}
 #profilePic{width:80px;height:80px;border-radius:50%;border:2px solid gold;margin:10px;}
 .postPreview{padding:10px;margin:10px 0;border-radius:10px;box-shadow:0 0 10px #d4af37;}
+#loadingAnim{display:none;text-align:center;margin:10px;font-size:1.2em;}
 </style>
 </head>
 <body>
 
-<div id="welcome">💀 VIP ADMIN PORTAL 💀</div>
+<div id="welcome">💀 VIP ADMIN PAGE 💀</div>
 
+<!-- Admin Login -->
 <div class="box" id="loginDiv">
   <h2>Admin Login</h2>
   <input type="text" id="adminName" placeholder="Full Name (Ignacio Chamboko / Don Kyono)"><br>
   <input type="password" id="adminPassInput" placeholder="Admin Password"><br>
-  <button onclick="adminLogin()">Enter Admin Portal</button>
+  <button onclick="adminLogin()">Enter Admin Page</button>
   <div id="adminMsg"></div>
 </div>
 
+<!-- Admin Panel -->
 <div class="box hidden" id="adminPanel">
   <div style="text-align:center;">
     <img id="profilePic" src="https://i.ebayimg.com/images/g/LHwAAOSwb9xnH64J/s-l1600.jpg" alt="Profile Picture">
     <h2 id="adminWelcome"></h2>
   </div>
-  <h3>Create New Post</h3>
+  <h3>Create New Thread</h3>
   <input type="text" id="postTitle" placeholder="Post Title"><br>
   <textarea id="postDesc" placeholder="Post Description" rows="3"></textarea><br>
   <input type="text" id="postLink" placeholder="https://example.com/file.zip"><br>
@@ -83,12 +84,14 @@ button:hover{background:#b58f1f;color:#fff;}
   <input type="color" id="textColor" value="#d4af37"> Text Color<br>
   <input type="color" id="bgColor" value="#333333"> Background Color<br>
   <select id="emojiIcon"><option value="💀">💀</option><option value="🔥">🔥</option><option value="⚡">⚡</option><option value="⭐">⭐</option></select>
-  <button onclick="postAdminLink()">Post</button>
+  <button onclick="postAdminLink()">Add Thread</button>
 
-  <h3>Post Preview</h3>
+  <div id="loadingAnim">💻 Thread added successfully! 💻</div>
+
+  <h3>Live Preview</h3>
   <div id="postPreview" class="postPreview"></div>
 
-  <h3>Saved Posts</h3>
+  <h3>Saved Threads</h3>
   <div id="savedPosts"></div>
 </div>
 
@@ -97,6 +100,7 @@ const admins = ["Ignacio Chamboko","Don Kyono"];
 const adminPass = "god+word";
 let currentAdmin = "";
 
+// Admin Login
 function adminLogin(){
   let name = document.getElementById("adminName").value.trim();
   let pass = document.getElementById("adminPassInput").value.trim();
@@ -114,6 +118,7 @@ function adminLogin(){
   }
 }
 
+// Post Thread
 function postAdminLink(){
   let title = document.getElementById("postTitle").value.trim();
   let desc = document.getElementById("postDesc").value.trim();
@@ -128,22 +133,27 @@ function postAdminLink(){
   if(!title || !url){ alert("Title and link required!"); return; }
 
   let posts = JSON.parse(localStorage.getItem(target)||"[]");
-  posts.unshift({
-    title,desc,url,admin:currentAdmin,comment,social,textColor,bgColor,emoji
-  });
+  posts.unshift({title,desc,url,admin:currentAdmin,comment,social,textColor,bgColor,emoji});
   localStorage.setItem(target,JSON.stringify(posts));
-  alert(`Post added to ${target} successfully!`);
+
+  // Reset form
   document.getElementById("postTitle").value='';
   document.getElementById("postDesc").value='';
   document.getElementById("postLink").value='';
   document.getElementById("commentLock").value='';
-  document.getElementById("socialLinks").
-    .value='';
-  updatePreview();
+  document.getElementById("socialLinks").value='';
+  document.getElementById("postPreview").innerHTML='';
+
+  // Show loading animation
+  let loading = document.getElementById("loadingAnim");
+  loading.style.display="block";
+  setTimeout(()=>{loading.style.display="none";},2000);
+
+  // Reload posts
   loadPosts();
 }
 
-// Update live preview
+// Live preview
 function updatePreview(){
   let title = document.getElementById("postTitle").value.trim() || "Post Title";
   let desc = document.getElementById("postDesc").value.trim() || "Description here...";
@@ -163,33 +173,32 @@ function updatePreview(){
   document.getElementById("postPreview").innerHTML = previewHTML;
 }
 
-// Load existing posts from localStorage
+// Load posts
 function loadPosts(){
   let savedDiv = document.getElementById("savedPosts");
   savedDiv.innerHTML = '';
   ["courses.html","audiobooks.html","freebooks.html"].forEach(page=>{
     let posts = JSON.parse(localStorage.getItem(page)||"[]");
-    if(posts.length){
-      posts.forEach(p=>{
-        let div = document.createElement("div");
-        div.className="postPreview";
-        div.style.color=p.textColor;
-        div.style.background=p.bgColor;
-        div.innerHTML = `<b>${p.emoji} ${p.title}</b><br>${p.desc}<br>
-                         <a href="${p.url}" target="_blank">Download Link</a><br>
-                         ${p.comment ? `<i>Comment to unlock: "${p.comment}"</i><br>` : ""}
-                         ${p.social ? `Social: ${p.social}<br>` : ""}
-                         Posted by ${p.admin}`;
-        savedDiv.appendChild(div);
-      });
-    }
+    posts.forEach(p=>{
+      let div = document.createElement("div");
+      div.className="postPreview";
+      div.style.color=p.textColor;
+      div.style.background=p.bgColor;
+      div.innerHTML = `<b>${p.emoji} ${p.title}</b><br>${p.desc}<br>
+                       <a href="${p.url}" target="_blank">Download Link</a><br>
+                       ${p.comment ? `<i>Comment to unlock: "${p.comment}"</i><br>` : ""}
+                       ${p.social ? `Social: ${p.social}<br>` : ""}
+                       Posted by ${p.admin}`;
+      savedDiv.appendChild(div);
+    });
   });
 }
 
-// Update preview live when typing
+// Update preview live
 ["postTitle","postDesc","postLink","commentLock","socialLinks","textColor","bgColor","emojiIcon"].forEach(id=>{
   document.getElementById(id).addEventListener("input",updatePreview);
 });
 </script>
+
 </body>
 </html>
