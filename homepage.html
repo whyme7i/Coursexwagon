@@ -3,54 +3,148 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>COURSE.XWAGON — VIP Forum</title>
+<title>C.X PRIVATE FORUM</title>
 <style>
-body{margin:0;padding:0;font-family:'Courier New',monospace;background:#0a0a0a;color:#d4af37;overflow-x:hidden;}
-header{background:#111;padding:15px;text-align:center;font-weight:900;font-size:1.5rem;}
-#sidebarToggle{position:fixed;top:18px;left:18px;background:#1a1a1a;color:#d4af37;padding:12px 18px;border:none;border-radius:5px;cursor:pointer;z-index:1100;animation:pulse 2s infinite;}
-#sidebar{position:fixed;top:0;left:-280px;width:280px;height:100%;background:#111;padding:80px 20px 20px;display:flex;flex-direction:column;gap:20px;transition:left 0.4s cubic-bezier(0.25, 1, 0.5, 1);z-index:1099;}
-#sidebar.open{left:0;}
-#overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.8);opacity:0;visibility:hidden;transition:0.3s;z-index:1088;}
-#overlay.active{opacity:1;visibility:visible;}
-#sidebar h2{text-align:center;margin-bottom:20px;}
-#sidebar a, #sidebar button{color:#d4af37;text-decoration:none;font-weight:700;padding:8px 0;text-align:center;background:none;border:none;cursor:pointer;}
-#sidebar a:hover, #sidebar button:hover{color:#fff;}
-.container{max-width:1200px;margin:160px auto 40px;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;}
-.thread-box{background:#1a1a1a;padding:15px;border-left:4px solid #d4af37;border-radius:8px;cursor:pointer;transition:0.4s ease, transform 0.3s ease;opacity:0;transform: translateY(20px);animation:slideIn 0.5s forwards;}
-.thread-box:hover{box-shadow: 0 0 20px #d4af37, 0 0 10px #fff inset; transform: scale(1.03);}
-.thread-box h4 span{display:inline-block;animation:bounce 1.2s infinite;}
-#welcomeBlock{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#111;padding:30px 50px;border:2px solid #d4af37;border-radius:15px;text-align:center;font-size:1.5rem;animation:fadePulse 2s infinite;}
-@keyframes slideIn{to { opacity:1; transform: translateY(0); }}
-@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
-@keyframes pulse{0%,100%{box-shadow:0 0 5px #d4af37;}50%{box-shadow:0 0 20px #d4af37;}}
-.alert-shake{animation:shake 0.5s;}
-@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
-@keyframes fadePulse{0%,100%{opacity:0.9;}50%{opacity:1;}}
-@media(max-width:720px){.container{grid-template-columns:1fr;margin-top:180px;padding:0 16px;}}
+  body {
+    margin:0;
+    padding:0;
+    font-family: 'Courier New', monospace;
+    background:#111;
+    color: gold;
+    overflow-x: hidden;
+  }
+
+  header {
+    position: fixed;
+    top:0; left:0; right:0;
+    height: 70px;
+    background: #000;
+    border-bottom: 2px solid gold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    z-index: 1000;
+    animation: pulse 2s infinite alternate;
+  }
+  @keyframes pulse {
+    0%{text-shadow:0 0 5px gold;}
+    50%{text-shadow:0 0 20px #fff;}
+    100%{text-shadow:0 0 40px gold;}
+  }
+
+  #sidebarToggle {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1100;
+    background: #111;
+    border: 2px solid gold;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-weight: bold;
+    color: gold;
+    border-radius: 6px;
+    transition: 0.3s;
+  }
+  #sidebarToggle:hover { background: gold; color:#111; }
+
+  #sidebar {
+    position: fixed;
+    top:0;
+    left: -200px;
+    width: 200px;
+    height: 100vh;
+    background: #111;
+    border-right: 2px solid gold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 80px;
+    gap: 20px;
+    transition: left 0.3s ease;
+    z-index: 1050;
+  }
+  #sidebar.open { left:0; }
+
+  #sidebar button {
+    width: 80%;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: 2px solid gold;
+    border-radius: 8px;
+    background:#111;
+    color: gold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  #sidebar button:hover { background: gold; color:#111; }
+
+  main {
+    margin-top: 80px;
+    padding: 20px;
+  }
+
+  .forum-thread {
+    background:#222;
+    border:2px solid gold;
+    border-radius:10px;
+    margin-bottom:20px;
+    padding:15px;
+    box-shadow:0 0 10px gold;
+    transition: 0.3s;
+    cursor:pointer;
+    animation: appear 1s ease-in-out;
+  }
+  .forum-thread:hover { box-shadow:0 0 20px #fff; }
+
+  .thread-title {
+    font-size:1.3rem;
+    font-weight:bold;
+    margin-bottom:8px;
+    color: gold;
+  }
+  .thread-admin { font-size:0.9rem; color:#ccc; margin-bottom:5px; }
+  .thread-desc { font-size:1rem; color:#ccc; }
+
+  @keyframes appear { from {opacity:0; transform: translateY(-10px);} to {opacity:1; transform: translateY(0);} }
+
+  /* Overlay for sidebar closing */
+  #overlay {
+    position:fixed;
+    top:0; left:0;
+    width:100vw;
+    height:100vh;
+    background:rgba(0,0,0,0.8);
+    opacity:0;
+    visibility:hidden;
+    transition:0.3s;
+    z-index:1040;
+  }
+  #overlay.active { opacity:1; visibility:visible; }
 </style>
 </head>
 <body>
 
-<div id="welcomeBlock">PRIVATE FORUM — MEMBERS ONLY</div>
-
+<header>C.X PRIVATE FORUM</header>
 <button id="sidebarToggle">MENU</button>
 <div id="sidebar">
-  <h2>COURSEXWAGON</h2>
-  <a href="index.html">Home</a>
-  <a href="audiobooks.html">Audiobooks</a>
-  <a href="freebooks.html">Free Books</a>
-  <button onclick="window.location.href='chatroom.html'">Join Us Now</button>
+  <button onclick="window.location.href='admin.html'">Admin Page</button>
+  <button onclick="window.location.href='chatroom.html'">Chatroom</button>
 </div>
 <div id="overlay"></div>
 
-<header>VIP HACKER FORUM — COURSES</header>
-
-<main class="container" id="threadContainer"></main>
+<main id="forumContainer">
+  <!-- Threads will be injected here -->
+</main>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDXEKOmJdN8lzvnUIAhVpzarXvgxanRYgs",
   authDomain: "coursexwagon-admins.firebaseapp.com",
@@ -63,71 +157,53 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Sidebar toggle
 const sidebarToggle = document.getElementById('sidebarToggle');
 const sidebar = document.getElementById('sidebar');
 const overlay = document.getElementById('overlay');
-sidebarToggle.addEventListener('click',()=>{sidebar.classList.toggle('open');overlay.classList.toggle('active');});
-overlay.addEventListener('click',()=>{sidebar.classList.remove('open');overlay.classList.remove('active');});
+sidebarToggle.addEventListener('click', ()=>{
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('active');
+});
+overlay.addEventListener('click', ()=>{
+  sidebar.classList.remove('open');
+  overlay.classList.remove('active');
+});
 
-// Hide welcome after 3s
-setTimeout(()=>{document.getElementById('welcomeBlock').style.display='none';},3000);
-
-// Load threads
+// Load forum threads
 async function loadThreads(){
-  const container = document.getElementById('threadContainer');
-  container.innerHTML='';
-  const categories=['courses','audiobooks','freebooks'];
-  for(const cat of categories){
-    const snapshot = await getDocs(collection(db, cat));
-    snapshot.forEach(docSnap=>{
-      const p = docSnap.data();
-      const div = document.createElement('div');
-      div.className='thread-box';
-      div.innerHTML=`<h4><span>${p.emoji?p.emoji:''}</span> ${p.title}</h4><p>Posted by: ${p.admin}</p>`;
-      div.onclick=()=>{
-        const threadWin=window.open('','_blank');
-        threadWin.document.write(`
-          <html><head><title>${p.title}</title>
-          <style>
-          body{background:#0a0a0a;color:#d4af37;font-family:'Courier New',monospace;padding:30px;}
-          a{color:#c0c0c0;text-decoration:underline;font-size:1.2rem;}
-          input,button{padding:8px;margin:6px 0;border-radius:4px;border:none;}
-          input{width:80%;background:#111;color:#d4af37;}
-          button{background:#d4af37;color:#0a0a0a;cursor:pointer;}
-          </style></head>
-          <body>
-          <h1><span>${p.emoji?p.emoji:''}</span> ${p.title}</h1>
-          <p>${p.desc}</p>
-          <p>Posted by: ${p.admin}</p>
-          <div id="commentSection">
-            <input type="text" id="commentInput" placeholder="Type comment to unlock link">
-            <button id="unlockBtn">Unlock Link</button>
-          </div>
-          <div id="linkArea" style="display:none;margin-top:15px;">
-            <a href="${p.url}" target="_blank">Download Link</a>
-          </div>
-          <script>
-            document.getElementById('unlockBtn').onclick=()=>{
-              const input=document.getElementById('commentInput').value.trim();
-              const required='${p.commentLock?p.commentLock:''}';
-              if(required==""||input.toLowerCase()==required.toLowerCase()){
-                document.getElementById('linkArea').style.display='block';
-                alert("✅ Link unlocked! Thank you for commenting.");
-              } else {
-                const cs=document.getElementById('commentInput');
-                cs.classList.add('alert-shake');
-                setTimeout(()=>cs.classList.remove('alert-shake'),500);
-              }
-            };
-          <\/script>
-          </body></html>
-        `);
-      };
-      container.appendChild(div);
-    });
-  }
+  const container = document.getElementById('forumContainer');
+  container.innerHTML = '';
+  const snapshot = await getDocs(collection(db,"threads"));
+  snapshot.forEach(docSnap=>{
+    const data = docSnap.data();
+    const threadDiv = document.createElement('div');
+    threadDiv.className = 'forum-thread';
+    threadDiv.innerHTML = `
+      <div class="thread-title">${data.title}</div>
+      <div class="thread-admin">Posted by: ${data.admin}</div>
+      <div class="thread-desc">${data.desc}</div>
+    `;
+    threadDiv.onclick = ()=> {
+      window.open("", "_blank").document.write(`
+        <html><head><title>${data.title}</title>
+        <style>body{background:#111;color:gold;font-family:'Courier New',monospace;padding:30px;} a{color:#ccc;}</style>
+        </head>
+        <body>
+          <h1>${data.title}</h1>
+          <p>Posted by: ${data.admin}</p>
+          <p>${data.desc}</p>
+          <a href="${data.url}" target="_blank">Download Link</a>
+        </body>
+        </html>
+      `);
+    };
+    container.appendChild(threadDiv);
+  });
 }
-window.onload=loadThreads;
+
+window.onload = loadThreads;
 </script>
+
 </body>
 </html>
