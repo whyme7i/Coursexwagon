@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>💀 MEMBERS & ADMIN PORTAL 💀</title>
+<title>⚡ VIP ADMIN PORTAL ⚡</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body{
@@ -10,8 +10,12 @@ body{
   background:#1a1a1a;
   font-family:'Courier New', monospace;
   color:#d4af37;
-  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
-  min-height:100vh;overflow-x:hidden;padding-top:20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  min-height:100vh;
+  overflow-x:hidden;
 }
 h1,h2{margin:10px;text-align:center;}
 #welcome{
@@ -21,151 +25,171 @@ h1,h2{margin:10px;text-align:center;}
   animation:glow 2s infinite alternate;
   color:#d4af37;
 }
-@keyframes glow{0%{text-shadow:0 0 5px #b58f1f;}50%{text-shadow:0 0 20px #c0c0c0;}100%{text-shadow:0 0 40px #d4af37;}}
+@keyframes glow{
+  0%{text-shadow:0 0 5px #b58f1f;}
+  50%{text-shadow:0 0 20px #c0c0c0;}
+  100%{text-shadow:0 0 40px #d4af37;}
+}
 .box{
   background: rgba(30,30,30,0.95);
   border:2px solid #c0c0c0;
-  border-radius:10px;
+  border-radius:15px;
   padding:20px;
-  max-width:400px;
+  max-width:500px;
   margin:20px auto;
-  box-shadow:0 0 15px #d4af37;
+  box-shadow:0 0 20px #d4af37;
   animation:appear 1s ease-in-out;
 }
 @keyframes appear{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
-input,select,button,textarea{
+input,select,textarea,button{
   width:90%;padding:10px;margin:8px 0;font-size:16px;border-radius:5px;border:1px solid #d4af37;background:#333;color:#d4af37;outline:none;
 }
+textarea{resize:none;}
 button{font-weight:bold;cursor:pointer;background:#d4af37;color:#1a1a1a;transition:0.3s;}
 button:hover{background:#b58f1f;color:#fff;}
 .hidden{display:none;}
-#skeleton{width:100px;animation:dance 1s infinite;margin-bottom:20px;}
-@keyframes dance{0%{transform:rotate(-15deg);}25%{transform:rotate(15deg);}50%{transform:rotate(-15deg);}75%{transform:rotate(15deg);}100%{transform:rotate(-15deg);}}
-.post{
-  padding:10px;margin:10px 0;border-radius:10px;box-shadow:0 0 10px gold;
-  animation:fadeIn 0.5s ease-in-out;
-}
-@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-.commentInput{width:80%;margin-top:5px;}
-.commentBtn{margin-top:5px;padding:5px 10px;}
+#profilePic{width:80px;height:80px;border-radius:50%;border:2px solid gold;margin:10px;}
+.postPreview{padding:10px;margin:10px 0;border-radius:10px;box-shadow:0 0 10px #d4af37;}
 </style>
 </head>
 <body>
 
-<img id="skeleton" src="https://i.ebayimg.com/images/g/LHwAAOSwb9xnH64J/s-l1600.jpg" alt="Skeleton">
+<div id="welcome">💀 VIP ADMIN PORTAL 💀</div>
 
-<div id="authDiv" class="box">
-  <h2>Create Account / Login</h2>
-  <input type="text" id="username" placeholder="Username"><br>
-  <input type="email" id="email" placeholder="Email"><br>
-  <input type="password" id="password" placeholder="Password"><br>
-  <button onclick="createAccount()">Create Account</button>
-  <button onclick="login()">Login</button>
-  <div id="message"></div>
-</div>
-
-<div id="adminDiv" class="box hidden">
+<div class="box" id="loginDiv">
   <h2>Admin Login</h2>
-  <input type="text" id="adminName" placeholder="Name"><br>
+  <input type="text" id="adminName" placeholder="Full Name (Ignacio Chamboko / Don Kyono)"><br>
   <input type="password" id="adminPassInput" placeholder="Admin Password"><br>
   <button onclick="adminLogin()">Enter Admin Portal</button>
   <div id="adminMsg"></div>
 </div>
 
-<div class="box hidden" id="postPanel">
-  <h2>Post a Link</h2>
-  <input type="text" id="postTitle" placeholder="Title"><br>
+<div class="box hidden" id="adminPanel">
+  <div style="text-align:center;">
+    <img id="profilePic" src="https://i.ebayimg.com/images/g/LHwAAOSwb9xnH64J/s-l1600.jpg" alt="Profile Picture">
+    <h2 id="adminWelcome"></h2>
+  </div>
+  <h3>Create New Post</h3>
+  <input type="text" id="postTitle" placeholder="Post Title"><br>
+  <textarea id="postDesc" placeholder="Post Description" rows="3"></textarea><br>
   <input type="text" id="postLink" placeholder="https://example.com/file.zip"><br>
-  <input type="text" id="commentLock" placeholder="Comment required to unlock (optional)"><br>
   <select id="targetPage">
     <option value="courses.html">Courses</option>
     <option value="audiobooks.html">Audiobooks</option>
     <option value="freebooks.html">Free Books</option>
   </select><br>
-  <select id="linkColor">
-    <option value="#d4af37">Gold</option>
-    <option value="#c0c0c0">Silver</option>
-    <option value="#b58f1f">Dark Gold</option>
-    <option value="#ff00ff">Magenta</option>
-    <option value="#00ffff">Cyan</option>
-  </select>
-  <select id="linkIcon">
-    <option value="💀">💀</option>
-    <option value="🔥">🔥</option>
-    <option value="⚡">⚡</option>
-    <option value="⭐">⭐</option>
-    <option value="👾">👾</option>
-  </select><br>
-  <textarea id="postBg" placeholder="Optional background color or gradient"></textarea><br>
+  <input type="text" id="commentLock" placeholder="Comment to unlock link (optional)"><br>
+  <input type="text" id="socialLinks" placeholder="Optional social links (comma separated)"><br>
+  <input type="color" id="textColor" value="#d4af37"> Text Color<br>
+  <input type="color" id="bgColor" value="#333333"> Background Color<br>
+  <select id="emojiIcon"><option value="💀">💀</option><option value="🔥">🔥</option><option value="⚡">⚡</option><option value="⭐">⭐</option></select>
   <button onclick="postAdminLink()">Post</button>
+
+  <h3>Post Preview</h3>
+  <div id="postPreview" class="postPreview"></div>
+
+  <h3>Saved Posts</h3>
+  <div id="savedPosts"></div>
 </div>
 
 <script>
-// Members system
-let currentUser = localStorage.getItem("currentUser")||"";
-const admins = ["Ignacio","Don"];
+const admins = ["Ignacio Chamboko","Don Kyono"];
 const adminPass = "god+word";
-let attemptCount = 0;
+let currentAdmin = "";
 
-window.onload = function(){
-  if(currentUser){showMessage(`Welcome back ${currentUser} 😇`);}
-}
-
-function createAccount(){
-  let username=document.getElementById("username").value.trim();
-  let email=document.getElementById("email").value.trim();
-  let password=document.getElementById("password").value.trim();
-  if(!username||!email||!password){showMessage("Fill all fields!");return;}
-  let users=JSON.parse(localStorage.getItem("users")||"[]");
-  if(users.find(u=>u.username===username||u.email===email)){showMessage("Username or Email exists!");return;}
-  users.push({username,email,password});
-  localStorage.setItem("users",JSON.stringify(users));
-  localStorage.setItem("currentUser",username);
-  showMessage("Account ready! Redirecting...");
-  setTimeout(()=>window.location.href="homepage.html",2000);
-}
-
-function login(){
-  let username=document.getElementById("username").value.trim();
-  let password=document.getElementById("password").value.trim();
-  let users=JSON.parse(localStorage.getItem("users")||"[]");
-  let user=users.find(u=>u.username===username&&u.password===password);
-  if(user){localStorage.setItem("currentUser",username);showMessage("Login success! Redirecting...");setTimeout(()=>window.location.href="homepage.html",2000);}
-  else{attemptCount++;if(attemptCount==1)showMessage("No No please leave or create an account 😤");else showMessage("😤😠 I SAID CREATE AN ACCOUNT OR FUCK OFF");}
-}
-
-function showMessage(msg){document.getElementById("message").innerHTML=msg;}
-
-// Admin login
 function adminLogin(){
-  let name=document.getElementById("adminName").value.trim();
-  let pass=document.getElementById("adminPassInput").value.trim();
-  let msgDiv=document.getElementById("adminMsg");
-  if(admins.includes(name)&&pass===adminPass){
-    msgDiv.innerHTML=`💻 WELCOME ADMIN ${name.toUpperCase()} 💻`;
-    document.getElementById("postPanel").classList.remove("hidden");
-  } else {msgDiv.innerHTML="❌ WRONG ADMIN NAME OR PASSWORD ❌"; msgDiv.style.color="red";}
+  let name = document.getElementById("adminName").value.trim();
+  let pass = document.getElementById("adminPassInput").value.trim();
+  let msgDiv = document.getElementById("adminMsg");
+  if(admins.includes(name) && pass===adminPass){
+    currentAdmin = name;
+    msgDiv.innerHTML="";
+    document.getElementById("loginDiv").classList.add("hidden");
+    document.getElementById("adminPanel").classList.remove("hidden");
+    document.getElementById("adminWelcome").innerText = `💻 WELCOME ADMIN ${name.toUpperCase()} 💻`;
+    loadPosts();
+  } else {
+    msgDiv.innerHTML="❌ WRONG NAME OR PASSWORD ❌";
+    msgDiv.style.color="red";
+  }
 }
 
-// Admin post
 function postAdminLink(){
-  let title=document.getElementById("postTitle").value.trim();
-  let url=document.getElementById("postLink").value.trim();
-  let target=document.getElementById("targetPage").value;
-  let color=document.getElementById("linkColor").value;
-  let icon=document.getElementById("linkIcon").value;
-  let comment=document.getElementById("commentLock").value.trim();
-  let bg=document.getElementById("postBg").value.trim();
-  if(!title||!url){alert("Fill all fields!");return;}
-  let posts=JSON.parse(localStorage.getItem(target)||"[]");
-  posts.unshift({title,url,user:currentUser,color,icon,comment,bg});
+  let title = document.getElementById("postTitle").value.trim();
+  let desc = document.getElementById("postDesc").value.trim();
+  let url = document.getElementById("postLink").value.trim();
+  let target = document.getElementById("targetPage").value;
+  let comment = document.getElementById("commentLock").value.trim();
+  let social = document.getElementById("socialLinks").value.trim();
+  let textColor = document.getElementById("textColor").value;
+  let bgColor = document.getElementById("bgColor").value;
+  let emoji = document.getElementById("emojiIcon").value;
+
+  if(!title || !url){ alert("Title and link required!"); return; }
+
+  let posts = JSON.parse(localStorage.getItem(target)||"[]");
+  posts.unshift({
+    title,desc,url,admin:currentAdmin,comment,social,textColor,bgColor,emoji
+  });
   localStorage.setItem(target,JSON.stringify(posts));
-  alert(`Post added to ${target}!`);
+  alert(`Post added to ${target} successfully!`);
   document.getElementById("postTitle").value='';
+  document.getElementById("postDesc").value='';
   document.getElementById("postLink").value='';
   document.getElementById("commentLock").value='';
-  document.getElementById("postBg").value='';
+  document.getElementById("socialLinks").
+    .value='';
+  updatePreview();
+  loadPosts();
 }
+
+// Update live preview
+function updatePreview(){
+  let title = document.getElementById("postTitle").value.trim() || "Post Title";
+  let desc = document.getElementById("postDesc").value.trim() || "Description here...";
+  let url = document.getElementById("postLink").value.trim() || "#";
+  let comment = document.getElementById("commentLock").value.trim() || "";
+  let social = document.getElementById("socialLinks").value.trim();
+  let textColor = document.getElementById("textColor").value;
+  let bgColor = document.getElementById("bgColor").value;
+  let emoji = document.getElementById("emojiIcon").value;
+
+  let previewHTML = `<div style="color:${textColor};background:${bgColor};padding:10px;border-radius:10px;box-shadow:0 0 10px #d4af37;margin-bottom:10px;">
+      <b>${emoji} ${title}</b><br>${desc}<br>
+      <a href="${url}" target="_blank">Download Link</a><br>`;
+  if(comment) previewHTML += `<i>Comment to unlock: "${comment}"</i><br>`;
+  if(social) previewHTML += `Social: ${social}<br>`;
+  previewHTML += `Posted by ${currentAdmin}</div>`;
+  document.getElementById("postPreview").innerHTML = previewHTML;
+}
+
+// Load existing posts from localStorage
+function loadPosts(){
+  let savedDiv = document.getElementById("savedPosts");
+  savedDiv.innerHTML = '';
+  ["courses.html","audiobooks.html","freebooks.html"].forEach(page=>{
+    let posts = JSON.parse(localStorage.getItem(page)||"[]");
+    if(posts.length){
+      posts.forEach(p=>{
+        let div = document.createElement("div");
+        div.className="postPreview";
+        div.style.color=p.textColor;
+        div.style.background=p.bgColor;
+        div.innerHTML = `<b>${p.emoji} ${p.title}</b><br>${p.desc}<br>
+                         <a href="${p.url}" target="_blank">Download Link</a><br>
+                         ${p.comment ? `<i>Comment to unlock: "${p.comment}"</i><br>` : ""}
+                         ${p.social ? `Social: ${p.social}<br>` : ""}
+                         Posted by ${p.admin}`;
+        savedDiv.appendChild(div);
+      });
+    }
+  });
+}
+
+// Update preview live when typing
+["postTitle","postDesc","postLink","commentLock","socialLinks","textColor","bgColor","emojiIcon"].forEach(id=>{
+  document.getElementById(id).addEventListener("input",updatePreview);
+});
 </script>
 </body>
 </html>
