@@ -2,166 +2,180 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>💀 MEMBERS ONLY GATE 💀</title>
+<title>💀 MEMBERS ONLY PORTAL 💀</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
   body {
-    margin:0;
-    padding:0;
+    margin:0; padding:0;
     background:#1a1a1a;
     color:#d4af37; /* gold */
-    font-family: 'Courier New', monospace;
-    text-align:center;
-    overflow-x:hidden;
+    font-family:'Courier New', monospace;
+    overflow:hidden;
   }
 
-  /* Dancing stick skeleton animation */
+  /* Edge Circling Animation */
+  @keyframes edgeSpin {
+    0% { transform: rotate(0deg);}
+    100% { transform: rotate(360deg);}
+  }
+  #edge {
+    position:absolute;
+    top:0; left:0; right:0; bottom:0;
+    border: 10px solid grey;
+    border-radius:50%;
+    animation: edgeSpin 20s linear infinite;
+    pointer-events:none;
+    box-sizing:border-box;
+  }
+
+  /* Skeleton dancing */
   #skeleton {
-    position: absolute;
-    bottom:0;
+    width:150px;
+    position:absolute;
+    bottom:10%;
     left:50%;
-    transform: translateX(-50%);
-    width:200px;
-    animation: dance 2s infinite;
+    transform:translateX(-50%);
+    animation: dance 1s infinite alternate;
   }
-
   @keyframes dance {
-    0% { transform: translateX(-50%) translateY(0) rotate(0deg); }
-    25% { transform: translateX(-50%) translateY(-15px) rotate(-5deg); }
-    50% { transform: translateX(-50%) translateY(0) rotate(0deg); }
-    75% { transform: translateX(-50%) translateY(-15px) rotate(5deg); }
-    100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+    0%{transform:translateX(-50%) rotate(-5deg);}
+    50%{transform:translateX(-50%) rotate(5deg) translateY(-5px);}
+    100%{transform:translateX(-50%) rotate(-5deg);}
   }
 
-  h1 {
-    text-shadow: 0 0 5px #d4af37, 0 0 10px #b0b0b0;
-    margin-top:50px;
-    font-size:2.5em;
-  }
-
+  /* Forms */
   .box {
-    border:2px solid #b0b0b0;
-    padding:20px;
+    background: rgba(20,20,20,0.8);
+    border:2px solid #d4af37;
     border-radius:10px;
-    margin:20px auto;
-    display:inline-block;
-    background: rgba(50,50,50,0.5);
-    animation: glow 3s infinite alternate;
+    padding:20px;
+    max-width:350px;
+    margin:15vh auto;
+    text-align:center;
+    box-shadow:0 0 20px #d4af37;
   }
-
-  @keyframes glow {
-    0% { box-shadow: 0 0 10px #d4af37; }
-    50% { box-shadow: 0 0 20px #b0b0b0; }
-    100% { box-shadow: 0 0 10px #d4af37; }
-  }
-
   input, button {
+    width:90%;
     padding:10px;
-    margin:10px;
+    margin:8px 0;
     font-size:16px;
-    background:#2c2c2c;
-    color:#d4af37;
     border:1px solid #d4af37;
     border-radius:5px;
+    background:#333;
+    color:#d4af37;
   }
   button {
     cursor:pointer;
     background:#d4af37;
     color:#1a1a1a;
     font-weight:bold;
+    transition:0.3s;
   }
-  .hidden { display:none; }
+  button:hover{background:#b58f1f; color:#fff;}
+  h1,h2{margin:5px;}
+
+  /* Messages */
+  #msg{font-size:18px; margin:10px;}
+  #msg.emoji{font-size:32px; display:block;}
+  /* Loading bar */
+  #loader {
+    width:80%; height:20px;
+    border:2px solid red;
+    margin:20px auto;
+    position:relative;
+    display:none;
+  }
+  #loaderbar {
+    height:100%;
+    width:0;
+    background:red;
+  }
 </style>
 </head>
 <body>
 
-<h1>💀 CREATE OR LOGIN 💀</h1>
+<div id="edge"></div>
+
 <img id="skeleton" src="https://i.ebayimg.com/images/g/LHwAAOSwb9xnH64J/s-l1600.jpg" alt="Skeleton">
 
-<div id="authDiv" class="box">
-  <h2>Login</h2>
-  <input type="text" id="loginUser" placeholder="Username"><br>
-  <input type="password" id="loginPass" placeholder="Password"><br>
-  <button onclick="login()">Login</button>
-  <hr>
-  <h2>Create Account</h2>
-  <input type="text" id="signupUser" placeholder="Username"><br>
-  <input type="text" id="signupSurname" placeholder="Surname"><br>
-  <input type="email" id="signupEmail" placeholder="Email"><br>
-  <input type="password" id="signupPass" placeholder="Password"><br>
-  <button onclick="signup()">Create Account</button>
+<div class="box" id="authBox">
+  <h1>💀 MEMBERS ONLY 💀</h1>
+  <div id="msg">Create or Login</div>
+
+  <input type="text" id="user" placeholder="Username"><br>
+  <input type="email" id="email" placeholder="Email (for new accounts)"><br>
+  <input type="password" id="pass" placeholder="Password"><br>
+  <button onclick="loginSignup()">Enter</button>
 </div>
 
-<div id="message" class="box hidden"></div>
+<div id="loader">
+  <div id="loaderbar"></div>
+</div>
 
 <script>
-  // Initialize localStorage users DB if empty
-  if(!localStorage.getItem("users")){
-    localStorage.setItem("users", JSON.stringify([]));
+  // LocalStorage Users DB
+  if(!localStorage.getItem("users")){localStorage.setItem("users",JSON.stringify([]));}
+  let attempts=0;
+
+  // Auto-login if already
+  let cur = localStorage.getItem("currentUser");
+  if(cur){
+    showLoadingAndRedirect();
   }
 
-  // Auto-login if already has account
-  window.onload = function(){
-    const currentUser = localStorage.getItem("currentUser");
-    if(currentUser){
-      document.getElementById("authDiv").classList.add("hidden");
-      showMessage("Welcome back! Redirecting to homepage...", true);
-      setTimeout(()=>window.location.href="homepage.html",2500);
+  function loginSignup(){
+    let u=document.getElementById("user").value.trim();
+    let e=document.getElementById("email").value.trim();
+    let p=document.getElementById("pass").value.trim();
+    let users=JSON.parse(localStorage.getItem("users"));
+
+    if(!u || !p){ showMsg("😤 Fill all fields!"); return; }
+
+    let existing=users.find(x=>x.username===u && x.password===p);
+    if(existing){ 
+      localStorage.setItem("currentUser",u);
+      showMsg("✅ Welcome back! Redirecting...");
+      showLoadingAndRedirect();
+    } else {
+      let duplicateUser = users.find(x=>x.username===u);
+      if(duplicateUser){
+        attempts++;
+        if(attempts==1) showMsg("😡 No No please leave or create an account");
+        if(attempts>=2) showMsg("😤😠 I SAID CREATE AN ACCOUNT OR FUCK OFF");
+        return;
+      }
+      // Create new account
+      users.push({username:u,email:e,password:p});
+      localStorage.setItem("users",JSON.stringify(users));
+      localStorage.setItem("currentUser",u);
+      showMsg("🎉 Your account is ready! You will be processed to the homepage, enjoy ✋😇");
+      showLoadingAndRedirect();
     }
   }
 
-  function login(){
-    let username = document.getElementById("loginUser").value.trim();
-    let password = document.getElementById("loginPass").value.trim();
-    let users = JSON.parse(localStorage.getItem("users"));
-    const user = users.find(u => u.username===username && u.password===password);
-    if(user){
-      localStorage.setItem("currentUser", username);
-      showMessage("Login successful! Redirecting to homepage...", true);
-      setTimeout(()=>window.location.href="homepage.html",2500);
-    } else showMessage("No No! Please leave or create an account ✋", false);
+  function showMsg(txt){
+    let msg=document.getElementById("msg");
+    msg.innerHTML=txt;
   }
 
-  function signup(){
-    let username = document.getElementById("signupUser").value.trim();
-    let surname = document.getElementById("signupSurname").value.trim();
-    let email = document.getElementById("signupEmail").value.trim();
-    let password = document.getElementById("signupPass").value.trim();
-    if(!username || !surname || !email || !password){
-      showMessage("Fill all fields!", false);
-      return;
-    }
+  function showLoadingAndRedirect(){
+    document.getElementById("authBox").style.display="none";
+    let loader=document.getElementById("loader");
+    let bar=document.getElementById("loaderbar");
+    loader.style.display="block";
 
-    let users = JSON.parse(localStorage.getItem("users"));
+    let emojis=["💀","😈","🔥","👾","💻","⚡","🛡️","☠️"];
+    let width=0, time=0;
 
-    // Check for duplicates
-    if(users.find(u => u.username===username)){
-      showMessage("Username already exists!", false);
-      return;
-    }
-    if(users.find(u => u.surname===surname)){
-      showMessage("Surname already exists!", false);
-      return;
-    }
-    if(users.find(u => u.email===email)){
-      showMessage("Email already exists!", false);
-      return;
-    }
-
-    // Add user
-    users.push({username,surname,email,password});
-    localStorage.setItem("users", JSON.stringify(users));
-    localStorage.setItem("currentUser", username);
-    showMessage("Your account is ready! You will be processed to the homepage ✋ Enjoy 😇", true);
-    setTimeout(()=>window.location.href="homepage.html",2500);
+    let interval=setInterval(()=>{
+      bar.style.width = width + "%";
+      document.getElementById("msg").innerHTML = emojis[Math.floor(Math.random()*emojis.length)];
+      width += 2;
+      time += 100;
+      if(width>=100){ clearInterval(interval); window.location.href="homepage.html"; }
+    },100);
   }
 
-  function showMessage(msg, success){
-    let m = document.getElementById("message");
-    m.innerHTML = msg;
-    m.classList.remove("hidden");
-    m.style.color = success ? "#d4af37" : "#b0b0b0";
-    m.style.animation = "glow 3s infinite alternate";
-  }
 </script>
 
 </body>
