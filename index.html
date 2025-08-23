@@ -8,7 +8,7 @@
   body {
     margin:0;
     padding:0;
-    background: #222;
+    background: #111;
     color: gold;
     font-family: 'Courier New', monospace;
     display: flex;
@@ -19,55 +19,57 @@
     overflow-x: hidden;
   }
   .box {
-    background: #333;
+    background: #222;
     border: 2px solid gold;
-    border-radius: 15px;
-    padding: 20px;
+    border-radius: 20px;
+    padding: 25px;
     width: 90%;
-    max-width: 400px;
+    max-width: 420px;
     text-align: center;
-    box-shadow: 0 0 20px gold;
+    box-shadow: 0 0 30px gold;
     animation: appear 1s ease-in-out;
   }
-  @keyframes appear { from {opacity:0; transform: translateY(-20px);} to {opacity:1; transform: translateY(0);} }
-
+  @keyframes appear { from {opacity:0; transform: translateY(-30px);} to {opacity:1; transform: translateY(0);} }
+  
   input, button {
-    padding:10px;
-    margin:10px 0;
+    padding:12px;
+    margin:12px 0;
     font-size:16px;
-    width: 80%;
+    width: 85%;
     border-radius: 8px;
     border: 1px solid gold;
-    background:#222;
+    background:#111;
     color: gold;
     outline:none;
+    transition:0.3s;
   }
   button {
     cursor:pointer;
     background: gold;
-    color: #222;
+    color: #111;
     font-weight: bold;
     transition: all 0.3s;
   }
-  button:hover { transform: scale(1.05); }
+  button:hover { transform: scale(1.08); background:#fff; color:#111; }
 
   #message {
     font-size: 1.2em;
-    margin-top: 10px;
-    min-height: 40px;
+    margin-top: 12px;
+    min-height: 45px;
+    animation: shake 0.3s;
   }
 
   #skeleton {
-    width:100px;
+    width:120px;
     animation: dance 1s infinite;
-    margin-bottom:20px;
+    margin-bottom:25px;
   }
   @keyframes dance {
-    0%{transform:rotate(-15deg);}
-    25%{transform:rotate(15deg);}
+    0%{transform:rotate(-20deg);}
+    25%{transform:rotate(20deg);}
     50%{transform:rotate(-15deg);}
     75%{transform:rotate(15deg);}
-    100%{transform:rotate(-15deg);}
+    100%{transform:rotate(-20deg);}
   }
 
   #loadingDiv {
@@ -77,12 +79,12 @@
     justify-content: center;
   }
   #loadingBar {
-    width: 80%;
-    height: 20px;
-    border:2px solid red;
-    border-radius: 10px;
+    width: 85%;
+    height: 22px;
+    border:3px solid red;
+    border-radius: 12px;
     overflow:hidden;
-    margin-top:20px;
+    margin-top:25px;
   }
   #progress {
     width:0%;
@@ -91,9 +93,25 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:16px;
+    font-size:18px;
     color:#fff;
     font-weight:bold;
+    transition:0.2s;
+  }
+
+  /* Additional forum style animations */
+  @keyframes pulseGlow {
+    0%,100%{box-shadow:0 0 10px gold;}
+    50%{box-shadow:0 0 25px #fff;}
+  }
+  .forumPulse {
+    animation: pulseGlow 2s infinite alternate;
+  }
+
+  @keyframes shake{
+    0%,100%{transform:translateX(0);}
+    25%{transform:translateX(-5px);}
+    75%{transform:translateX(5px);}
   }
 </style>
 </head>
@@ -101,8 +119,8 @@
 
 <img id="skeleton" src="https://i.ebayimg.com/images/g/LHwAAOSwb9xnH64J/s-l1600.jpg" alt="Dancing Skeleton">
 
-<div id="authDiv" class="box">
-  <h2>Create Account / Login</h2>
+<div id="authDiv" class="box forumPulse">
+  <h2>💀 CREATE ACCOUNT / LOGIN 💀</h2>
   <input type="text" id="username" placeholder="Username"><br>
   <input type="email" id="email" placeholder="Email"><br>
   <input type="password" id="password" placeholder="Password"><br>
@@ -111,83 +129,83 @@
   <div id="message"></div>
 </div>
 
-<div id="loadingDiv" class="box">
-  <div>Processing...</div>
+<div id="loadingDiv" class="box forumPulse">
+  <div>Processing your entry to the forum...</div>
   <div id="loadingBar"><div id="progress">💻</div></div>
 </div>
 
 <script>
-  if(!localStorage.getItem("users")) localStorage.setItem("users", JSON.stringify([]));
-  let attemptCount = 0;
+if(!localStorage.getItem("users")) localStorage.setItem("users", JSON.stringify([]));
+let attemptCount = 0;
 
-  // Auto-login if already has account
-  window.onload = function(){
-    let currentUser = localStorage.getItem("currentUser");
-    if(currentUser){
-      showLoading(currentUser);
-    }
+// Auto-login
+window.onload = function(){
+  let currentUser = localStorage.getItem("currentUser");
+  if(currentUser){
+    showLoading(currentUser);
   }
+}
 
-  function createAccount(){
-    let username = document.getElementById("username").value.trim();
-    let email = document.getElementById("email").value.trim();
-    let password = document.getElementById("password").value.trim();
-    if(!username || !email || !password){ showMessage("Fill all fields!"); return; }
+function createAccount(){
+  let username = document.getElementById("username").value.trim();
+  let email = document.getElementById("email").value.trim();
+  let password = document.getElementById("password").value.trim();
+  if(!username || !email || !password){ showMessage("Fill all fields!"); return; }
 
-    let users = JSON.parse(localStorage.getItem("users"));
-    if(users.find(u => u.username===username || u.email===email)){
-      showMessage("Username or Email already exists!");
-      return;
-    }
-    users.push({username,email,password});
-    localStorage.setItem("users", JSON.stringify(users));
+  let users = JSON.parse(localStorage.getItem("users"));
+  if(users.find(u => u.username===username || u.email===email)){
+    showMessage("Username or Email already exists!");
+    return;
+  }
+  users.push({username,email,password});
+  localStorage.setItem("users", JSON.stringify(users));
+  localStorage.setItem("currentUser", username);
+  showMessage("✅ Your account is ready! Proceeding to forum...", "success");
+  showLoading(username);
+}
+
+function login(){
+  let username = document.getElementById("username").value.trim();
+  let password = document.getElementById("password").value.trim();
+  let users = JSON.parse(localStorage.getItem("users"));
+  let user = users.find(u => u.username===username && u.password===password);
+  if(user){
     localStorage.setItem("currentUser", username);
-    showMessage("Your account is ready! You will be processed to homepage ✋😇", "success");
+    showMessage("Welcome back! Redirecting...", "success");
     showLoading(username);
+  } else {
+    attemptCount++;
+    if(attemptCount===1) showMessage("❌ No No please leave or create an account 😤");
+    else showMessage("😡 I SAID CREATE AN ACCOUNT OR FUCK OFF 😠");
   }
+}
 
-  function login(){
-    let username = document.getElementById("username").value.trim();
-    let password = document.getElementById("password").value.trim();
-    let users = JSON.parse(localStorage.getItem("users"));
-    let user = users.find(u => u.username===username && u.password===password);
-    if(user){
-      localStorage.setItem("currentUser", username);
-      showMessage("Welcome back! Processing to homepage ✋😇","success");
-      showLoading(username);
+function showMessage(msg,type="error"){
+  const m = document.getElementById("message");
+  m.innerHTML = msg;
+  if(type==="success") m.style.color = "gold";
+  else m.style.color = "red";
+}
+
+function showLoading(user){
+  document.getElementById("authDiv").style.display="none";
+  document.getElementById("loadingDiv").style.display="flex";
+  let progress = document.getElementById("progress");
+  let width = 0;
+  let emojis = ["💻","🛡️","⚡","🔥","💀","😈","🤖","👾"];
+  let emojiIndex = 0;
+  let interval = setInterval(()=>{
+    if(width>=100){
+      clearInterval(interval);
+      window.location.href="homepage.html";
     } else {
-      attemptCount++;
-      if(attemptCount===1) showMessage("No No please leave or create an account 😤");
-      else showMessage("😤😠 I SAID CREATE AN ACCOUNT OR FUCK OFF 😡");
+      width += 2;
+      progress.style.width = width + "%";
+      progress.innerHTML = emojis[emojiIndex];
+      emojiIndex = (emojiIndex+1)%emojis.length;
     }
-  }
-
-  function showMessage(msg,type="error"){
-    const m = document.getElementById("message");
-    m.innerHTML = msg;
-    if(type==="success") m.style.color = "gold";
-    else m.style.color = "red";
-  }
-
-  function showLoading(user){
-    document.getElementById("authDiv").style.display="none";
-    document.getElementById("loadingDiv").style.display="flex";
-    let progress = document.getElementById("progress");
-    let width = 0;
-    let emojis = ["💻","🛡️","⚡","🔥","💀","😈","🤖","👾"];
-    let emojiIndex = 0;
-    let interval = setInterval(()=>{
-      if(width>=100){
-        clearInterval(interval);
-        window.location.href="homepage.html";
-      } else {
-        width += 2;
-        progress.style.width = width + "%";
-        progress.innerHTML = emojis[emojiIndex];
-        emojiIndex = (emojiIndex+1)%emojis.length;
-      }
-    },100);
-  }
+  },100);
+}
 </script>
 
 </body>
