@@ -7,79 +7,91 @@
   body {
     margin:0;
     padding:0;
-    background:black;
-    color: lime;
+    background:#1a1a1a;
+    color:#d4af37; /* gold */
     font-family: 'Courier New', monospace;
     text-align:center;
     overflow-x:hidden;
   }
 
-  /* Skeleton animation */
+  /* Dancing stick skeleton animation */
   #skeleton {
     position: absolute;
     bottom:0;
     left:50%;
     transform: translateX(-50%);
     width:200px;
-    animation: float 3s ease-in-out infinite;
-    filter: drop-shadow(0 0 20px lime);
+    animation: dance 2s infinite;
   }
 
-  @keyframes float {
+  @keyframes dance {
     0% { transform: translateX(-50%) translateY(0) rotate(0deg); }
-    50% { transform: translateX(-50%) translateY(-20px) rotate(-5deg); }
+    25% { transform: translateX(-50%) translateY(-15px) rotate(-5deg); }
+    50% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+    75% { transform: translateX(-50%) translateY(-15px) rotate(5deg); }
     100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
   }
 
   h1 {
-    text-shadow: 0 0 10px lime, 0 0 20px lime, 0 0 30px lime;
+    text-shadow: 0 0 5px #d4af37, 0 0 10px #b0b0b0;
     margin-top:50px;
+    font-size:2.5em;
   }
 
-  .hidden { display:none; }
-  input, button {
-    padding:10px;
-    margin:10px;
-    font-size:16px;
-    background:#111;
-    color:lime;
-    border:1px solid lime;
-  }
-  button {
-    cursor:pointer;
-    background:lime;
-    color:black;
-    font-weight:bold;
-  }
   .box {
-    border:2px solid lime;
+    border:2px solid #b0b0b0;
     padding:20px;
     border-radius:10px;
     margin:20px auto;
     display:inline-block;
-    backdrop-filter: blur(5px);
+    background: rgba(50,50,50,0.5);
+    animation: glow 3s infinite alternate;
   }
+
+  @keyframes glow {
+    0% { box-shadow: 0 0 10px #d4af37; }
+    50% { box-shadow: 0 0 20px #b0b0b0; }
+    100% { box-shadow: 0 0 10px #d4af37; }
+  }
+
+  input, button {
+    padding:10px;
+    margin:10px;
+    font-size:16px;
+    background:#2c2c2c;
+    color:#d4af37;
+    border:1px solid #d4af37;
+    border-radius:5px;
+  }
+  button {
+    cursor:pointer;
+    background:#d4af37;
+    color:#1a1a1a;
+    font-weight:bold;
+  }
+  .hidden { display:none; }
 </style>
 </head>
 <body>
 
-<h1>💀 MEMBERS ONLY GATE 💀</h1>
+<h1>💀 CREATE OR LOGIN 💀</h1>
 <img id="skeleton" src="https://i.ebayimg.com/images/g/LHwAAOSwb9xnH64J/s-l1600.jpg" alt="Skeleton">
 
-<!-- Login / Sign-Up Forms -->
 <div id="authDiv" class="box">
   <h2>Login</h2>
   <input type="text" id="loginUser" placeholder="Username"><br>
   <input type="password" id="loginPass" placeholder="Password"><br>
   <button onclick="login()">Login</button>
   <hr>
-  <h2>Sign Up</h2>
+  <h2>Create Account</h2>
   <input type="text" id="signupUser" placeholder="Username"><br>
   <input type="text" id="signupSurname" placeholder="Surname"><br>
   <input type="email" id="signupEmail" placeholder="Email"><br>
   <input type="password" id="signupPass" placeholder="Password"><br>
   <button onclick="signup()">Create Account</button>
 </div>
+
+<div id="message" class="box hidden"></div>
 
 <script>
   // Initialize localStorage users DB if empty
@@ -91,7 +103,9 @@
   window.onload = function(){
     const currentUser = localStorage.getItem("currentUser");
     if(currentUser){
-      window.location.href = "homepage.html";
+      document.getElementById("authDiv").classList.add("hidden");
+      showMessage("Welcome back! Redirecting to homepage...", true);
+      setTimeout(()=>window.location.href="homepage.html",2500);
     }
   }
 
@@ -102,8 +116,9 @@
     const user = users.find(u => u.username===username && u.password===password);
     if(user){
       localStorage.setItem("currentUser", username);
-      window.location.href = "homepage.html";
-    } else alert("Wrong username or password!");
+      showMessage("Login successful! Redirecting to homepage...", true);
+      setTimeout(()=>window.location.href="homepage.html",2500);
+    } else showMessage("No No! Please leave or create an account ✋", false);
   }
 
   function signup(){
@@ -112,7 +127,7 @@
     let email = document.getElementById("signupEmail").value.trim();
     let password = document.getElementById("signupPass").value.trim();
     if(!username || !surname || !email || !password){
-      alert("Fill all fields!");
+      showMessage("Fill all fields!", false);
       return;
     }
 
@@ -120,15 +135,15 @@
 
     // Check for duplicates
     if(users.find(u => u.username===username)){
-      alert("Username already exists!");
+      showMessage("Username already exists!", false);
       return;
     }
     if(users.find(u => u.surname===surname)){
-      alert("Surname already exists!");
+      showMessage("Surname already exists!", false);
       return;
     }
     if(users.find(u => u.email===email)){
-      alert("Email already exists!");
+      showMessage("Email already exists!", false);
       return;
     }
 
@@ -136,8 +151,16 @@
     users.push({username,surname,email,password});
     localStorage.setItem("users", JSON.stringify(users));
     localStorage.setItem("currentUser", username);
-    alert("Account created! Redirecting...");
-    window.location.href = "homepage.html";
+    showMessage("Your account is ready! You will be processed to the homepage ✋ Enjoy 😇", true);
+    setTimeout(()=>window.location.href="homepage.html",2500);
+  }
+
+  function showMessage(msg, success){
+    let m = document.getElementById("message");
+    m.innerHTML = msg;
+    m.classList.remove("hidden");
+    m.style.color = success ? "#d4af37" : "#b0b0b0";
+    m.style.animation = "glow 3s infinite alternate";
   }
 </script>
 
