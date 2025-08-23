@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>⚡ ADMINS PORTAL ⚡</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  margin:0;
+  padding:0;
+  background:#1a1a1a;
+  font-family:'Courier New', monospace;
+  color:#d4af37; /* gold */
+  overflow-x:hidden;
+}
+h1,h2{margin:10px;text-align:center;}
+
+#welcome{
+  font-size:2em;
+  text-align:center;
+  margin-top:20px;
+  animation: glow 2s infinite alternate;
+  color:#d4af37;
+}
+@keyframes glow{
+  0%{text-shadow:0 0 5px #b58f1f;}
+  50%{text-shadow:0 0 20px #c0c0c0;}
+  100%{text-shadow:0 0 40px #d4af37;}
+}
+
+.box{
+  background: rgba(30,30,30,0.9);
+  border:2px solid #c0c0c0; /* silver */
+  border-radius:10px;
+  padding:20px;
+  max-width:400px;
+  margin:20px auto;
+  box-shadow:0 0 15px #d4af37;
+}
+
+input, select, button{
+  width:90%;
+  padding:10px;
+  margin:8px 0;
+  font-size:16px;
+  border-radius:5px;
+  border:1px solid #d4af37;
+  background:#333;
+  color:#d4af37;
+}
+button{
+  font-weight:bold;
+  cursor:pointer;
+  background:#d4af37;
+  color:#1a1a1a;
+  transition:0.3s;
+}
+button:hover{background:#b58f1f;color:#fff;}
+.hidden{display:none;}
+</style>
+</head>
+<body>
+
+<div id="welcome">💀 WELCOME DON & IGNACIO 💀</div>
+
+<div class="box" id="verifyDiv">
+  <h2>Admin Verification</h2>
+  <button onclick="verifyAdmin()">Enter Secret Code</button>
+</div>
+
+<div class="box hidden" id="postPanel">
+  <h2>Post a Link</h2>
+  <input type="text" id="postTitle" placeholder="Title"><br>
+  <input type="text" id="postLink" placeholder="https://example.com/file.zip"><br>
+  <select id="targetPage">
+    <option value="courses.html">Courses</option>
+    <option value="audiobooks.html">Audiobooks</option>
+    <option value="freebooks.html">Free Books</option>
+  </select><br>
+  <select id="linkColor">
+    <option value="#d4af37">Gold</option>
+    <option value="#c0c0c0">Silver</option>
+    <option value="#b58f1f">Dark Gold</option>
+  </select>
+  <select id="linkIcon">
+    <option value="💀">💀</option>
+    <option value="🔥">🔥</option>
+    <option value="⚡">⚡</option>
+    <option value="⭐">⭐</option>
+  </select><br>
+  <button onclick="postAdminLink()">Post</button>
+</div>
+
+<script>
+const admins = ["Ignacio","Don"];
+const adminPass = "0000&111"; // secret code
+let currentUser = localStorage.getItem("currentUser") || "";
+
+function verifyAdmin(){
+  let code = prompt("Enter Admin Secret Code:");
+  if(code===adminPass && admins.includes(currentUser)){
+    document.getElementById("verifyDiv").classList.add("hidden");
+    document.getElementById("postPanel").classList.remove("hidden");
+    alert("Access Granted! You can now post links.");
+  } else {
+    alert("Wrong code or you are not an admin!");
+  }
+}
+
+// Admin posts link
+function postAdminLink(){
+  let title = document.getElementById("postTitle").value.trim();
+  let url = document.getElementById("postLink").value.trim();
+  let target = document.getElementById("targetPage").value;
+  let color = document.getElementById("linkColor").value;
+  let icon = document.getElementById("linkIcon").value;
+
+  if(!title || !url){ alert("Fill all fields!"); return; }
+
+  let posts = JSON.parse(localStorage.getItem(target) || "[]");
+  posts.unshift({title,url,user:currentUser,color,icon});
+  localStorage.setItem(target, JSON.stringify(posts));
+
+  document.getElementById("postTitle").value='';
+  document.getElementById("postLink").value='';
+  alert("Post added to "+target+" successfully!");
+}
+</script>
+
+</body>
+</html>
