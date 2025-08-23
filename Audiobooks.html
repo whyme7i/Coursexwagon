@@ -2,154 +2,35 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Coursexwagon Audiobooks | The Vault of Mastery</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@700;900&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-<meta name="description" content="Find the safest free download links to your favorite Audiobooks">
-<meta name="keywords" content="Audiobooks, free download links">
-<meta name="author" content="Coursexwagon">
-<meta name="robots" content="index, follow">
-
-<link href="img/favicon.png" rel="shortcut icon">
-
 <style>
-* {margin:0; padding:0; box-sizing:border-box;}
-body {
-    font-family:'Courier Prime', monospace;
-    background:#0a0a0a;
-    color:#f0d084;
-    min-height:100vh;
-    overflow-x:hidden;
-    letter-spacing:0.04em;
-}
-header {
-    position:fixed; top:0; left:0; right:0;
-    height:60px;
-    background:#12100cdd;
-    backdrop-filter:blur(6px);
-    display:flex; justify-content:space-between; align-items:center;
-    padding:0 24px;
-    box-shadow: inset 0 -2px 4px #3b2c10cc;
-    z-index:1100;
-}
-header .logo {
-    font-weight:900; font-size:1.7rem;
-    color:#f0d084;
-    text-transform:uppercase;
-    text-shadow:1px 1px 2px #2f1f09;
-    cursor:pointer;
-}
-#sidebarToggle {
-    cursor:pointer;
-    background:transparent;
-    border:none;
-    color:#f0d084;
-    font-size:2.5rem;
-    filter:drop-shadow(0 0 1px #2f1f09);
-}
-#sidebarToggle:hover {color:#d4b162; filter:drop-shadow(0 0 3px #d4b162);}
-#sidebar {
-    position:fixed; top:0; left:-280px;
-    width:280px; height:100vh;
-    background:#1a180fdd;
-    padding:80px 24px 24px;
-    display:flex; flex-direction:column; gap:20px;
-    font-weight:700; color:#f0d084;
-    transition:left 0.3s ease; z-index:1150;
-    text-transform:uppercase; letter-spacing:0.1em; border-radius:0 8px 8px 0;
-}
-#sidebar.open {left:0;}
-#sidebar nav button {
-    background:#2e2b23;
-    border:2px solid #f0d084;
-    color:#f0d084;
-    font-size:1.25rem;
-    padding:12px 16px;
-    cursor:pointer;
-    border-radius:6px;
-    text-transform:uppercase;
-    font-weight:700;
-    box-shadow:0 0 8px #f0d08444 inset;
-    transition:0.3s ease;
-    width:100%;
-    text-align:left;
-}
-#sidebar nav button:hover {
-    background-color:#f0d084;
-    color:#1c1a11;
-    box-shadow:0 0 12px #d4b162;
-}
-#overlay {position:fixed; inset:0; background:rgba(0,0,0,0.9); opacity:0; visibility:hidden; transition:0.25s ease; z-index:1140;}
-#overlay.active {opacity:1; visibility:visible;}
-main {
-    margin-top:80px; 
-    max-width:960px; 
-    margin-left:auto; margin-right:auto; 
-    padding:20px 24px;
-    min-height:80vh; /* ensures footer is pushed down */
-}
-header + main {padding-top:20px;}
-footer {
-    background:#111009; 
-    color:#3f2b0dcc; 
-    text-align:center; 
-    padding:20px 16px; 
-    font-size:0.85rem; 
-    border-top:1px solid #f0d084; 
-    margin-top:80px;
-}
-footer a {color:#f0d084; text-decoration:none; font-weight:700;}
-footer a:hover {color:#d4b162;}
-/* Google CSE Customization */
-.gsc-control-cse, .gsc-control-cse .gsc-table-result {background-color:#0a0a0a !important; border:none !important; color:#f0d084 !important; font-family:'Courier Prime', monospace !important;}
-.gsc-input-box, .gsc-input {background-color:#1a180f !important; border:1px solid #f0d084 !important; color:#f0d084 !important; font-weight:700;}
-.gsc-search-button {background-color:#f0d084 !important; border:none !important; color:#1c1a11 !important; font-weight:700;}
-.gsc-results-wrapper-visible {background:#0a0a0a !important; color:#f0d084 !important;}
-.gsc-webResult.gsc-result a.gs-title {color:#f0d084 !important;}
-.gsc-webResult.gsc-result a.gs-title:hover {color:#d4b162 !important;}
-.gsc-cursor-page {color:#f0d084 !important;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Courier Prime', monospace;background:#0a0a0a;color:#f0d084;min-height:100vh;overflow-x:hidden;padding-top:80px;letter-spacing:0.04em;}
+header{position:fixed;top:0;left:0;right:0;height:60px;background:#12100cdd;backdrop-filter:blur(6px);display:flex;justify-content:space-between;align-items:center;padding:0 24px;box-shadow: inset 0 -2px 4px #3b2c10cc;z-index:1100;}
+header .logo{font-weight:900;font-size:1.7rem;color:#f0d084;text-transform:uppercase;text-shadow:1px 1px 2px #2f1f09;cursor:pointer;}
+#searchInput{width:300px;max-width:80%;padding:6px 10px;background:#1a180f;color:#f0d084;border:1px solid #d4af37;border-radius:6px;font-weight:700;}
+main{max-width:960px;margin:0 auto;padding:20px 24px;display:flex;flex-direction:column;gap:15px;}
+.postCard{background:#1a180fdd;padding:15px;border-radius:12px;box-shadow:0 0 10px #444;transition:0.3s;cursor:pointer;}
+.postCard:hover{box-shadow:0 0 20px #d4af37;transform:scale(1.02);}
+.postTitle{font-size:1.3rem;font-weight:900;margin-bottom:6px;}
+.postDesc{margin-bottom:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.postAdmin{font-size:0.8rem;color:#ccc;margin-bottom:4px;}
+footer{background:#111009;color:#3f2b0dcc;text-align:center;padding:20px 16px;font-size:0.85rem;border-top:1px solid #f0d084;margin-top:40px;}
+footer a{color:#f0d084;text-decoration:none;font-weight:700;}
+footer a:hover{color:#d4b162;}
 </style>
-
-<script>
-(function() {
-  var cx = '04bb79690e2ff47f8'; // Google CSE ID
-  var gcse = document.createElement('script');
-  gcse.type='text/javascript';
-  gcse.async=true;
-  gcse.src='https://cse.google.com/cse.js?cx=' + cx;
-  var s=document.getElementsByTagName('script')[0];
-  s.parentNode.insertBefore(gcse,s);
-})();
-window.onload = function() {
-  var searchBox = document.querySelector('input.gsc-input');
-  if(searchBox) searchBox.placeholder="Search for your favourite Audiobooks";
-}
-</script>
 </head>
-
 <body>
+
 <header>
-  <div class="logo" onclick="location.href='index-audiobooks.html'">C.X</div>
-  <button id="sidebarToggle">&#9776;</button>
+  <div class="logo" onclick="location.href='index.html'">C.X</div>
+  <input type="text" id="searchInput" placeholder="Search Audiobooks...">
 </header>
 
-<div id="sidebar">
-  <nav>
-    <button data-target="index.html">Home</button>
-    <button data-target="index-audiobooks.html">Audiobooks</button>
-    <button data-target="courses.html">Courses</button>
-    <button data-target="freebooks.html">Free Books</button>
-  </nav>
-</div>
-<div id="overlay"></div>
-
-<main>
-  <gcse:search></gcse:search>
+<main id="postsContainer">
+  <!-- Posts loaded dynamically -->
 </main>
 
 <footer>
@@ -159,27 +40,42 @@ window.onload = function() {
 </footer>
 
 <script>
-const sidebarToggle = document.getElementById('sidebarToggle');
-const sidebar=document.getElementById('sidebar');
-const overlay=document.getElementById('overlay');
-const buttons=sidebar.querySelectorAll('nav button');
+const postsContainer=document.getElementById("postsContainer");
+const searchInput=document.getElementById("searchInput");
 
-sidebarToggle.addEventListener('click',()=>{
-  sidebar.classList.toggle('open');
-  overlay.classList.toggle('active');
-});
+// Load posts from localStorage
+function loadPosts(){
+  postsContainer.innerHTML="";
+  let posts=JSON.parse(localStorage.getItem("audiobooks.html")||"[]");
+  posts.forEach((p,i)=>{
+    const card=document.createElement("div");
+    card.className="postCard";
+    card.style.color=p.textColor||"#f0d084";
+    card.style.background=p.bgColor||"#1a180fdd";
+    card.innerHTML=`
+      <div class="postTitle">${p.emoji||"💀"} ${p.title}</div>
+      <div class="postDesc">${p.desc}</div>
+      <div class="postAdmin">Posted by ${p.admin}</div>
+    `;
+    card.addEventListener("click",()=>{
+      window.location.href=`thread.html?id=${p.id}`;
+    });
+    postsContainer.appendChild(card);
+  });
+}
 
-overlay.addEventListener('click',()=>{
-  sidebar.classList.remove('open');
-  overlay.classList.remove('active');
-});
-
-buttons.forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    window.location.href=btn.getAttribute('data-target');
-    sidebar.classList.remove('open'); overlay.classList.remove('active');
+// Real-time search
+searchInput.addEventListener("input",()=>{
+  let filter=searchInput.value.toLowerCase();
+  let cards=postsContainer.querySelectorAll(".postCard");
+  cards.forEach(card=>{
+    let title=card.querySelector(".postTitle").innerText.toLowerCase();
+    let desc=card.querySelector(".postDesc").innerText.toLowerCase();
+    card.style.display=(title.includes(filter)||desc.includes(filter))?"block":"none";
   });
 });
+
+window.addEventListener("load",loadPosts);
 </script>
 
 </body>
