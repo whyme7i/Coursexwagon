@@ -10,7 +10,6 @@ body{
   font-family:'Courier New', monospace;
   background:#0a0a0a;
   color:#d4af37;
-  overflow-x:hidden;
   letter-spacing:0.04em;
   min-height:100vh;
 }
@@ -22,64 +21,68 @@ header{
   font-weight:900;
   font-size:1.4rem;
   color:#d4af37;
-  letter-spacing:0.12em;
   position:fixed;
   top:0;left:0;right:0;
   z-index:1100;
 }
-#sidebarToggle{
-  position:fixed;top:18px;left:18px;
-  background:#2e2b23;border:2px solid #d4af37;border-radius:6px;
-  padding:12px 18px;cursor:pointer;font-weight:700;color:#d4af37;
-  box-shadow:0 0 15px #5a3c1a88;z-index:1150;transition:0.3s;
+#searchBar{
+  margin:120px auto 20px;
+  max-width:600px;
+  display:flex;
 }
-#sidebarToggle:hover{background:#d4af37;color:#1a1a1a;box-shadow:0 0 20px #806232aa;}
-#sidebar{
-  position:fixed;top:0;left:-280px;width:280px;height:100vh;
-  background:#1a180fdd;padding:80px 24px 24px;
-  display:flex;flex-direction:column;gap:20px;font-weight:700;color:#d4af37;
-  text-transform:uppercase;letter-spacing:0.1em;border-radius:0 8px 8px 0;
-  transition:left 0.3s ease;z-index:1140;
+#searchBar input{
+  flex:1;
+  padding:10px;
+  font-size:1rem;
+  border-radius:5px;
+  border:1px solid #d4af37;
+  background:#111;
+  color:#d4af37;
 }
-#sidebar.open{left:0;}
-#sidebar h2{margin-bottom:25px;font-weight:900;text-shadow:1px 1px 2px #2f1f09;}
-#sidebar nav a{color:#d4af37;text-decoration:none;margin:15px 0;font-size:1.1rem;padding:10px 0;display:block;transition:0.3s;}
-#sidebar nav a:hover{color:#806232;text-shadow:0 0 6px #806232bb;}
-#overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.9);opacity:0;visibility:hidden;transition:0.3s;z-index:1130;}
-#overlay.active{opacity:1;visibility:visible;}
 .container{
-  max-width:1200px;margin:100px auto 60px;padding:0 24px;
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:30px;
+  max-width:1200px;
+  margin:0 auto 200px;
+  padding:0 24px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:30px;
 }
-.course-box{background:#1a180fdd;border-radius:15px;box-shadow:0 0 15px #5a3c1a88,inset 0 0 15px #3b2c10cc;padding:20px;display:flex;flex-direction:column;align-items:center;transition:0.3s;}
-.course-box:hover{box-shadow:0 0 25px #806232cc,inset 0 0 20px #806232cc;}
-.course-box h3{color:#d4af37;font-weight:900;font-size:1.5rem;margin-bottom:15px;text-align:center;letter-spacing:0.1em;}
-#adminFeed{grid-column:1/-1;display:flex;flex-direction:column;gap:15px;margin-top:30px;}
-.post-box{background:#1a180fdd;border-left:5px solid #d4af37;padding:15px;border-radius:8px;box-shadow:0 0 10px #5a3c1a88;cursor:pointer;transition:0.3s;}
+.post-box{
+  background:#1a180fdd;
+  border-left:5px solid #d4af37;
+  padding:15px;
+  border-radius:8px;
+  box-shadow:0 0 10px #5a3c1a88;
+  cursor:pointer;
+  transition:0.3s;
+}
 .post-box:hover{box-shadow:0 0 20px #806232cc;}
 .post-box h4{margin-bottom:5px;font-weight:700;color:#d4af37;}
-.post-box a{color:#c0c0c0;text-decoration:underline;}
-footer{background:#12100cdd;color:#3b2c10cc;text-align:center;padding:18px 15px;font-size:0.85rem;border-top:1px solid #5a3c1a;margin-top:200px;font-weight:700;letter-spacing:0.06em;}
+.post-box p{margin-bottom:8px;}
+footer{
+  background:#12100cdd;
+  color:#3b2c10cc;
+  text-align:center;
+  padding:18px 15px;
+  font-size:0.85rem;
+  border-top:1px solid #5a3c1a;
+  font-weight:700;
+  letter-spacing:0.06em;
+  margin-top:200px;
+}
 footer a{color:#d4af37;text-decoration:none;margin:0 10px;}
 footer a:hover{color:#806232;}
-@media(max-width:720px){header{font-size:1.1rem;padding:15px 15px;}.container{grid-template-columns:1fr;margin-top:120px;padding:0 16px;}#sidebar{width:240px;padding-top:70px;}}
 </style>
 </head>
 <body>
 
-<button id="sidebarToggle">MENU</button>
-<div id="sidebar">
-  <h2>C.X</h2>
-  <nav>
-    <a href="index.html">\\HOME//</a>
-    <a href="audiobooks.html">/AUDIOBOOKS//</a>
-    <a href="freebooks.html">\\FREE BOOKS</a>
-  </nav>
-</div>
-<div id="overlay"></div>
 <header>
-  <span>PREMIUM COURSES </span><span class="white">WE NEVER PASS $50</span>
+  PREMIUM COURSES — VIP HACKER FORUM
 </header>
+
+<div id="searchBar">
+  <input type="text" id="searchInput" placeholder="Search threads...">
+</div>
 
 <main class="container" role="main" aria-label="Courses List">
   <div id="adminFeed">
@@ -111,21 +114,27 @@ const firebaseConfig = {
   appId: "1:1081264056319:web:99c2814d8e83571c16e9ca",
   measurementId: "G-SR53N510NN"
 };
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const sidebarToggle = document.getElementById('sidebarToggle');
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('overlay');
-sidebarToggle.addEventListener('click',()=>{sidebar.classList.toggle('open');overlay.classList.toggle('active');});
-overlay.addEventListener('click',()=>{sidebar.classList.remove('open');overlay.classList.remove('active');});
+const feed = document.getElementById('adminFeed');
+const searchInput = document.getElementById('searchInput');
+let threads = [];
 
 async function loadAdminPosts(){
-  const feed = document.getElementById('adminFeed');
   feed.innerHTML = '<h2 style="color:#d4af37;text-align:center;margin-bottom:15px;">🖤 VIP HACKER FORUM — COURSES 🖤</h2>';
   const snapshot = await getDocs(collection(db,"courses"));
+  threads = [];
   snapshot.forEach(docSnap=>{
     const p = docSnap.data();
+    threads.push(p);
+  });
+  displayThreads(threads);
+}
+
+function displayThreads(list){
+  list.forEach(p=>{
     const div = document.createElement('div');
     div.className="post-box";
     div.innerHTML = `<h4>${p.emoji?p.emoji+" ":""}${p.title}</h4>
@@ -136,18 +145,39 @@ async function loadAdminPosts(){
         <html><head><title>${p.title}</title>
         <style>body{font-family:'Courier New', monospace;background:#0a0a0a;color:#d4af37;padding:30px;}
                a{color:#c0c0c0;text-decoration:underline;font-size:1.2rem;}
-        </style></head>
+               #commentBox{margin:20px 0;} button{padding:8px 15px;cursor:pointer;border:none;border-radius:5px;background:#d4af37;color:#000;font-weight:bold;}
+               #commentBox input{padding:8px;width:80%;border-radius:5px;border:1px solid #fff;background:#111;color:#fff;}</style>
+        </head>
         <body>
           <h1>${p.emoji?p.emoji+" ":""}${p.title}</h1>
           <p>Posted by: ${p.admin}</p>
           <p>${p.desc}</p>
-          <a href="${p.url}" target="_blank">Download Link</a>
+          ${p.comment?`<div id="commentBox"><input type="text" id="userComment" placeholder="Enter comment to unlock link"><button id="unlockBtn">Unlock Link</button></div>`:""}
+          <a id="downloadLink" href="${p.url}" target="_blank" style="display:${p.comment?'none':'inline'}">Download Link</a>
+          <script>
+            const btn=document.getElementById('unlockBtn');
+            if(btn){
+              btn.onclick=function(){
+                const c=document.getElementById('userComment').value.trim();
+                if(c.toLowerCase()=== '${p.comment.toLowerCase()}'){
+                  document.getElementById('downloadLink').style.display='inline';
+                  btn.parentElement.style.display='none';
+                } else alert('Wrong comment!');
+              }
+            }
+          <\/script>
         </body></html>
       `);
     };
     feed.appendChild(div);
   });
 }
+
+searchInput.addEventListener('input',()=>{
+  const val = searchInput.value.toLowerCase();
+  displayThreads(threads.filter(t=>t.title.toLowerCase().includes(val) || (t.desc && t.desc.toLowerCase().includes(val))));
+});
+
 window.onload=loadAdminPosts;
 </script>
 </body>
