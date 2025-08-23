@@ -3,30 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>⚡ CourseXWagon Admin Panel ⚡</title>
+<title>CourseXWagon Admin Panel</title>
 <style>
 body{
   margin:0; padding:0;
   font-family: 'Courier New', monospace;
-  background:#1a1a1a; color:#d4af37;
+  background:#000; color:#fff;
 }
 h1,h2{text-align:center;}
 .container{
   max-width:600px; margin:auto; padding:20px;
 }
 input, select, button, textarea{
-  width:100%; margin:8px 0; padding:10px; border-radius:5px; border:1px solid #d4af37;
-  background:#333; color:#d4af37; font-size:16px;
+  width:100%; margin:8px 0; padding:10px; border-radius:5px; border:1px solid #fff;
+  background:#111; color:#fff; font-size:16px;
 }
-button{cursor:pointer; font-weight:bold; background:#d4af37; color:#1a1a1a; transition:0.3s;}
-button:hover{background:#b58f1f;color:#fff;}
+button{cursor:pointer; font-weight:bold; background:#fff; color:#000; transition:0.3s;}
+button:hover{background:#ccc;color:#000;}
 .postCard{
-  border:2px solid #c0c0c0; border-radius:10px; margin:10px 0; padding:10px;
-  background:#222;
+  border:1px solid #fff; border-radius:10px; margin:10px 0; padding:10px;
+  background:#111;
 }
 .hidden{display:none;}
 .loading{
-  height:5px; width:0%; background:red; margin:10px 0; animation:load 5s linear forwards;
+  height:5px; width:0%; background:#fff; margin:10px 0; animation:load 3s linear forwards;
 }
 @keyframes load{0%{width:0%;}100%{width:100%;}}
 </style>
@@ -40,7 +40,7 @@ button:hover{background:#b58f1f;color:#fff;}
     <h2>Admin Login</h2>
     <input type="text" id="adminName" placeholder="Admin Name">
     <input type="password" id="adminPass" placeholder="Password">
-    <button onclick="loginAdmin()">Login</button>
+    <button id="loginBtn">Login</button>
     <div id="loginMsg"></div>
   </div>
 
@@ -56,10 +56,8 @@ button:hover{background:#b58f1f;color:#fff;}
     </select>
     <input type="text" id="commentLock" placeholder="Comment required to unlock (optional)">
     <input type="text" id="emojiIcon" placeholder="Emoji for thread (optional)">
-    <input type="color" id="textColor" value="#d4af37">
-    <input type="color" id="bgColor" value="#222222">
     <input type="text" id="profilePic" placeholder="Profile picture URL (optional)">
-    <button onclick="postThread()">Add Thread</button>
+    <button id="postBtn">Add Thread</button>
     <div class="loading hidden" id="loadingBar"></div>
 
     <h2>Saved Threads</h2>
@@ -88,7 +86,8 @@ const admins = ["Ignacio Chamboko","Don Kyono"];
 const adminPassword = "god+word";
 let currentAdmin="";
 
-function loginAdmin(){
+// Make functions global for onclick
+window.loginAdmin = function(){
   const name = document.getElementById("adminName").value.trim();
   const pass = document.getElementById("adminPass").value;
   const msgDiv = document.getElementById("loginMsg");
@@ -103,32 +102,28 @@ function loginAdmin(){
   }
 }
 
-async function postThread(){
+window.postThread = async function(){
   const title=document.getElementById("postTitle").value.trim();
   const desc=document.getElementById("postDesc").value.trim();
   const url=document.getElementById("postLink").value.trim();
   const target=document.getElementById("targetPage").value;
   const comment=document.getElementById("commentLock").value.trim();
   const emoji=document.getElementById("emojiIcon").value.trim();
-  const textColor=document.getElementById("textColor").value;
-  const bgColor=document.getElementById("bgColor").value;
   const profilePic=document.getElementById("profilePic").value.trim();
   if(!title || !url){ alert("Title and Link required!"); return; }
   const postID='post-'+Date.now()+'-'+Math.floor(Math.random()*1000);
 
-  const postData={id:postID,title,desc,url,comment,emoji,textColor,bgColor,profilePic,admin:currentAdmin,timestamp:serverTimestamp()};
+  const postData={id:postID,title,desc,url,comment,emoji,profilePic,admin:currentAdmin,timestamp:serverTimestamp()};
 
   document.getElementById("loadingBar").classList.remove("hidden");
-
   await setDoc(doc(db,target,postID),postData);
-
   document.getElementById("loadingBar").classList.add("hidden");
   resetForm();
   loadPosts();
   alert("✅ Thread added successfully!");
 }
 
-function resetForm(){
+window.resetForm = function(){
   document.getElementById("postTitle").value='';
   document.getElementById("postDesc").value='';
   document.getElementById("postLink").value='';
@@ -137,7 +132,7 @@ function resetForm(){
   document.getElementById("profilePic").value='';
 }
 
-async function loadPosts(){
+window.loadPosts = async function(){
   const savedDiv=document.getElementById("savedPosts");
   savedDiv.innerHTML='';
   const pages=["courses","audiobooks","freebooks"];
@@ -147,8 +142,6 @@ async function loadPosts(){
       const p=docSnap.data();
       const div=document.createElement("div");
       div.className="postCard";
-      div.style.color=p.textColor;
-      div.style.background=p.bgColor;
       div.innerHTML=`
         ${p.profilePic?`<img src="${p.profilePic}" width="50">`:""}
         <b>${p.emoji?p.emoji+" ":""}${p.title}</b><br>
@@ -164,21 +157,25 @@ async function loadPosts(){
   }
 }
 
-async function deletePost(id,page){
+window.deletePost = async function(id,page){
   if(confirm("Delete this thread?")){
     await deleteDoc(doc(db,page,id));
     loadPosts();
   }
 }
 
-async function editPost(id,page){
+window.editPost = async function(id,page){
   const newTitle=prompt("New Title:");
   if(!newTitle) return;
   const newDesc=prompt("New Description:");
   await setDoc(doc(db,page,id),{title:newTitle,desc:newDesc},{merge:true});
   loadPosts();
 }
-</script>
 
+// Attach buttons
+document.getElementById("loginBtn").onclick=loginAdmin;
+document.getElementById("postBtn").onclick=postThread;
+
+</script>
 </body>
 </html>
