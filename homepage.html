@@ -17,21 +17,23 @@
     background:#111; display:flex; align-items:center; justify-content:center;
     font-weight:900; font-size:1.5rem; z-index:1000;
     letter-spacing:0.1em; border-bottom:2px solid #d4af37;
+    text-shadow:0 0 8px #d4af37;
   }
   #sidebarToggle{
     position:fixed; top:10px; left:10px;
     background:#111; border:2px solid #d4af37; padding:10px 15px;
     cursor:pointer; z-index:1100;
+    text-shadow:0 0 5px #d4af37;
   }
   #sidebar{
     position:fixed; top:0; left:-250px; width:250px; height:100vh;
     background:#111; padding:70px 15px; display:flex; flex-direction:column;
-    gap:20px; transition:left 0.3s ease; z-index:1099;
+    gap:20px; transition:left 0.3s ease; z-index:1099; border-right:2px solid #d4af37;
   }
   #sidebar button{
-    padding:10px; font-weight:700; cursor:pointer; border:none;
+    padding:12px; font-weight:700; cursor:pointer; border:none;
     border-radius:5px; background:#d4af37; color:#111;
-    transition:0.3s;
+    transition:0.3s; font-size:1rem; text-shadow:0 0 3px #000;
   }
   #sidebar button:hover{background:#fff;color:#000;}
   #overlay{
@@ -42,22 +44,30 @@
   #overlay.active{opacity:1; visibility:visible;}
   main{
     max-width:1200px; margin:80px auto 50px; padding:0 15px;
+  }
+  .search-bar{
+    width:100%; margin-bottom:20px; padding:12px; font-size:16px; border-radius:5px;
+    border:2px solid #d4af37; background:#000; color:#d4af37;
+    box-shadow:0 0 10px #d4af37 inset;
+  }
+  #threadsContainer{
     display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px;
   }
   .thread{
-    background:#111; padding:15px; border:2px solid #d4af37; border-radius:10px;
+    background:#111; padding:20px; border:2px solid #d4af37; border-radius:10px;
     box-shadow:0 0 15px #d4af37; transition:0.3s; position:relative;
+    animation: fadeIn 0.7s ease;
   }
   .thread:hover{box-shadow:0 0 25px #fff;}
-  .thread h3{margin-bottom:10px;}
+  .thread h3{margin-bottom:10px; text-shadow:0 0 5px #d4af37;}
   .thread p{margin-bottom:10px;}
   .delete-btn{
     position:absolute; top:10px; right:10px; background:red; color:#fff;
-    border:none; border-radius:5px; cursor:pointer; padding:5px 8px;
+    border:none; border-radius:5px; cursor:pointer; padding:5px 8px; font-weight:bold;
   }
-  .search-bar{
-    width:100%; margin-bottom:20px; padding:10px; font-size:16px; border-radius:5px;
-    border:1px solid #d4af37; background:#000; color:#d4af37;
+  @keyframes fadeIn{
+    from {opacity:0; transform:translateY(20px);}
+    to {opacity:1; transform:translateY(0);}
   }
 </style>
 </head>
@@ -93,19 +103,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Sidebar toggle
 const sidebarToggle = document.getElementById('sidebarToggle');
 const sidebar = document.getElementById('sidebar');
 const overlay = document.getElementById('overlay');
+sidebarToggle.addEventListener('click',()=>{sidebar.classList.toggle('open');overlay.classList.toggle('active');});
+overlay.addEventListener('click',()=>{sidebar.classList.remove('open');overlay.classList.remove('active');});
 
-sidebarToggle.addEventListener('click',()=>{
-  sidebar.classList.toggle('open');
-  overlay.classList.toggle('active');
-});
-overlay.addEventListener('click',()=>{
-  sidebar.classList.remove('open');
-  overlay.classList.remove('active');
-});
-
+// Load threads
 const threadsContainer = document.getElementById('threadsContainer');
 const searchInput = document.getElementById('searchInput');
 
@@ -123,21 +128,33 @@ async function loadThreads(){
                    <button class="delete-btn">Delete</button>`;
     const deleteBtn = div.querySelector('.delete-btn');
     deleteBtn.onclick=async()=>{
-      if(confirm("Delete this thread?")){
-        await deleteDoc(doc(db,"threads",docSnap.id));
-        div.remove();
+      const username = prompt("Enter Admin username:");
+      const password = prompt("Enter Admin password:");
+      if(username==="Don Kyono" || username==="Ignacio Chamboko"){
+        if(password==="God+Word"){
+          await deleteDoc(doc(db,"threads",docSnap.id));
+          div.remove();
+          alert("Thread deleted successfully!");
+        } else {
+          alert("⚡💀 Wrong password! You are logged out!");
+          localStorage.removeItem("currentUser");
+          location.reload();
+        }
+      } else {
+        alert("⚡💀 Unauthorized! You are logged out!");
+        localStorage.removeItem("currentUser");
+        location.reload();
       }
     }
     threadsContainer.appendChild(div);
   });
 }
 
-// Real-time search
+// Search filter
 searchInput.addEventListener('input',()=>{
   const val = searchInput.value.toLowerCase();
   document.querySelectorAll('.thread').forEach(t=>{
-    const text = t.innerText.toLowerCase();
-    t.style.display=text.includes(val)?"block":"none";
+    t.style.display=t.innerText.toLowerCase().includes(val)?"block":"none";
   });
 });
 
