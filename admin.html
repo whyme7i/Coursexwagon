@@ -3,56 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CourseXWagon Admin Panel</title>
+<title>⚡ ADMIN PORTAL ⚡</title>
 <style>
-body{margin:0; padding:0; font-family:'Courier New', monospace; background:#000; color:#fff;}
-h1,h2{text-align:center;}
-.container{max-width:700px; margin:auto; padding:20px;}
-input, select, button, textarea{width:100%; margin:8px 0; padding:10px; border-radius:5px; border:1px solid #fff; background:#111; color:#fff; font-size:16px;}
-button{cursor:pointer; font-weight:bold; background:#fff; color:#000; transition:0.3s;}
-button:hover{background:#ccc; color:#000;}
-.postCard{border:1px solid #fff; border-radius:10px; margin:10px 0; padding:10px; background:#111;}
+body{margin:0;padding:0;font-family:'Courier New',monospace;background:#0a0a0a;color:#d4af37;}
+h1,h2{text-align:center;margin:10px;}
+.container{max-width:600px;margin:80px auto;padding:20px;background:#1a1a1a;border-radius:10px;}
+input,textarea,select,button{width:90%;margin:8px 0;padding:10px;border-radius:5px;border:none;font-size:16px;}
+input,textarea,select{background:#0a0a0a;color:#d4af37;}
+button{background:#d4af37;color:#0a0a0a;font-weight:bold;cursor:pointer;}
+button:hover{background:#fff;color:#0a0a0a;}
 .hidden{display:none;}
-.loading{height:5px; width:0%; background:#fff; margin:10px 0; animation:load 3s linear forwards;}
-@keyframes load{0%{width:0%;}100%{width:100%;}}
+.thread-box{background:#111;margin:10px 0;padding:10px;border-left:4px solid #d4af37;cursor:pointer;}
+.thread-box:hover{background:#222;}
 </style>
 </head>
 <body>
 
-<div class="container">
-<h1>💀 CourseXWagon Admin Panel 💀</h1>
+<h1>⚡ ADMIN PORTAL ⚡</h1>
 
-<div id="loginDiv">
+<div class="container" id="loginBox">
   <h2>Admin Login</h2>
   <input type="text" id="adminName" placeholder="Admin Name">
   <input type="password" id="adminPass" placeholder="Password">
-  <button id="loginBtn">Login</button>
-  <div id="loginMsg"></div>
+  <button onclick="loginAdmin()">Login</button>
 </div>
 
-<div id="panelDiv" class="hidden">
-  <h2>Post a Thread</h2>
-  <input type="text" id="postTitle" placeholder="Thread Title">
-  <textarea id="postDesc" placeholder="Thread Description"></textarea>
-  <input type="text" id="postLink" placeholder="https://example.com/file.zip">
-  <select id="targetPage">
+<div class="container hidden" id="adminPanel">
+  <h2>Post New Thread</h2>
+  <input type="text" id="title" placeholder="Thread Title">
+  <textarea id="desc" placeholder="Thread Description"></textarea>
+  <input type="text" id="url" placeholder="Download Link (zip/url)">
+  <input type="text" id="commentLock" placeholder="Comment to unlock link (optional)">
+  <input type="text" id="emoji" placeholder="Emoji Decoration (optional)">
+  <input type="text" id="social" placeholder="Optional social link">
+  <select id="category">
     <option value="courses">Courses</option>
     <option value="audiobooks">Audiobooks</option>
     <option value="freebooks">FreeBooks</option>
   </select>
-  <input type="text" id="commentLock" placeholder="Comment required to unlock (optional)">
-  <input type="text" id="emojiIcon" placeholder="Emoji for thread (optional)">
-  <input type="text" id="profilePic" placeholder="Profile picture URL (optional)">
-  <button id="postBtn">Add Thread</button>
-  <div class="loading hidden" id="loadingBar"></div>
-
-  <h2>Saved Threads</h2>
-  <div id="savedPosts"></div>
+  <button onclick="postThread()">Post Thread</button>
+  
+  <h2>Existing Threads</h2>
+  <div id="threadList"></div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { getFirestore, collection, doc, setDoc, getDocs, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDXEKOmJdN8lzvnUIAhVpzarXvgxanRYgs",
@@ -63,108 +60,74 @@ const firebaseConfig = {
   appId: "1:1081264056319:web:99c2814d8e83571c16e9ca",
   measurementId: "G-SR53N510NN"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const admins = ["Ignacio Chamboko","Don Kyono"];
-const adminPassword = "god+word";
-let currentAdmin="";
+const password = "god+word";
+let currentAdmin = '';
 
-// Login
-window.loginAdmin = function(){
-  const name=document.getElementById("adminName").value.trim();
-  const pass=document.getElementById("adminPass").value;
-  const msgDiv=document.getElementById("loginMsg");
-  if(admins.includes(name) && pass===adminPassword){
-    currentAdmin=name;
-    document.getElementById("loginDiv").classList.add("hidden");
-    document.getElementById("panelDiv").classList.remove("hidden");
-    msgDiv.innerHTML=`💀 Welcome Admin ${name} 💀`;
-    loadPosts();
+function loginAdmin(){
+  const name = document.getElementById('adminName').value.trim();
+  const pass = document.getElementById('adminPass').value.trim();
+  if(admins.includes(name) && pass === password){
+    currentAdmin = name;
+    document.getElementById('loginBox').classList.add('hidden');
+    document.getElementById('adminPanel').classList.remove('hidden');
+    alert(`WELCOME ADMIN ${name}`);
+    loadThreads();
   } else {
-    msgDiv.innerHTML="❌ Wrong name or password!";
+    alert("❌ Wrong Name or Password!");
   }
 }
 
-// Post a thread
-window.postThread = async function(){
-  const title=document.getElementById("postTitle").value.trim();
-  const desc=document.getElementById("postDesc").value.trim();
-  const url=document.getElementById("postLink").value.trim();
-  const target=document.getElementById("targetPage").value;
-  const comment=document.getElementById("commentLock").value.trim();
-  const emoji=document.getElementById("emojiIcon").value.trim();
-  const profilePic=document.getElementById("profilePic").value.trim();
-  if(!title || !url){ alert("Title and Link required!"); return; }
-  const postID='post-'+Date.now()+'-'+Math.floor(Math.random()*1000);
+async function postThread(){
+  const title = document.getElementById('title').value.trim();
+  const desc = document.getElementById('desc').value.trim();
+  const url = document.getElementById('url').value.trim();
+  const commentLock = document.getElementById('commentLock').value.trim();
+  const emoji = document.getElementById('emoji').value.trim();
+  const social = document.getElementById('social').value.trim();
+  const category = document.getElementById('category').value;
 
-  const postData={id:postID,title,desc,url,comment,emoji,profilePic,admin:currentAdmin,timestamp:serverTimestamp()};
+  if(!title || !url){alert("Title and URL are required"); return;}
 
-  document.getElementById("loadingBar").classList.remove("hidden");
-  await setDoc(doc(db,target,postID),postData);
-  document.getElementById("loadingBar").classList.add("hidden");
-  resetForm();
-  loadPosts();
+  const id = 'thread-'+Date.now();
+  await addDoc(collection(db, category), {id,title,desc,url,commentLock,emoji,admin:currentAdmin,social,date:new Date().toISOString()});
   alert("✅ Thread added successfully!");
+  loadThreads();
 }
 
-// Reset form
-window.resetForm=function(){
-  document.getElementById("postTitle").value='';
-  document.getElementById("postDesc").value='';
-  document.getElementById("postLink").value='';
-  document.getElementById("commentLock").value='';
-  document.getElementById("emojiIcon").value='';
-  document.getElementById("profilePic").value='';
+async function loadThreads(){
+  const threadList = document.getElementById('threadList');
+  threadList.innerHTML = '';
+  const category = document.getElementById('category').value;
+  const snapshot = await getDocs(collection(db, category));
+  snapshot.forEach(docSnap => {
+    const t = docSnap.data();
+    const div = document.createElement('div');
+    div.className = 'thread-box';
+    div.innerHTML = `${t.emoji? t.emoji+' ':''}${t.title} <button onclick="deleteThread('${category}','${docSnap.id}')">❌</button>
+                     <button onclick="editThread('${category}','${docSnap.id}')">✏️</button>`;
+    threadList.appendChild(div);
+  });
 }
 
-// Load posts
-window.loadPosts=async function(){
-  const savedDiv=document.getElementById("savedPosts");
-  savedDiv.innerHTML='';
-  const pages=["courses","audiobooks","freebooks"];
-  for(const page of pages){
-    const snapshot=await getDocs(collection(db,page));
-    snapshot.forEach(docSnap=>{
-      const p=docSnap.data();
-      const div=document.createElement("div");
-      div.className="postCard";
-      div.innerHTML=`
-        ${p.profilePic?`<img src="${p.profilePic}" width="50">`:""}
-        <b>${p.emoji?p.emoji+" ":""}${p.title}</b><br>
-        ${p.desc}<br>
-        <a href="${p.url}" target="_blank">Download Link</a><br>
-        ${p.comment?`<i>Comment to unlock: "${p.comment}"</i><br>`:""}
-        Posted by: ${p.admin}<br>
-        <button onclick="editPost('${p.id}','${page}')">Edit</button>
-        <button onclick="deletePost('${p.id}','${page}')">Delete</button>
-      `;
-      savedDiv.appendChild(div);
-    });
+async function deleteThread(category,id){
+  if(confirm("Delete this thread?")) {
+    await deleteDoc(doc(db, category, id));
+    alert("Thread deleted!");
+    loadThreads();
   }
 }
 
-// Delete
-window.deletePost=async function(id,page){
-  if(confirm("Delete this thread?")){
-    await deleteDoc(doc(db,page,id));
-    loadPosts();
-  }
+async function editThread(category,id){
+  const snapshot = await getDocs(collection(db, category));
+  const t = snapshot.docs.find(d => d.id === id).data();
+  const newTitle = prompt("Edit Title",t.title);
+  if(newTitle) await updateDoc(doc(db, category, id), {title:newTitle});
+  loadThreads();
 }
-
-// Edit
-window.editPost=async function(id,page){
-  const newTitle=prompt("New Title:");
-  if(!newTitle) return;
-  const newDesc=prompt("New Description:");
-  await setDoc(doc(db,page,id),{title:newTitle,desc:newDesc},{merge:true});
-  loadPosts();
-}
-
-// Attach buttons
-document.getElementById("loginBtn").onclick=loginAdmin;
-document.getElementById("postBtn").onclick=postThread;
 </script>
 </body>
 </html>
