@@ -3,134 +3,149 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>C.X — Admin Panel</title>
+<title>C.X ADMINS PANEL</title>
 <style>
-  body {
-    margin:0; padding:0;
-    background:#000; color:#fff;
-    font-family: 'Courier New', monospace;
-    display:flex; justify-content:center; align-items:center;
-    height:100vh; overflow:hidden;
-  }
-  .login-box {
-    background:#111; border:2px solid #fff;
-    padding:30px; border-radius:12px;
-    text-align:center; width:350px; position:relative;
-    box-shadow:0 0 20px #fff inset;
-  }
-  input { width:80%; padding:10px; margin:10px 0; background:#000; color:#fff; border:1px solid #fff; border-radius:6px; }
-  button { padding:10px 20px; margin:10px; background:#fff; color:#000; font-weight:bold; border:none; cursor:pointer; border-radius:6px; transition:0.3s; }
-  button:hover { transform: scale(1.05); }
-  #status { margin-top:15px; min-height:40px; font-size:1rem; }
-  #deathScreen {
-    display:none;
-    position:absolute;
-    top:0; left:0; right:0; bottom:0;
-    background:#000;
-    color:red; font-size:2rem;
-    display:flex; justify-content:center; align-items:center;
-    flex-direction:column; animation:fadeIn 1s ease forwards;
-    z-index:999;
-  }
-  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-  .hackerAnim {
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
     font-family:'Courier New', monospace;
-    color:#0f0;
-    font-size:1rem;
-    text-align:left;
-    white-space:pre;
-    line-height:1.3em;
-    max-height:200px;
-    overflow-y:auto;
-    margin-top:15px;
-    border:1px solid #0f0;
-    padding:10px;
     background:#000;
+    color:#d4af37;
+    overflow-x:hidden;
+  }
+  header{
+    position:fixed; top:0; left:0; right:0; height:60px;
+    background:#111; display:flex; align-items:center; justify-content:center;
+    font-weight:900; font-size:1.5rem; z-index:1000;
+    letter-spacing:0.1em; border-bottom:2px solid #d4af37;
+    text-shadow:0 0 8px #d4af37;
+  }
+  main{
+    margin-top:80px; max-width:800px; padding:15px; margin-left:auto;margin-right:auto;
+  }
+  input, textarea{
+    width:100%; padding:10px; margin-bottom:15px;
+    border:2px solid #d4af37; border-radius:8px;
+    background:#111; color:#d4af37; font-size:1rem;
+    box-shadow:0 0 8px #d4af37 inset;
+  }
+  button{
+    padding:12px 20px; border:none; border-radius:6px;
+    background:#d4af37; color:#111; font-weight:700; cursor:pointer;
+    font-size:1rem; margin-right:10px;
+    transition:0.3s;
+  }
+  button:hover{background:#fff;color:#000;}
+  .thread-box{
+    background:#111; border:2px solid #d4af37; padding:15px;
+    margin-bottom:20px; border-radius:10px; box-shadow:0 0 15px #d4af37;
+    animation: fadeIn 0.7s ease;
+    position:relative;
+  }
+  @keyframes fadeIn{
+    from {opacity:0; transform:translateY(20px);}
+    to {opacity:1; transform:translateY(0);}
+  }
+  .locked-comment{
+    margin-top:10px; font-style:italic; color:red;
+    text-align:center; border-top:1px dashed #d4af37; padding-top:10px;
   }
 </style>
 </head>
 <body>
+<header>C.X ADMINS PANEL</header>
+<main>
+  <h2>Post New Thread</h2>
+  <input type="text" id="adminUsername" placeholder="Admin Username">
+  <input type="password" id="adminPassword" placeholder="Admin Password">
+  <input type="text" id="threadTitle" placeholder="Thread Title">
+  <textarea id="threadDesc" rows="4" placeholder="Thread Description"></textarea>
+  <input type="text" id="threadURL" placeholder="Thread URL (optional)">
+  <input type="text" id="threadEmoji" placeholder="Emoji (optional)">
+  <button onclick="postThread()">Post Thread</button>
+  <div id="message"></div>
 
-<div class="login-box">
-  <h2>💀 C.X — Admin Login 💀</h2>
-  <input type="text" id="username" placeholder="Full Name">
-  <input type="password" id="password" placeholder="Password">
-  <button id="loginBtn">Enter</button>
-  <div id="status"></div>
-  <div class="hackerAnim" id="hackConsole"></div>
-</div>
-
-<div id="deathScreen">
-  <div>☠️ YOU ARE NOT AN ADMIN ☠️</div>
-  <div style="font-size:1rem; margin-top:20px;">You try hard but can't accept the fact you are not the admins!</div>
-</div>
+  <h2 style="margin-top:40px;">Posted Threads</h2>
+  <div id="postedThreads"></div>
+</main>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDXEKOmJdN8lzvnUIAhVpzarXvgxanRYgs",
-    authDomain: "coursexwagon-admins.firebaseapp.com",
-    projectId: "coursexwagon-admins",
-    storageBucket: "coursexwagon-admins.firebasestorage.app",
-    messagingSenderId: "1081264056319",
-    appId: "1:1081264056319:web:99c2814d8e83571c16e9ca",
-    measurementId: "G-SR53N510NN"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyDXEKOmJdN8lzvnUIAhVpzarXvgxanRYgs",
+  authDomain: "coursexwagon-admins.firebaseapp.com",
+  projectId: "coursexwagon-admins",
+  storageBucket: "coursexwagon-admins.firebasestorage.app",
+  messagingSenderId: "1081264056319",
+  appId: "1:1081264056319:web:99c2814d8e83571c16e9ca",
+  measurementId: "G-SR53N510NN"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+const messageDiv = document.getElementById('message');
+const postedThreadsDiv = document.getElementById('postedThreads');
 
-  const admins = [
-    { name: "Ignacio Chamboko", password: "God+word" },
-    { name: "Don Kyono", password: "God+word" }
-  ];
-
-  let attempts = 0;
-
-  const loginBtn = document.getElementById("loginBtn");
-  const status = document.getElementById("status");
-  const hackConsole = document.getElementById("hackConsole");
-  const deathScreen = document.getElementById("deathScreen");
-
-  loginBtn.addEventListener("click", async () => {
-    const name = document.getElementById("username").value.trim();
-    const pass = document.getElementById("password").value.trim();
-    
-    const admin = admins.find(a => a.name === name && a.password === pass);
-
-    if(admin) {
-      status.style.color="gold";
-      status.textContent="✅ Access Granted. Redirecting to admin panel...";
-      // Optionally store login in Firestore
-      await addDoc(collection(db,"logins"),{name, time: new Date().toISOString()});
-      setTimeout(()=>window.location.href="admins.html",1500);
-      return;
-    }
-
-    attempts++;
-    
-    if(attempts === 1) {
-      deathScreen.style.display="flex";
-      setTimeout(()=>deathScreen.style.display="none",3000);
-      hackConsole.textContent="HACKER SIMULATION: Detecting intrusion attempt...\nAccess Denied.";
-    } else if(attempts === 2) {
-      hackConsole.textContent="";
-      let msg = ["Initiating hacking simulation...\n","Bypassing firewalls...\n","Injecting viruses...\n","Screen breach detected!"];
-      let i = 0;
-      const interval = setInterval(()=>{
-        if(i>=msg.length){ clearInterval(interval); hackConsole.textContent+="\n💀 System lockdown!"; return; }
-        hackConsole.textContent+=msg[i];
-        hackConsole.scrollTop = hackConsole.scrollHeight;
-        i++;
-      },1000);
-    } else {
-      hackConsole.textContent="\n💀 Your screen is cracked! Security triggered!";
-      document.body.style.background="radial-gradient(circle,#000,#111)";
-    }
+async function loadThreads(){
+  postedThreadsDiv.innerHTML="";
+  const snapshot = await getDocs(collection(db,"threads"));
+  snapshot.forEach(docSnap=>{
+    const t = docSnap.data();
+    const div = document.createElement('div');
+    div.className="thread-box";
+    div.innerHTML = `<h3>${t.emoji?t.emoji+" ":""}${t.title}</h3>
+                     <p>${t.desc}</p>
+                     <p>Posted by: ${t.admin}</p>
+                     <a href="${t.url}" target="_blank">${t.url? "Download Link":""}</a>
+                     <div class="locked-comment">Comments Locked</div>`;
+    postedThreadsDiv.appendChild(div);
   });
-</script>
+}
 
+async function postThread(){
+  const username = document.getElementById('adminUsername').value.trim();
+  const password = document.getElementById('adminPassword').value.trim();
+  const title = document.getElementById('threadTitle').value.trim();
+  const desc = document.getElementById('threadDesc').value.trim();
+  const url = document.getElementById('threadURL').value.trim();
+  const emoji = document.getElementById('threadEmoji').value.trim();
+
+  if(!username || !password || !title || !desc){
+    messageDiv.innerText="Fill all required fields!";
+    messageDiv.style.color="red";
+    return;
+  }
+
+  if(!((username==="Don Kyono" || username==="Ignacio Chamboko") && password==="God+Word")){
+    messageDiv.innerText="💀 You are not an admin! Access denied!";
+    messageDiv.style.color="red";
+    return;
+  }
+
+  try{
+    await addDoc(collection(db,"threads"),{
+      admin: username,
+      title,
+      desc,
+      url,
+      emoji
+    });
+    messageDiv.innerText="✅ Thread posted successfully!";
+    messageDiv.style.color="gold";
+    document.getElementById('threadTitle').value="";
+    document.getElementById('threadDesc').value="";
+    document.getElementById('threadURL').value="";
+    document.getElementById('threadEmoji').value="";
+    loadThreads();
+  } catch(e){
+    console.error(e);
+    messageDiv.innerText="Error posting thread!";
+    messageDiv.style.color="red";
+  }
+}
+
+window.onload=loadThreads;
+</script>
 </body>
 </html>
