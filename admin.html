@@ -12,6 +12,11 @@ body {
   font-family:'Courier New', monospace;
   color:#d4af37; /* gold */
   overflow-x:hidden;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
 }
 h1,h2{margin:10px;text-align:center;}
 
@@ -36,7 +41,10 @@ h1,h2{margin:10px;text-align:center;}
   max-width:400px;
   margin:20px auto;
   box-shadow:0 0 15px #d4af37;
+  animation: appear 1s ease-in-out;
 }
+
+@keyframes appear { from {opacity:0; transform: translateY(-20px);} to {opacity:1; transform: translateY(0);} }
 
 input, select, button{
   width:90%;
@@ -47,6 +55,7 @@ input, select, button{
   border:1px solid #d4af37;
   background:#333;
   color:#d4af37;
+  outline:none;
 }
 button{
   font-weight:bold;
@@ -61,11 +70,14 @@ button:hover{background:#b58f1f;color:#fff;}
 </head>
 <body>
 
-<div id="welcome">💀 WELCOME DON & IGNACIO 💀</div>
+<div id="welcome">💀 VIP HACKERS FORUM 💀</div>
 
-<div class="box" id="verifyDiv">
-  <h2>Admin Verification</h2>
-  <button onclick="verifyAdmin()">Enter Secret Code</button>
+<div class="box" id="loginDiv">
+  <h2>Admin Login</h2>
+  <input type="text" id="adminName" placeholder="Enter Name"><br>
+  <input type="password" id="adminPassword" placeholder="Enter Password"><br>
+  <button onclick="adminLogin()">Enter</button>
+  <div id="loginMessage"></div>
 </div>
 
 <div class="box hidden" id="postPanel">
@@ -93,17 +105,23 @@ button:hover{background:#b58f1f;color:#fff;}
 
 <script>
 const admins = ["Ignacio","Don"];
-const adminPass = "0000&111"; // secret code
-let currentUser = localStorage.getItem("currentUser") || "";
+const adminPass = "god+word";
+let currentUser = "";
 
-function verifyAdmin(){
-  let code = prompt("Enter Admin Secret Code:");
-  if(code===adminPass && admins.includes(currentUser)){
-    document.getElementById("verifyDiv").classList.add("hidden");
+function adminLogin(){
+  let name = document.getElementById("adminName").value.trim();
+  let pass = document.getElementById("adminPassword").value.trim();
+  let msgDiv = document.getElementById("loginMessage");
+
+  if(admins.includes(name) && pass===adminPass){
+    currentUser = name;
+    msgDiv.innerHTML = `💻 WELCOME ADMIN ${name.toUpperCase()} 💻`;
+    msgDiv.style.color = "#d4af37";
+    document.getElementById("loginDiv").classList.add("hidden");
     document.getElementById("postPanel").classList.remove("hidden");
-    alert("Access Granted! You can now post links.");
   } else {
-    alert("Wrong code or you are not an admin!");
+    msgDiv.innerHTML = "❌ WRONG NAME OR PASSWORD ❌";
+    msgDiv.style.color="red";
   }
 }
 
@@ -123,7 +141,7 @@ function postAdminLink(){
 
   document.getElementById("postTitle").value='';
   document.getElementById("postLink").value='';
-  alert("Post added to "+target+" successfully!");
+  alert(`Post added to ${target} successfully!`);
 }
 </script>
 
