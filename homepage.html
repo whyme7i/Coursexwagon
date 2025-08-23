@@ -1,1000 +1,133 @@
-<!DOCTYPE html>      
-<html lang="en">      
-<head>      
-<meta charset="UTF-8" />      
-<meta name="viewport" content="width=device-width, initial-scale=1" />      
-<meta name="6a97888e-site-verification" content="890093415d261303fd7a37b2d5216be9" />      
-<meta http-equiv="Delegate-CH" content="Sec-CH-UA https://s.magsrv.com https://5697892.notify6.com; Sec-CH-UA-Mobile https://s.magsrv.com https://5697892.notify6.com; Sec-CH-UA-Arch https://s.magsrv.com https://5697892.notify6.com; Sec-CH-UA-Model https://s.magsrv.com https://5697892.notify6.com; Sec-CH-UA-Platform https://s.magsrv.com https://5697892.notify6.com; Sec-CH-UA-Platform-Version https://s.magsrv.com https://5697892.notify6.com; Sec-CH-UA-Bitness https://s.magsrv.com https://5697892.notify6.com; Sec-CH-UA-Full-Version-List https://s.magsrv.com https://5697892.notify6.com; Sec-CH-UA-Full-Version https://s.magsrv.com https://5697892.notify6.com;">      
-<title>COURSE.XWAGON | The Vault of Mastery</title>      
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>      
-  /* Reset */      
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }      
-  
-  /* Enhanced Design System */
-  :root {
-    --color-primary: #b08d57;
-    --color-primary-dark: #806232;
-    --color-primary-light: #d4b88a;
-    --color-text: #b08d57;
-    --color-text-dark: #5a3c1a;
-    --color-background: #0a0a0a;
-    --color-card: #151310;
-    --color-sidebar: #12100c;
-    --glow-strength: 8px;
-    --transition-speed: 0.3s;
-  }
-  
-  @keyframes floatAnimation {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-    100% { transform: translateY(0); }
-  }
-  
-  @keyframes pulseGlow {
-    0%, 100% { filter: drop-shadow(0 0 var(--glow-strength) var(--color-primary)); }
-    50% { filter: drop-shadow(0 0 calc(var(--glow-strength) * 1.5) var(--color-primary-light)); }
-  }
-  
-  @keyframes shine {
-    0% { transform: translateX(-100%) skewX(-25deg); }
-    100% { transform: translateX(200%) skewX(-25deg); }
-  }
-
-  body { 
-    font-family: 'Space Mono', 'Courier New', monospace; 
-    background: var(--color-background); 
-    color: var(--color-text-dark); 
-    overflow-x: hidden; 
-    min-height: 100vh; 
-    -webkit-user-select: none; 
-       -moz-user-select: none; 
-            user-select: none; 
-    letter-spacing: 0.04em; 
-    background-image: 
-      radial-gradient(circle at 20% 30%, #1a1205 0%, transparent 40%), 
-      radial-gradient(circle at 80% 70%, #241a08 0%, transparent 30%),
-      url("data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='20' height='20' fill='%23090705' fill-opacity='0.2'/%3E%3C/svg%3E");
-  }      
-
-  header { 
-    position: fixed; 
-    top: 0; 
-    left: 0; 
-    right: 0; 
-    height: 70px; 
-    background: rgba(10, 8, 5, 0.85); 
-    backdrop-filter: blur(10px); 
-    display: flex; 
-    align-items: center; 
-    justify-content: space-between; 
-    padding: 0 32px; 
-    box-shadow: inset 0 -1px 0 var(--color-primary-dark); 
-    z-index: 1100; 
-    transition: all var(--transition-speed) ease;
-  }
-
-  header:hover {
-    box-shadow: inset 0 -1px 0 var(--color-primary), 0 5px 15px rgba(176, 141, 87, 0.1);
-  }
-  
-  header .logo { 
-    font-weight: 900; 
-    font-size: 2rem; 
-    color: var(--color-primary); 
-    text-transform: uppercase; 
-    text-shadow: 0 0 5px rgba(176, 141, 87, 0.3); 
-    letter-spacing: 0.15em;
-    position: relative;
-    transition: all var(--transition-speed) ease;
-  }
-
-  header .logo::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--color-primary);
-    transition: width var(--transition-speed) ease;
-  }
-  
-  header .logo:hover {
-    color: var(--color-primary-light);
-    text-shadow: 0 0 10px rgba(176, 141, 87, 0.5);
-  }
-
-  header .logo:hover::after {
-    width: 100%;
-  }
-
-  #sidebarToggle { 
-    cursor: pointer; 
-    background: transparent; 
-    border: 2px solid var(--color-primary-dark); 
-    border-radius: 8px;
-    color: var(--color-primary); 
-    font-size: 1.8rem; 
-    padding: 4px 12px;
-    transition: all var(--transition-speed) ease; 
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    outline: none;
-  }      
-  
-  #sidebarToggle:hover { 
-    color: var(--color-background); 
-    background: var(--color-primary);
-    box-shadow: 0 0 15px rgba(176, 141, 87, 0.5);
-    transform: translateY(-2px);
-  }      
-  
-  #sidebar { 
-    position: fixed; 
-    top: 0; 
-    left: -320px; 
-    width: 320px; 
-    height: 100vh; 
-    background: rgba(18, 16, 12, 0.95); 
-    backdrop-filter: blur(10px);
-    box-shadow: 4px 0 20px rgba(176, 141, 87, 0.2); 
-    padding: 100px 30px 40px; 
-    display: flex; 
-    flex-direction: column; 
-    gap: 24px; 
-    color: var(--color-text); 
-    transition: left var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1); 
-    z-index: 1150; 
-    border-right: 1px solid var(--color-primary-dark);
-  }      
-  
-  #sidebar.open { 
-    left: 0; 
-  }      
-  
-  #sidebar nav {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-  }
-
-  #sidebar nav button { 
-    background: rgba(46, 43, 35, 0.6); 
-    border: 2px solid var(--color-primary-dark); 
-    color: var(--color-primary); 
-    font-family: 'Space Mono', monospace;
-    font-size: 1.2rem; 
-    padding: 14px 20px; 
-    cursor: pointer; 
-    border-radius: 8px; 
-    text-transform: uppercase; 
-    letter-spacing: 0.1em; 
-    font-weight: 700; 
-    transition: all var(--transition-speed) ease; 
-    width: 100%; 
-    text-align: left;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  #sidebar nav button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(
-      90deg, 
-      transparent, 
-      rgba(176, 141, 87, 0.2), 
-      transparent
-    );
-    transition: left 0.5s ease;
-  }
-      
-  #sidebar nav button:hover { 
-    background-color: var(--color-primary-dark); 
-    color: #0a0a0a; 
-    box-shadow: 0 0 20px rgba(176, 141, 87, 0.3);
-    transform: translateY(-3px); 
-  }
-
-  #sidebar nav button:hover::before {
-    animation: shine 1.5s ease;
-  }
-      
-  #overlay { 
-    position: fixed; 
-    inset: 0; 
-    background: rgba(0,0,0,0.85); 
-    opacity: 0; 
-    visibility: hidden; 
-    transition: opacity var(--transition-speed) ease; 
-    z-index: 1140; 
-    backdrop-filter: blur(3px);
-  }      
-  
-  #overlay.active { 
-    opacity: 1; 
-    visibility: visible; 
-  }      
-  
-  main { 
-    margin-top: 70px; 
-    max-width: 1200px; 
-    margin-left: auto; 
-    margin-right: auto; 
-    padding: 0 32px 100px; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .categories-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    width: 100%;
-    margin-top: 30px;
-    justify-content: center;
-  }
-      
-  .category-btn { 
-    background: linear-gradient(145deg, rgba(30, 28, 22, 0.8), rgba(21, 19, 16, 0.9));
-    border: 1px solid var(--color-primary-dark);
-    border-radius: 20px; 
-    box-shadow: 0 15px 35px rgba(10, 8, 5, 0.6), 0 0 0 1px rgba(176, 141, 87, 0.1);
-    color: var(--color-primary); 
-    font-family: 'Space Mono', monospace;
-    font-weight: 700; 
-    font-size: 1.8rem; 
-    min-height: 240px;
-    padding: 30px;
-    display: flex; 
-    flex-direction: column;
-    justify-content: center; 
-    align-items: center; 
-    cursor: pointer; 
-    text-decoration: none; 
-    letter-spacing: 0.12em; 
-    text-transform: uppercase; 
-    -webkit-user-select: none; 
-       -moz-user-select: none; 
-            user-select: none; 
-    transition: all var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative; 
-    overflow: hidden;
-    text-align: center;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-  }
-
-  .category-btn .icon {
-    font-size: 3rem;
-    margin-bottom: 24px;
-    transition: all var(--transition-speed) ease;
-    position: relative;
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
-    background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary-dark));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    padding: 10px;
-    border-radius: 50%;
-  }
-  
-  .category-btn .icon::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, rgba(176, 141, 87, 0.15), transparent 70%);
-    opacity: 0;
-    transition: opacity var(--transition-speed) ease;
-  }
-      
-  .category-btn::before { 
-    content: ''; 
-    position: absolute; 
-    top: 0;
-    left: -100%; 
-    width: 100%; 
-    height: 100%; 
-    background: linear-gradient(
-      90deg, 
-      transparent, 
-      rgba(176, 141, 87, 0.2), 
-      transparent
-    ); 
-    transition: left 0.8s ease;
-    pointer-events: none; 
-  }
-      
-  .category-btn:hover { 
-    color: var(--color-primary-light);
-    transform: translateY(-10px); 
-    box-shadow: 0 20px 40px rgba(10, 8, 5, 0.7), 0 0 30px rgba(176, 141, 87, 0.4);
-    border-color: var(--color-primary);
-    background: linear-gradient(145deg, rgba(35, 32, 25, 0.9), rgba(25, 22, 18, 1));
-  }
-
-  .category-btn:hover .icon {
-    transform: scale(1.15) translateY(-5px);
-    filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.4));
-    background: linear-gradient(135deg, #e2c88f, var(--color-primary));
-    -webkit-background-clip: text;
-    background-clip: text;
-  }
-  
-  .category-btn:hover .icon::after {
-    opacity: 1;
-  }
-  
-  .category-btn::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--color-primary-dark), transparent);
-    opacity: 0;
-    transition: opacity var(--transition-speed) ease, width var(--transition-speed) ease;
-  }
-  
-  .category-btn:hover::after {
-    opacity: 0.7;
-    width: 80%;
-  }
-
-  .category-btn:hover::before {
-    animation: shine 1.5s ease;
-  }
-      
-  #scrollIndicator { 
-    position: fixed; 
-    bottom: 32px; 
-    left: 50%; 
-    transform: translateX(-50%); 
-    color: var(--color-primary-dark); 
-    font-weight: 700; 
-    -webkit-user-select: none; 
-       -moz-user-select: none; 
-            user-select: none; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    animation: pulseMove 2.5s infinite ease-in-out; 
-    z-index: 1200; 
-    letter-spacing: 0.08em; 
-    text-transform: uppercase;
-    transition: opacity var(--transition-speed) ease;
-  }
-  
-  #scrollIndicator:hover {
-    animation-play-state: paused;
-  }
-      
-  #scrollIndicator span { 
-    font-size: 0.9rem; 
-    margin-bottom: 10px; 
-    color: var(--color-primary-dark);
-    transition: color var(--transition-speed) ease;
-  }
-
-  #scrollIndicator:hover span {
-    color: var(--color-primary);
-  }
-      
-  #scrollIndicator .bar { 
-    width: 3px; 
-    height: 42px; 
-    border-radius: 9999px; 
-    background: linear-gradient(180deg, var(--color-primary-dark), transparent); 
-    transition: background var(--transition-speed) ease;
-  }
-
-  #scrollIndicator:hover .bar {
-    background: linear-gradient(180deg, var(--color-primary), transparent);
-  }
-      
-  footer { 
-    background: linear-gradient(0deg, rgba(15, 12, 8, 0.95), rgba(10, 8, 5, 0.85)); 
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    color: var(--color-text-dark); 
-    text-align: center; 
-    padding: 60px 16px 40px; 
-    font-size: 0.95rem; 
-    border-top: 1px solid var(--color-primary-dark);
-    letter-spacing: 0.06em; 
-    font-family: 'Space Mono', monospace;
-    position: relative;
-    overflow: hidden;
-  }
-
-  footer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
-    opacity: 0.5;
-  }
-
-  footer .footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 40px;
-    position: relative;
-    z-index: 1;
-  }
-  
-  footer .footer-column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-  }
-  
-  footer .footer-logo {
-    font-size: 1.8rem;
-    font-weight: 900;
-    color: var(--color-primary);
-    margin-bottom: 10px;
-    letter-spacing: 0.15em;
-    position: relative;
-    display: inline-block;
-  }
-  
-  footer .footer-tagline {
-    font-size: 1rem;
-    margin-bottom: 15px;
-    color: var(--color-primary-dark);
-    letter-spacing: 0.08em;
-    max-width: 280px;
-  }
-  
-  footer .footer-separator {
-    width: 40px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--color-primary-dark), transparent);
-    margin: 5px auto 15px;
-  }
-      
-  footer a { 
-    color: var(--color-primary); 
-    font-weight: 700; 
-    text-decoration: none; 
-    margin: 0 8px;
-    transition: all var(--transition-speed) ease;
-    position: relative;
-    padding: 4px 8px;
-    border-radius: 4px;
-  }
-
-  footer a::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
-    transition: width var(--transition-speed) ease;
-  }
-      
-  footer a:hover { 
-    color: var(--color-primary-light); 
-    text-shadow: 0 0 8px rgba(176, 141, 87, 0.4);
-    background: rgba(176, 141, 87, 0.05);
-  }
-
-  footer a:hover::after {
-    width: 100%;
-  }
-  
-  footer .copyright {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(90, 60, 26, 0.2);
-    color: rgba(90, 60, 26, 0.7);
-    font-size: 0.9rem;
-    width: 100%;
-    grid-column: 1 / -1;
-  }
-  
-  footer .social-links {
-    display: flex;
-    gap: 15px;
-    margin-top: 10px;
-  }
-  
-  footer .social-link {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: rgba(90, 60, 26, 0.1);
-    color: var(--color-primary);
-    font-size: 1.2rem;
-    transition: all var(--transition-speed) ease;
-  }
-  
-  footer .social-link:hover {
-    background: var(--color-primary);
-    color: #0a0a0a;
-    transform: translateY(-4px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  }
-      
-  @keyframes pulseMove { 
-    0%, 100% { opacity: 0.8; transform: translateX(-50%) translateY(0); } 
-    50% { opacity: 0.4; transform: translateX(-50%) translateY(8px); } 
-  }
-      
-  .hero { 
-    width: 100%;
-    max-width: 1000px; 
-    margin: 120px auto 60px; 
-    text-align: center; 
-    -webkit-user-select: none; 
-       -moz-user-select: none; 
-            user-select: none; 
-    letter-spacing: 0.15em;
-    padding: 0 20px;
-  }
-      
-  .hero h1 { 
-    font-size: clamp(2.5rem, 7vw, 4.5rem);
-    font-weight: 900; 
-    color: var(--color-primary); 
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-    text-transform: uppercase; 
-    margin-bottom: 30px;
-    line-height: 1.2;
-    position: relative;
-    display: inline-block;
-    animation: pulseGlow 3s infinite ease-in-out;
-  }
-
-  .hero h1::before,
-  .hero h1::after {
-    content: '';
-    position: absolute;
-    height: 4px;
-    background: var(--color-primary-dark);
-    width: 60px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .hero h1::before {
-    left: -80px;
-  }
-
-  .hero h1::after {
-    right: -80px;
-  }
-      
-  .hero p { 
-    font-size: clamp(1.1rem, 3vw, 1.4rem);
-    color: var(--color-primary-dark);
-    max-width: 700px; 
-    margin: 0 auto 40px; 
-    line-height: 1.6;
-  }
-
-  .hero .cta-button {
-    display: inline-block;
-    background: var(--color-primary-dark);
-    color: #0a0a0a;
-    font-size: 1.1rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding: 16px 32px;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: all var(--transition-speed) ease;
-    border: 2px solid var(--color-primary-dark);
-    margin-top: 10px;
-  }
-
-  .hero .cta-button:hover {
-    background: transparent;
-    color: var(--color-primary);
-    box-shadow: 0 0 20px rgba(176, 141, 87, 0.4);
-    transform: translateY(-5px);
-  }
-
-  /* Decorative Elements */
-  .hero-decoration {
-    position: relative;
-  }
-
-  .decoration-dot {
-    position: absolute;
-    background: var(--color-primary-dark);
-    border-radius: 50%;
-    opacity: 0.15;
-    z-index: -1;
-  }
-
-  .dot-1 {
-    width: 180px;
-    height: 180px;
-    top: -50px;
-    left: 10%;
-    filter: blur(40px);
-  }
-
-  .dot-2 {
-    width: 200px;
-    height: 200px;
-    bottom: -100px;
-    right: 5%;
-    filter: blur(50px);
-  }
-
-  /* Features Section */
-  .features-section {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    margin: 20px 0 60px;
-  }
-
-  .feature-card {
-    background: rgba(21, 19, 16, 0.7);
-    border: 1px solid var(--color-primary-dark);
-    border-radius: 12px;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    transition: all var(--transition-speed) ease;
-  }
-
-  .feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(10, 8, 5, 0.5);
-    border-color: var(--color-primary);
-  }
-
-  .feature-icon {
-    font-size: 2.2rem;
-    color: var(--color-primary);
-    margin-bottom: 10px;
-  }
-
-  .feature-title {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--color-primary);
-    margin-bottom: 8px;
-  }
-
-  .feature-text {
-    font-size: 0.95rem;
-    color: var(--color-text-dark);
-    line-height: 1.6;
-  }
-
-  /* Responsive Adjustments */
-  @media (max-width: 768px) {
-    header {
-      padding: 0 20px;
-    }
-    
-    header .logo {
-      font-size: 1.8rem;
-    }
-
-    .hero {
-      margin: 100px auto 40px;
-    }
-
-    .hero h1::before,
-    .hero h1::after {
-      width: 40px;
-    }
-
-    .hero h1::before {
-      left: -60px;
-    }
-
-    .hero h1::after {
-      right: -60px;
-    }
-
-    .features-section {
-      gap: 20px;
-    }
-  }
-
-  @media (max-width: 576px) {
-    header {
-      padding: 0 16px;
-    }
-    
-    .hero h1::before,
-    .hero h1::after {
-      display: none;
-    }
-    
-    .categories-grid {
-      grid-template-columns: 1fr;
-      max-width: 340px;
-      margin: 20px auto 0;
-    }
-    
-    .category-btn {
-      min-height: 180px;
-      padding: 20px;
-    }
-
-    #sidebar {
-      width: 280px;
-      left: -280px;
-    }
-    
-    footer {
-      padding: 40px 16px 30px;
-    }
-    
-    footer .footer-content {
-      grid-template-columns: 1fr;
-      gap: 30px;
-    }
-    
-    footer .copyright {
-      margin-top: 20px;
-      padding-top: 15px;
-    }
-  }
-</style>      
-</head>      
-<body>      
-
-<header>      
-  <div class="logo">C.X</div>      
-  <button id="sidebarToggle" aria-label="Toggle Menu">&#9776;</button>      
-</header>      
-
-<div id="sidebar" aria-label="Sidebar Navigation">      
-  <nav>      
-    <button data-target="freebooks.html">Free books search</button>      
-    <button data-target="Audiobooks.html">Audiobooks</button>      
-    <button data-target="courses.html">Courses</button>      
-    <button data-target="testimonials.html">Testimonials</button>      
-    <button data-target="chatroom.html">Chatroom/request</button>    
-  </nav>
-</div>     
-
-<div id="overlay"></div>      
-
-<main>      
-  <div class="hero-decoration">
-    <div class="decoration-dot dot-1"></div>
-    <div class="decoration-dot dot-2"></div>
-  </div>
-
-  <section class="hero" role="banner" aria-label="Site Introduction">      
-    <h1>The Vault of Mastery</h1>      
-    <p>No rules. No limits. Own it. Resell it. Flip it. Welcome to the underground HQ for digital hustlers.</p>
-    <a href="courses.html" class="cta-button">Explore Vault</a>
-  </section>
-
-  <section class="features-section">
-    <div class="feature-card">
-      <div class="feature-icon">🔒</div>
-      <h3 class="feature-title">Exclusive Access</h3>
-      <p class="feature-text">Gain entry to premium courses and knowledge that others pay thousands for.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">💰</div>
-      <h3 class="feature-title">Monetize Skills</h3>
-      <p class="feature-text">Learn how to turn digital assets into consistent income streams.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🚀</div>
-      <h3 class="feature-title">Unlimited Potential</h3>
-      <p class="feature-text">No ceiling on your growth. Scale knowledge into multiple revenue channels.</p>
-    </div>
-  </section>
-
-  <div class="categories-grid">
-    <a href="courses.html" class="category-btn" role="button" aria-label="Go to Courses page">
-      <div class="icon">📚</div>
-      Courses
-    </a>      
-    <a href="Audiobooks.html" class="category-btn" role="button" aria-label="Go to Audiobooks page">
-      <div class="icon">🎧</div>
-      Audiobooks
-    </a>      
-    <a href="freebooks.html" class="category-btn" role="button" aria-label="Go to Free Books page">
-      <div class="icon">📖</div>
-      Free Books
-      <!-- Admins Button -->
-<a href="admin.html" id="adminBtn" style="color:#d4af37; display:block; margin:10px 0; font-weight:bold;">Admins</a>
-    </a>
-  </div>      
-</main>      
-
-<div id="scrollIndicator" aria-hidden="true">      
-  <span>Scroll to explore</span>      
-  <div class="bar"></div>      
-</div>      
-
-<footer>
-  <div class="footer-content">
-    <div class="footer-column">
-      <div class="footer-logo">C.X</div>
-      <div class="footer-separator"></div>
-      <div class="footer-tagline">Unlock forbidden knowledge. Rule the underground.</div>
-      <div class="social-links">
-        <a href="#" class="social-link">📱</a>
-        <a href="#" class="social-link">💬</a>
-        <a href="#" class="social-link">📧</a>
-      </div>
-    </div>
-    <div class="footer-column">
-      <h3>Navigation</h3>
-      <div class="footer-separator"></div>
-      <a href="courses.html">Courses</a>
-      <a href="Audiobooks.html">Audiobooks</a>
-      <a href="freebooks.html">Free Books</a>
-      <a href="chatroom.html">Chatroom/Request</a>
-    </div>
-    <div class="footer-column">
-      <h3>Contact & Info</h3>
-      <div class="footer-separator"></div>
-      <a href="policy.html">Policy</a>
-      <a href="aboutus.html">About COURSE.XWAGON</a>
-      <div>Email: <a href="mailto:Coursexwagon@gmail.com">Coursexwagon@gmail.com</a></div>
-    </div>
-    <div class="copyright">
-      &copy; 2025 COURSE.XWAGON | The Vault of Mastery
-    </div>
-  </div>      
-</footer>      
-
-<script>      
-  const sidebarToggle = document.getElementById('sidebarToggle');      
-  const sidebar = document.getElementById('sidebar');      
-  const overlay = document.getElementById('overlay');      
-  const buttons = sidebar.querySelectorAll('nav button');      
-      
-  sidebarToggle.addEventListener('click', () => {      
-    sidebar.classList.toggle('open');      
-    overlay.classList.toggle('active');      
-  });      
-      
-  overlay.addEventListener('click', () => {      
-    sidebar.classList.remove('open');      
-    overlay.classList.remove('active');      
-  });      
-      
-  buttons.forEach(btn => {      
-    btn.addEventListener('click', () => {      
-      window.location.href = btn.getAttribute('data-target');      
-      sidebar.classList.remove('open');      
-      overlay.classList.remove('active');      
-    });      
-  });      
-  
-  // Hide scroll indicator when user scrolls down
-  window.addEventListener('scroll', () => {
-    const scrollIndicator = document.getElementById('scrollIndicator');
-    if (window.scrollY > 100) {
-      scrollIndicator.style.opacity = '0';
-    } else {
-      scrollIndicator.style.opacity = '1';
-    }
-  });
-</script>      
-<script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
-<ins class="eas6a97888e2" data-zoneid="5699678"></ins> 
-<script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
-<!-- Replaced all ads with your requested script -->      
-<script type="text/javascript">  
-    aclib.runAutoTag({  
-        zoneId: 'zggv7zzyum',  
-    });  
-</script>  
-
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COURSE.XWAGON — VIP Forum</title>
 <style>
-  #devv-badge-container {
-    position: fixed;
-    bottom: 16px;
-    right: 16px;
-    z-index: 1000000;
-  }
-  
-  #devv-badge {
-    background-color: #000;
-    color: #fff;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-size: 11px;
-    font-weight: 500;
-    padding: 6px 12px;
-    border-radius: 100px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    text-decoration: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: all 0.2s ease, width 0.3s ease;
-    position: relative;
-  }
-
-  #devv-badge:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-  }
-  
-  #devv-badge svg.logo {
-    width: 16px;
-    height: 16px;
-    margin-right: 4px;
-  }
-  
-  #devv-badge-close {
-    color: rgba(255, 255, 255, 0.8);
-    background-color: transparent;
-    border: none;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    font-weight: normal;
-    font-size: 14px;
-    cursor: pointer;
-    line-height: 1;
-    padding-bottom: 2px;
-    margin-left: 4px;
-    transition: color 0.2s ease;
-  }
-
-  #devv-badge:hover #devv-badge-close {
-    display: inline-flex;
-  }
-
-  #devv-badge-close:hover {
-    color: rgba(255, 255, 255, 1);
-  }
-  
-  @media (max-width: 768px) {
-    #devv-badge-container {
-      bottom: 10px;
-      right: 10px;
-    }
-    
-    #devv-badge {
-      padding: 5px 10px;
-      font-size: 10px
-    }
-  }
+body{margin:0;padding:0;font-family:'Courier New',monospace;background:#0a0a0a;color:#d4af37;overflow-x:hidden;}
+header{background:#111;padding:15px;text-align:center;font-weight:900;font-size:1.5rem;}
+#sidebarToggle{position:fixed;top:18px;left:18px;background:#1a1a1a;color:#d4af37;padding:12px 18px;border:none;border-radius:5px;cursor:pointer;z-index:1100;animation:pulse 2s infinite;}
+#sidebar{position:fixed;top:0;left:-280px;width:280px;height:100%;background:#111;padding:80px 20px 20px;display:flex;flex-direction:column;gap:20px;transition:left 0.4s cubic-bezier(0.25, 1, 0.5, 1);z-index:1099;}
+#sidebar.open{left:0;}
+#overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.8);opacity:0;visibility:hidden;transition:0.3s;z-index:1088;}
+#overlay.active{opacity:1;visibility:visible;}
+#sidebar h2{text-align:center;margin-bottom:20px;}
+#sidebar a, #sidebar button{color:#d4af37;text-decoration:none;font-weight:700;padding:8px 0;text-align:center;background:none;border:none;cursor:pointer;}
+#sidebar a:hover, #sidebar button:hover{color:#fff;}
+.container{max-width:1200px;margin:160px auto 40px;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;}
+.thread-box{background:#1a1a1a;padding:15px;border-left:4px solid #d4af37;border-radius:8px;cursor:pointer;transition:0.4s ease, transform 0.3s ease;opacity:0;transform: translateY(20px);animation:slideIn 0.5s forwards;}
+.thread-box:hover{box-shadow: 0 0 20px #d4af37, 0 0 10px #fff inset; transform: scale(1.03);}
+.thread-box h4 span{display:inline-block;animation:bounce 1.2s infinite;}
+#welcomeBlock{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#111;padding:30px 50px;border:2px solid #d4af37;border-radius:15px;text-align:center;font-size:1.5rem;animation:fadePulse 2s infinite;}
+@keyframes slideIn{to { opacity:1; transform: translateY(0); }}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+@keyframes pulse{0%,100%{box-shadow:0 0 5px #d4af37;}50%{box-shadow:0 0 20px #d4af37;}}
+.alert-shake{animation:shake 0.5s;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
+@keyframes fadePulse{0%,100%{opacity:0.9;}50%{opacity:1;}}
+@media(max-width:720px){.container{grid-template-columns:1fr;margin-top:180px;padding:0 16px;}}
 </style>
+</head>
+<body>
 
-  </a>
+<div id="welcomeBlock">PRIVATE FORUM — MEMBERS ONLY</div>
+
+<button id="sidebarToggle">MENU</button>
+<div id="sidebar">
+  <h2>COURSEXWAGON</h2>
+  <a href="index.html">Home</a>
+  <a href="audiobooks.html">Audiobooks</a>
+  <a href="freebooks.html">Free Books</a>
+  <button onclick="window.location.href='chatroom.html'">Join Us Now</button>
 </div>
-</script>
+<div id="overlay"></div>
 
-</body>      
+<header>VIP HACKER FORUM — COURSES</header>
+
+<main class="container" id="threadContainer"></main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDXEKOmJdN8lzvnUIAhVpzarXvgxanRYgs",
+  authDomain: "coursexwagon-admins.firebaseapp.com",
+  projectId: "coursexwagon-admins",
+  storageBucket: "coursexwagon-admins.firebasestorage.app",
+  messagingSenderId: "1081264056319",
+  appId: "1:1081264056319:web:99c2814d8e83571c16e9ca",
+  measurementId: "G-SR53N510NN"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const sidebarToggle = document.getElementById('sidebarToggle');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
+sidebarToggle.addEventListener('click',()=>{sidebar.classList.toggle('open');overlay.classList.toggle('active');});
+overlay.addEventListener('click',()=>{sidebar.classList.remove('open');overlay.classList.remove('active');});
+
+// Hide welcome after 3s
+setTimeout(()=>{document.getElementById('welcomeBlock').style.display='none';},3000);
+
+// Load threads
+async function loadThreads(){
+  const container = document.getElementById('threadContainer');
+  container.innerHTML='';
+  const categories=['courses','audiobooks','freebooks'];
+  for(const cat of categories){
+    const snapshot = await getDocs(collection(db, cat));
+    snapshot.forEach(docSnap=>{
+      const p = docSnap.data();
+      const div = document.createElement('div');
+      div.className='thread-box';
+      div.innerHTML=`<h4><span>${p.emoji?p.emoji:''}</span> ${p.title}</h4><p>Posted by: ${p.admin}</p>`;
+      div.onclick=()=>{
+        const threadWin=window.open('','_blank');
+        threadWin.document.write(`
+          <html><head><title>${p.title}</title>
+          <style>
+          body{background:#0a0a0a;color:#d4af37;font-family:'Courier New',monospace;padding:30px;}
+          a{color:#c0c0c0;text-decoration:underline;font-size:1.2rem;}
+          input,button{padding:8px;margin:6px 0;border-radius:4px;border:none;}
+          input{width:80%;background:#111;color:#d4af37;}
+          button{background:#d4af37;color:#0a0a0a;cursor:pointer;}
+          </style></head>
+          <body>
+          <h1><span>${p.emoji?p.emoji:''}</span> ${p.title}</h1>
+          <p>${p.desc}</p>
+          <p>Posted by: ${p.admin}</p>
+          <div id="commentSection">
+            <input type="text" id="commentInput" placeholder="Type comment to unlock link">
+            <button id="unlockBtn">Unlock Link</button>
+          </div>
+          <div id="linkArea" style="display:none;margin-top:15px;">
+            <a href="${p.url}" target="_blank">Download Link</a>
+          </div>
+          <script>
+            document.getElementById('unlockBtn').onclick=()=>{
+              const input=document.getElementById('commentInput').value.trim();
+              const required='${p.commentLock?p.commentLock:''}';
+              if(required==""||input.toLowerCase()==required.toLowerCase()){
+                document.getElementById('linkArea').style.display='block';
+                alert("✅ Link unlocked! Thank you for commenting.");
+              } else {
+                const cs=document.getElementById('commentInput');
+                cs.classList.add('alert-shake');
+                setTimeout(()=>cs.classList.remove('alert-shake'),500);
+              }
+            };
+          <\/script>
+          </body></html>
+        `);
+      };
+      container.appendChild(div);
+    });
+  }
+}
+window.onload=loadThreads;
+</script>
+</body>
 </html>
